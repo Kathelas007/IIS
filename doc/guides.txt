@@ -1,0 +1,15 @@
+# instalace laravel
+https://www.howtoforge.com/tutorial/install-laravel-on-ubuntu-for-apache/
+
+z 2 variant vzit tu 1, ale nepridavat dalsiho uzivatele, jsou potom problemy s pravama
+pokud nefunguje jejich chmod, pouzit ./change_mod.sh iis_hotel, akorat zmeni uzivatele z awesome na vase
+
+# mysql
+https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04
+fakt udelat secure_instalation
+rovnou vytvorit novyho uzivatele databazi a dat mu prava vsechna na tu databazi
+
+
+https://www.parthpatel.net/laravel-tutorial-for-beginner/
+soubor .env se musi shodovat s userem a databazi v mysql a nastavenim v apache
+!! password a username v .env musi byt s "", jinak vyzkoci permission denied
