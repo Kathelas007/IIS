@@ -48,5 +48,5 @@ Thumbs.db
 *.mov
 *.wmv
 
-vendor
-.env
+iis_hotel/vendor
+iis_hotel/.env
