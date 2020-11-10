@@ -61,6 +61,8 @@
                             </div>
                         </div>
 
+                        <input type="hidden" name="user_role" value="{{ \App\Models\User::role_customer }}">
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
