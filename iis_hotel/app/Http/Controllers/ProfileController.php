@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
+    }
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
     }
 
     private function getUser($id) {
@@ -62,8 +71,22 @@ class ProfileController extends Controller
         return redirect('/profile/'.$id);
     }
 
-    public function update_password() {
-        return redirect('/profile');
+    public function update_password(Request $request) {
+        $this->validator($request->all())->validate();
+
+        $user = Auth::user();
+        if(Hash::check($request->old_password, $user->password)) {
+            $user->password = Hash::make($request->password);
+
+            $user->save();
+
+            return redirect('/profile');
+        }
+
+        $errors = [
+            'old_password' => 'This password does not match our records.',
+        ];
+        return redirect()->back()->withErrors($errors);
     }
 
     public function destroy($id) {
