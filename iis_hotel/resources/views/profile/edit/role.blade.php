@@ -8,13 +8,20 @@
                 <div class="card-header">{{ __('Profile') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('profile.edit.role') }}">
+                    <form method="POST" action="{{ route('profile.edit.role', $user->id) }}">
                         @csrf
 
                         <div class="form-group row">
                             <label for="role" class="col-md-4 col-form-label text-md-right">Role</label>
 
                             <div class="col-md-6">
+                                <select name="role" id="user-role" class="form-control" value="{{ $user->role }}">
+                                    @foreach (Auth::user()::role_names as $role => $name)
+                                        @if ($role != Auth::user()::role_admin)
+                                            <option value="{{ $role }}">{{ $name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

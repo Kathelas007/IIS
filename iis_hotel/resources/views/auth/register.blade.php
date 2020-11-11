@@ -61,7 +61,23 @@
                             </div>
                         </div>
 
-                        <input type="hidden" name="user_role" value="{{ \App\Models\User::role_customer }}">
+                        @auth
+                            <div class="form-group row">
+                                <label for="user-role" class="col-4 col-form-label text-right">Role</label>
+
+                                <div class="col-6">
+                                    <select name="role" id="user-role" class="form-control">
+                                        @foreach (Auth::user()::role_names as $role => $name)
+                                            @if ($role != Auth::user()::role_admin)
+                                                <option value="{{ $role }}">{{ $name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @else
+                            <input type="hidden" name="role" value="{{ \App\Models\User::role_customer }}">
+                        @endauth
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

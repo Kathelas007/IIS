@@ -13,10 +13,10 @@
                             Name:
                         </div>
                         <div class="col-4">
-                            {{ Auth::user()->name }}
+                            {{ $user->name }}
                         </div>
                         <div class="col-4">
-                            <a href="{{ route('profile.edit.name') }}">Change</a>
+                            <a href="{{ route('profile.edit.name', $user->id) }}">Change</a>
                         </div>
                     </div>
                     <div class="row">
@@ -24,7 +24,7 @@
                             E-mail:
                         </div>
                         <div class="col-8">
-                            {{ Auth::user()->email }}
+                            {{ $user->email }}
                         </div>
                     </div>
                     @authAtLeast(Auth::user()::role_clerk)
@@ -33,12 +33,14 @@
                                 Role:
                             </div>
                             <div class="col-4">
-                                {{ Auth::user()->roleString() }}
+                                {{ $user->roleString() }}
                             </div>
                             @authAtLeast(Auth::user()::role_admin)
-                                <div class="col-4">
-                                    <a href="{{ route('profile.edit.role') }}">Change</a>
-                                </div>
+                                @if ($user->role != Auth::user()::role_admin)
+                                    <div class="col-4">
+                                        <a href="{{ route('profile.edit.role', $user->id) }}">Change</a>
+                                    </div>
+                                @endif
                             @endauthAtLeast
                         </div>
                     @endauthAtLeast
@@ -47,12 +49,14 @@
 
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3"></div>
-                        <div class="col-9">
-                            <a href="{{ route('profile.edit.password') }}">Change password</a>
+                    @if(Auth::user()->id == $user->id)
+                        <div class="row">
+                            <div class="col-3"></div>
+                            <div class="col-9">
+                                <a href="{{ route('profile.edit.password') }}">Change password</a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

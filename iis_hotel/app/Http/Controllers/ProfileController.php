@@ -12,45 +12,64 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    public function index() {
-        return view('profile.index');
+    private function getUser($id) {
+        if($id == NULL) {
+            return Auth::user();
+        } else {
+            return User::findOrFail($id);
+        }
     }
 
-    public function edit_name() {
-        return view('profile.edit.name');
+    private function getData($id) {
+        return [
+            'user' => $this->getUser($id),
+        ];
     }
 
-    public function edit_role() {
-        return view('profile.edit.role');
+    public function index($id = NULL) {
+        return view('profile.index', $this->getData($id));
+    }
+
+    public function edit_name($id = NULL) {
+        return view('profile.edit.name', $this->getData($id));
+    }
+
+    public function edit_role($id = NULL) {
+        return view('profile.edit.role', $this->getData($id));
     }
 
     public function edit_password() {
         return view('profile.edit.password');
     }
 
-    public function update_name() {
-        $id = Auth::id();
-        $user = User::findOrFail($id);
+    public function update_name($id = NULL) {
+        $user = $this->getUser($id);
 
         $user->name = request('name');
 
         $user->save();
 
-        return redirect('/profile');
+        return redirect('/profile/'.$id);
     }
 
-    public function update_role() {
-        $id = Auth::id();
-        $user = User::findOrFail($id);
+    public function update_role($id = NULL) {
+        $user = $this->getUser($id);
 
-        $user->user_role = request('user_role');
+        $user->role = request('role');
 
         $user->save();
 
-        return redirect('/profile');
+        return redirect('/profile/'.$id);
     }
 
     public function update_password() {
         return redirect('/profile');
+    }
+
+    public function destroy($id) {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect('home');
     }
 }

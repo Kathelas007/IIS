@@ -33,7 +33,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'user_role',
+        'role',
     ];
 
     /**
@@ -55,21 +55,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    const role_names = [
+        User::role_customer => 'Customer',
+        User::role_clerk => 'Hotel receptionist',
+        User::role_owner => 'Hotel owner',
+        User::role_admin => 'Administrator',
+    ];
+
     function isAtLeast($role) {
-        return $this->user_role <= $role;
+        return $this->role <= $role;
     }
 
     function roleString() {
-        switch($this->user_role) {
-            case User::role_admin:
-                return 'administrator';
-            case User::role_owner:
-                return 'hotel owner';
-            case User::role_clerk:
-                return 'hotel receptionist';
-            case User::role_customer:
-                return 'customer';
-        }
+        return User::role_names[$this->role];
     }
 }
 
