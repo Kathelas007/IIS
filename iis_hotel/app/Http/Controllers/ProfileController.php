@@ -16,12 +16,20 @@ class ProfileController extends Controller
         return view('profile');
     }
 
-    public function update() { 
+    public function name() {
+        return redirect('/');
+    }
+
+    public function password() {
+        return redirect('/');
+    }
+
+    public function update() {
         $id = Auth::id();
         $user = User::findOrFail($id);
 
         $user->name = request('name');
-        
+
         $user->save();
 
         return redirect('/profile');
