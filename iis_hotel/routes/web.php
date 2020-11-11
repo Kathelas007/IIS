@@ -21,7 +21,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
-Route::get('/profile/name', [\App\Http\Controllers\ProfileController::class, 'name'])->name('profile.name');
-Route::get('/profile/password', [\App\Http\Controllers\ProfileController::class, 'password'])->name('profile.password');
-Route::post('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile');
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+Route::get('/profile/edit/name', [\App\Http\Controllers\ProfileController::class, 'edit_name'])->name('profile.edit.name');
+Route::get('/profile/edit/role', [\App\Http\Controllers\ProfileController::class, 'edit_role'])->name('profile.edit.role');
+Route::get('/profile/edit/password', [\App\Http\Controllers\ProfileController::class, 'edit_password'])->name('profile.edit.password');
+
+Route::post('/profile/edit/name', [App\Http\Controllers\ProfileController::class, 'update_name'])->name('profile.edit.name');
+Route::post('/profile/edit/role', [\App\Http\Controllers\ProfileController::class, 'update_role'])->name('profile.edit.role');
+Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::class, 'update_password'])->name('profile.edit.password');

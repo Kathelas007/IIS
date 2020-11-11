@@ -56,7 +56,7 @@ class User extends Authenticatable
     ];
 
     function isAtLeast($role) {
-        return $this->user_role < $role;
+        return $this->user_role <= $role;
     }
 
     function roleString() {
