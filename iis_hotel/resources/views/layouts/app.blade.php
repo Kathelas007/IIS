@@ -60,6 +60,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('home') }}" class="dropdown-item">
+                                        Home
+                                    </a>
                                     <a href="{{ route('profile.index') }}" class="dropdown-item">
                                         Profile
                                     </a>
