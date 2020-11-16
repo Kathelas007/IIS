@@ -63,6 +63,9 @@
                                     <a href="{{ route('profile.index') }}" class="dropdown-item">
                                         Profile
                                     </a>
+                                    <a href="{{ route('orders.index') }}" class="dropdown-item">
+                                        Orders
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
