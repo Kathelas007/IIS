@@ -5,58 +5,37 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Profile') }}</div>
+                <div class="card-header">Profiles list</div>
 
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-4 text-right" >
-                            Name:
-                        </div>
-                        <div class="col-4">
-                            {{ $user->name }}
-                        </div>
-                        <div class="col-4">
-                            <a href="{{ route('profile.edit.name', $user->id) }}">Change</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 text-right">
-                            E-mail:
-                        </div>
-                        <div class="col-8">
-                            {{ $user->email }}
-                        </div>
-                    </div>
-                    @authAtLeast(Auth::user()::role_clerk)
+                    @foreach ($users as $user)
                         <div class="row">
                             <div class="col-4 text-right">
-                                Role:
+                                User:
                             </div>
                             <div class="col-4">
-                                {{ $user->roleString() }}
+                                {{ $user->name }}
                             </div>
-                            @authAtLeast(Auth::user()::role_admin)
-                                @if ($user->role != Auth::user()::role_admin)
-                                    <div class="col-4">
-                                        <a href="{{ route('profile.edit.role', $user->id) }}">Change</a>
-                                    </div>
-                                @endif
-                            @endauthAtLeast
+                            @if(Auth::user()->id != $user->id)
+                                <div class="col-4">
+                                    <a href="{{ route('profile.show', $user->id) }}">
+                                        Edit
+                                    </a>
+                                    <form method="POST" class="d-inline" action="{{ route('profile.destroy', $user->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
-                    @endauthAtLeast
+                    @endforeach
                     <div class="row">
-                        <div class="col-4">
-
-                        </div>
+                        <div class="col-3"></div>
+                        <a href="{{ route('register') }}" class="col-9">Register new user</a>
                     </div>
-                    @if(Auth::user()->id == $user->id)
-                        <div class="row">
-                            <div class="col-3"></div>
-                            <div class="col-9">
-                                <a href="{{ route('profile.edit.password') }}">Change password</a>
-                            </div>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

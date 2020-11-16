@@ -52,7 +52,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     Change
                                 </button>
-                                <a href="{{ route('profile.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('profile.show') }}" class="btn btn-secondary">
                                     Back
                                 </a>
                             </div>

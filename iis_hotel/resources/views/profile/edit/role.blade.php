@@ -15,10 +15,14 @@
                             <label for="role" class="col-md-4 col-form-label text-md-right">Role</label>
 
                             <div class="col-md-6">
-                                <select name="role" id="user-role" class="form-control" value="{{ $user->role }}">
+                                <select name="role" id="user-role" class="form-control">
                                     @foreach (Auth::user()::role_names as $role => $name)
                                         @if ($role != Auth::user()::role_admin)
-                                            <option value="{{ $role }}">{{ $name }}</option>
+                                            @if($role == $user->role)
+                                                <option value="{{ $role }}" selected>{{ $name }}</option>
+                                            @else
+                                                <option value="{{ $role }}">{{ $name }}</option>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </select>
@@ -30,7 +34,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     Change
                                 </button>
-                                <a href="{{ route('profile.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('profile.show', $user->id) }}" class="btn btn-secondary">
                                     Back
                                 </a>
                             </div>
