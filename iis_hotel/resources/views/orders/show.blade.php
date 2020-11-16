@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Orders</div>
+                <div class="card-header">Order</div>
 
                 <div class="card-body">
                     <div class="row">
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     @authAtLeast(Auth::user()::role_clerk)
-                        <form method="POST" action="{{ route('orders.edit', $order) }}">
+                        <form method="POST" action="{{ route('orders.update', $order) }}">
                             @csrf
 
                             <div class="form-group row">
@@ -64,6 +64,8 @@
                                 </div>
                             </div>
                         </form>
+                    @else
+                        <a href="{{ route('orders.index', Auth::user()) }}">Back</a>
                     @endauthAtLeast
                 </div>
             </div>

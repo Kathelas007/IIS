@@ -46,6 +46,12 @@
                             <a href="{{ route('register') }}" class="col-9">Register new user</a>
                         </div>
                     @endauthAtLeast
+                    @authAtLeast(Auth::user()::role_clerk)
+                        <div class="row">
+                            <div class="col-3"></div>
+                            <a href="{{ route('orders.index') }}" class="col-9">Manage orders</a>
+                        </div>
+                    @endauthAtLeast
                 </div>
             </div>
         </div>

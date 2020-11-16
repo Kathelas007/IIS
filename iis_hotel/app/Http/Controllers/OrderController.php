@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -74,11 +78,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        $order->state = request('state');
-
-        $order->save();
-
-        return redirect('/orders');
+        //
     }
 
     /**
@@ -90,7 +90,11 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $order->state = $request->state;
+
+        $order->save();
+
+        return redirect('/orders');
     }
 
     /**

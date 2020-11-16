@@ -12,8 +12,8 @@ class Order extends Model
     const states = [
         'filed',
         'accepted',
-        'confirmed',
         'proceeding',
-        'finished'
+        'finished',
+        'cancelled',
     ];
 }

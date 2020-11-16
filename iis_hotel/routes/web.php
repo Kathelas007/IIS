@@ -36,4 +36,4 @@ Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'd
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
 Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
 
-Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'edit'])->name('orders.edit');
+Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
