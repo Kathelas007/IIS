@@ -15,5 +15,5 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
 mix.styles([
-    'vendor/components/font-awesome/css/fontawesome.css',
+    'node_modules/font-awesome/css/font-awesome.css',
 ], 'public/css/all.css');
