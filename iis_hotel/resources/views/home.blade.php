@@ -17,34 +17,10 @@
                     You are logged in as <span class="text-lowercase">{{ Auth::user()->roleString() }}</span>
 
                     @authAtLeast(Auth::user()::role_admin)
-                        @foreach ($users as $user)
-                            <div class="row">
-                                <div class="col-4 text-right">
-                                    User:
-                                </div>
-                                <div class="col-4">
-                                    {{ $user->name }}
-                                </div>
-                                @if(Auth::user()->id != $user->id)
-                                    <div class="col-4">
-                                        <a href="{{ route('profile.index', $user->id) }}">
-                                            Edit
-                                        </a>
-                                        <form method="POST" class="d-inline" action="{{ route('profile.destroy', $user->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                @endif
-                            </div>
-                        @endforeach
-                        <div class="row">
-                            <div class="col-3"></div>
-                            <a href="{{ route('register') }}" class="col-9">Register new user</a>
-                        </div>
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <a href="{{ route('profile.index') }}" class="col-9">Manage users</a>
+                    </div>
                     @endauthAtLeast
                     @authAtLeast(Auth::user()::role_clerk)
                         <div class="row">

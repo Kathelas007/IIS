@@ -24,11 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-
-        $data = [
-            'users' => $users,
-        ];
-        return view('home', $data);
+        return view('home');
     }
 }

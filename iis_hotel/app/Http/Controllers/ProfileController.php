@@ -35,8 +35,17 @@ class ProfileController extends Controller
         ];
     }
 
-    public function index($id = NULL) {
-        return view('profile.index', $this->getData($id));
+    public function index() {
+        $users = User::all();
+
+        $data = [
+            'users' => $users,
+        ];
+        return view('profile.index', $data);
+    }
+
+    public function show($id = NULL) {
+        return view('profile.show', $this->getData($id));
     }
 
     public function edit_name($id = NULL) {
