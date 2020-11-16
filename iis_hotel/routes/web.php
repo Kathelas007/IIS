@@ -33,7 +33,7 @@ Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::c
 
 Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
-Route::get('orders', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
+Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
 Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
 
 Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'edit'])->name('orders.edit');

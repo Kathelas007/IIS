@@ -19,7 +19,8 @@ class CreateOrdersTable extends Migration
             $table->string("firstname");
             $table->string("lastname");
             $table->string("phone");
-            $table->integer('state');
+            $table->string('state');
+            $table->foreignId('user_id')->constrained();
         });
     }
 

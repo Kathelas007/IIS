@@ -66,7 +66,7 @@
                                     <a href="{{ route('profile.index') }}" class="dropdown-item">
                                         Profile
                                     </a>
-                                    <a href="{{ route('orders.index') }}" class="dropdown-item">
+                                    <a href="{{ route('orders.index', Auth::user()) }}" class="dropdown-item">
                                         Orders
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

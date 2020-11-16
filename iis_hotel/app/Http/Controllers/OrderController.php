@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class OrderController extends Controller
 {
@@ -12,10 +15,18 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user = NULL)
     {
+        if($user != NULL) {
+            $orders = Order::where('user_id', $user->id)->get();
+        } else if(Auth::user()->isAtLeast(User::role_clerk)) {
+            $orders = Order::all();
+        } else {
+            return redirect('home');
+        }
+
         $data = [
-            'orders' => Order::all(),
+            'orders' => $orders,
         ];
         return view('orders.index', $data);
     }
