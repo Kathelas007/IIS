@@ -21,6 +21,7 @@
                             </div>
                         </div>
                     @endforeach
+                    <a href="{{ route('orders.create') }}">Create</a>
                 </div>
             </div>
         </div>

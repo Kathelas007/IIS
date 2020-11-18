@@ -26,12 +26,22 @@
                     </div>
                     <div class="row">
                         <div class="col-4 text-right">
-                            Phone number:
+                            E-mail:
                         </div>
                         <div class="col-6" >
-                            {{ $order->phone }}
+                            {{ $order->email }}
                         </div>
                     </div>
+                    @isset($order->phone)
+                        <div class="row">
+                            <div class="col-4 text-right">
+                                Phone number:
+                            </div>
+                            <div class="col-6" >
+                                {{ $order->phone }}
+                            </div>
+                        </div>
+                    @endisset
                     @authAtLeast(Auth::user()::role_clerk)
                         <form method="POST" action="{{ route('orders.update', $order) }}">
                             @csrf
