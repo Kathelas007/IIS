@@ -20,6 +20,12 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
+    <link href="{{ asset('css/iis.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/iis.css') }}" />
+
+    <link href="{{ asset('css/all.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/all.css') }}" />
+
 </head>
 <body>
     <div id="app">

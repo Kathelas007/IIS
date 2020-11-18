@@ -21,7 +21,7 @@
                         <div class="col-3"></div>
                         <a href="{{ route('profile.index') }}" class="col-9">Manage users</a>
                     </div>
-                    @endauthAtLeast
+                    @endauthAtLeast You are logged in as Customer
                     @authAtLeast(Auth::user()::role_clerk)
                         <div class="row">
                             <div class="col-3"></div>

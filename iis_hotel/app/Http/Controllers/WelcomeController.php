@@ -8,7 +8,6 @@ use App\Http\Controllers\HotelController;
 class WelcomeController extends Controller
 {
 //  TODO seeds
-//  TODO add home to header
 
     public function index() {
         return view('welcome.index');

@@ -1,4 +1,4 @@
-<div class="col-md-10">
+<div class="col-md-10 search-bar">
     <form action="/search" method="GET" role="search">
         <div class="input-group">
             <input type="text" class="form-control" name="query" id="query"
@@ -12,3 +12,5 @@
         </div>
     </form>
 </div>
+
+

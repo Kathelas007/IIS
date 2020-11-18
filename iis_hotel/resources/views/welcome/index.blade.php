@@ -10,6 +10,7 @@
                     <p>some page info</p>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
