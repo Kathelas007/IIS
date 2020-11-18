@@ -17,8 +17,8 @@ class WelcomeController extends Controller
         $request->validate(['query' => 'required|min:3']);
 
         $query = $request->input('query');
-        $result = HotelController::get_searched($query);
+        $hotels = HotelController::get_search_paginator($query);
 
-        return view('welcome.search',  ['hotel_results' => $result]);
+        return view('welcome.search',  compact('hotels'));
     }
 }

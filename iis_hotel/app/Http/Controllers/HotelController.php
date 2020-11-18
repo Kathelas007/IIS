@@ -12,7 +12,7 @@ class HotelController extends Controller {
 
     }
 
-    public static function get_searched($loc_pos) {
+    public static function get_search_paginator($loc_pos) {
         $by_hotel = Hotel::where('oznaceni', 'like', "%$loc_pos%");
 
         return DB::table('hotels')->join('addresses', function ($join) {
@@ -21,6 +21,6 @@ class HotelController extends Controller {
             ->where('addresses.mesto', 'like', "%$loc_pos%")
             ->select('hotels.*')
             ->union($by_hotel)
-            ->get();
+            ->paginate(10);
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+use Faker\Factory as Faker;
+
 class AddressSeeder extends Seeder
 {
     /**
@@ -17,23 +19,25 @@ class AddressSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Faker::create();
+
         for($i = 1; $i <= 10; $i++){
             DB::table('addresses')->updateOrInsert([
-                'ulice' => Str::random(5),
+                'ulice' => $faker->streetName,
                 'c_popisne' => rand(1, 1000),
-                'mesto' => Str::random(5),
-                'PSC' => rand(10000, 99999),
-                'stat' => Str::random(2),
+                'mesto' =>  $faker->city,
+                'PSC' => rand(10000, 90000),
+                'stat' =>  $faker->country
             ]);
         }
 
         for($i = 1; $i <= 10; $i++){
             DB::table('addresses')->updateOrInsert([
-                'ulice' => Str::random(5),
+                'ulice' => $faker->streetName,
                 'c_popisne' => rand(1, 1000),
-                'mesto' => 'Brno' . Str::random(5),
-                'PSC' => rand(10000, 99999),
-                'stat' => Str::random(2),
+                'mesto' => 'Brno' . Str::random(3),
+                'PSC' => rand(10000, 90000),
+                'stat' => $faker->country,
             ]);
         }
     }
