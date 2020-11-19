@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers;
 
+
+use Intervention\Image\ImageManagerStatic as Im;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,14 +20,12 @@ use App\Http\Controllers;
 |
 */
 
-//Route::get('/', ['WelcomeController@index'])->name('welcome.index');
-//Route::get('/search', ['WelcomeController@search'])->name('welcome.search');
+Auth::routes();
 
 Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome.index');
 Route::get('/search', [App\Http\Controllers\WelcomeController::class, 'search'])->name('welcome.search');
 
-Auth::routes();
-
+Route::get('/fetch_hotel_image/{id}', [App\Http\Controllers\HotelController::class, 'fetch_hotel_image']);
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -44,5 +46,8 @@ Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'cre
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
 Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
 
+Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
+
+Route::get('/{id}', [App\Http\Controllers\WelcomeController::class, 'show'])->name('welcome.show');
 Route::post('orders/create', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.create');
 Route::post('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
