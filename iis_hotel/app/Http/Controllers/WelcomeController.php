@@ -21,4 +21,10 @@ class WelcomeController extends Controller
 
         return view('welcome.search',  compact('hotels'));
     }
+
+    public function show($id){
+        return view('welcome.show');
+    }
+
+
 }
