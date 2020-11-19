@@ -6,12 +6,27 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 
 class OrderController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
+    }
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'e-mail' => ['required', 'string', 'email', 'max:255'],
+            'phone' => ['digits:9'],
+        ]);
     }
 
     /**
@@ -42,7 +57,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('orders.create');
     }
 
     /**
@@ -53,7 +68,19 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validator($request->all())->validate();
+
+        $order = new Order();
+        $order->firstname = $request->firstname;
+        $order->lastname = $request->lastname;
+        $order->email = request('e-mail');
+        $order->phone = $request->phone;
+        $order->user_id = Auth::user()->id;
+        $order->state = 'filed';
+
+        $order->save();
+
+        return redirect('home');
     }
 
     /**
