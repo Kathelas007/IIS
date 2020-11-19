@@ -11,8 +11,13 @@ use Illuminate\Support\Facades\Response;
 use Intervention\Image\ImageManagerStatic as Im;
 
 class HotelController extends Controller {
-    public function index() {
+    public function index(Hotel $hotel) {
+        $hotels = Hotel::All();
 
+        $data = [
+            'hotels' => $hotels,
+        ];
+        return view('hotels.index', $data);
     }
 
     public static function get_search_paginator($loc_pos) {

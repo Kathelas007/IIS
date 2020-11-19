@@ -42,6 +42,8 @@ Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::c
 
 Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
+Route::get('/hotels/list', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
+
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
 Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
