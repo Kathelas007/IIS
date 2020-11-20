@@ -27,7 +27,6 @@ Route::get('/search', [App\Http\Controllers\WelcomeController::class, 'search'])
 
 Route::get('/fetch_hotel_image/{id}', [App\Http\Controllers\HotelController::class, 'fetch_hotel_image']);
 
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/profile/list', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
@@ -43,6 +42,7 @@ Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::c
 Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
 Route::get('/hotels/list', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
+Route::get('/hotels/public_show/{id}', [App\Http\Controllers\HotelController::class, 'public_show'])->name('hotels.public_show');
 
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
@@ -50,6 +50,5 @@ Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class,
 
 Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
 
-Route::get('/{id}', [App\Http\Controllers\WelcomeController::class, 'show'])->name('welcome.show');
 Route::post('orders/create', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.create');
 Route::post('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');

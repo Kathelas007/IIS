@@ -26,6 +26,7 @@
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url('/css/all.css') }}" />
 
+
 </head>
 <body>
     <div id="app">

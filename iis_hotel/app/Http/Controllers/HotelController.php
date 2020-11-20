@@ -34,6 +34,17 @@ class HotelController extends Controller {
             ->paginate(10);
     }
 
+    function public_show($id) {
+        $hotel = Hotel::findOrFail($id);
+        $address = null;
+
+        if ($hotel->address_id != null) {
+            // TODO function from address model
+            $address = DB::table('addresses')->where("id", '=', "$hotel->address_id")->first();
+        }
+        return view('hotels.public_show', ['hotel' => $hotel, 'address' => $address]);
+    }
+
 
     function fetch_hotel_image($hotel_id) {
         // TODO

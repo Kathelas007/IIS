@@ -27,7 +27,7 @@
                                             <img src="/fetch_hotel_image/{{ $hotel->id }}"/>
                                         </div>
                                         <div class="col-8 text-left align-content-center">
-                                            <a href="{{ route('welcome.show', $hotel->id) }}">
+                                            <a href="{{ route('hotels.public_show', $hotel->id) }}">
                                                 {{$hotel->oznaceni}}
                                             </a>
                                         </div>
