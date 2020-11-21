@@ -38,7 +38,7 @@
                                     Country:
                                 </div>
                                 <div class="col-6 text-left">
-                                    {{ $address->stat }}
+                                    {{ $hotel->stat }}
                                 </div>
                             </div>
                             <div class="row">
@@ -46,7 +46,7 @@
                                     City:
                                 </div>
                                 <div class="col-6 text-left">
-                                    {{ $address->mesto }}
+                                    {{ $hotel->mesto }}
                                 </div>
                             </div>
                             <div class="row">
@@ -54,7 +54,7 @@
                                     Street, no.:
                                 </div>
                                 <div class="col-6 text-left">
-                                    {{ $address->ulice }}, {{ $address->c_popisne }}
+                                    {{ $hotel->ulice }}, {{ $hotel->c_popisne }}
                                 </div>
                             </div>
                             <div class="row">
@@ -62,7 +62,7 @@
                                     Postal code:
                                 </div>
                                 <div class="col-6 text-left">
-                                    {{ $address->PSC }}
+                                    {{ $hotel->PSC }}
                                 </div>
                             </div>
                         </div>

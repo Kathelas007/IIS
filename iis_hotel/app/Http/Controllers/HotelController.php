@@ -114,8 +114,21 @@ class HotelController extends Controller {
         return view('hotels.edit', $data);
     }
 
-    public function update(Hotel $hotel){
+    public function update(Request $request, Hotel $hotel){
 
+        $this->validator($request->all())->validate();
+
+        $hotel->oznaceni = $request->oznaceni;
+        $hotel->popis    = $request->popis;
+        $hotel->ulice    = $request->ulice;
+        $hotel->c_popisne = $request->c_popisne;
+        $hotel->mesto     = $request->mesto;
+        $hotel->PSC       = $request->PSC;
+        $hotel->stat      = $request->stat;
+
+        $hotel->save();
+
+            return redirect('home');
         }
 
     public function destroy ($id){

@@ -8,13 +8,13 @@
                 <div class="card-header">Edit Hotel</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('hotels.edit') }}">
+                    <form method="POST" action="{{ route('hotels.update', $hotel) }}">
                         @csrf
                         <div class="form-group row">
                             <label for="oznaceni" class="col-4 col-form-label text-right">Hotel name</label>
 
                             <div class="col-6">
-                                <input id="oznaceni" type="text" class="form-control @error('oznaceni') is-invalid @enderror" name="oznaceni" value="{{ old('oznaceni') }}" autofocus>
+                                <input id="oznaceni" type="text" class="form-control @error('oznaceni') is-invalid @enderror" name="oznaceni" value="{{ old('oznaceni', $hotel->oznaceni) }}" autofocus>
 
                                 @error('oznaceni')
                                     <span class="invalid-feedback" role="alert">
@@ -28,7 +28,7 @@
                             <label for="stat" class="col-4 col-form-label text-right">Country</label>
 
                             <div class="col-6">
-                                <input id="stat" type="text" class="form-control @error('stat') is-invalid @enderror" name="stat" value="{{ old('stat') }}" autofocus>
+                                <input id="stat" type="text" class="form-control @error('stat') is-invalid @enderror" name="stat" value="{{ old('stat', $hotel->stat) }}" autofocus>
 
                                 @error('stat')
                                     <span class="invalid-feedback" role="alert">
@@ -42,7 +42,7 @@
                             <label for="mesto" class="col-4 col-form-label text-right">City</label>
 
                             <div class="col-6">
-                                <input id="mesto" type="text" class="form-control @error('mesto') is-invalid @enderror" name="mesto" value="{{ old('mesto') }}" autofocus>
+                                <input id="mesto" type="text" class="form-control @error('mesto') is-invalid @enderror" name="mesto" value="{{ old('mesto', $hotel->mesto) }}" autofocus>
 
                                 @error('mesto')
                                     <span class="invalid-feedback" role="alert">
@@ -56,7 +56,7 @@
                             <label for="ulice" class="col-4 col-form-label text-right">Street</label>
 
                             <div class="col-6">
-                                <input id="ulice" type="text" class="form-control @error('ulice') is-invalid @enderror" name="ulice" value="{{ old('ulice') }}" autofocus>
+                                <input id="ulice" type="text" class="form-control @error('ulice') is-invalid @enderror" name="ulice" value="{{ old('ulice', $hotel->ulice) }}" autofocus>
 
                                 @error('ulice')
                                     <span class="invalid-feedback" role="alert">
@@ -70,7 +70,7 @@
                             <label for="phone" class="col-4 col-form-label text-right">No.</label>
 
                             <div class="col-6">
-                                <input id="c_popisne" type="text" class="form-control @error('c_popisne') is-invalid @enderror" name="c_popisne" value="{{ old('c_popisne') }}">
+                                <input id="c_popisne" type="text" class="form-control @error('c_popisne') is-invalid @enderror" name="c_popisne" value="{{ old('c_popisne', $hotel->c_popisne) }}">
 
                                 @error('c_popisne')
                                     <span class="invalid-feedback" role="alert">
@@ -84,7 +84,7 @@
                             <label for="PSC" class="col-4 col-form-label text-right">Postal Code</label>
 
                             <div class="col-6">
-                                <input id="PSC" type="text" class="form-control @error('PSC') is-invalid @enderror" name="PSC" value="{{ old('PSC') }}">
+                                <input id="PSC" type="text" class="form-control @error('PSC') is-invalid @enderror" name="PSC" value="{{ old('PSC', $hotel->PSC) }}">
 
                                 @error('PSC')
                                     <span class="invalid-feedback" role="alert">
@@ -98,8 +98,7 @@
                             <label for="popis" class="col-4 col-form-label text-right">Description</label>
 
                             <div class="col-6">
-                                <textarea id="popis" type="text" class="form-control @error('popis') is-invalid @enderror" name="popis" value="{{ old('popis') }}">
-                                </textarea>
+                                <textarea id="popis" type="text" class="form-control @error('popis') is-invalid @enderror" name="popis">{{ old('popis', $hotel->popis) }}</textarea>
 
                                 @error('popis')
                                     <span class="invalid-feedback" role="alert">
