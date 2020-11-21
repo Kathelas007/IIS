@@ -23,11 +23,24 @@
                             {{$hotel->oznaceni}}
                         </div>
                         <div class="col-4 text-right">
-                            <a href="{{ route('hotels.owner_show', $hotel) }}">Detail</a>
+                                <a href="{{ route('hotels.owner_show', $hotel) }}">
+                                    <button class="btn btn-primary">
+                                        Detail
+                                     </button>
+                                </a>
                         </div>
                         <div class="col-3 text-right">
-                            Delete option here
-                            {{--<a href="{{ route('hotels.edit', $order) }}">Delete</a>--}}
+                        <form method="POST", action="/hotels/{{ $hotel->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <div class="form-group row mb-0">
+                                   <div class="col text-right">
+                                        <button class="btn btn-primary">
+                                            Delete
+                                       </button>
+                                   </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     @endforeach

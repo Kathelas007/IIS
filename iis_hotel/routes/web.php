@@ -47,6 +47,8 @@ Route::get('/hotels/{user?}', [App\Http\Controllers\HotelController::class, 'ind
 Route::get('/hotels/owner_show/{hotel}', [App\Http\Controllers\HotelController::class, 'owner_show'])->name('hotels.owner_show');
 Route::get('/hotels/edit/{hotel?}', [App\Http\Controllers\HotelController::class, 'edit'])->name('hotels.edit');
 
+Route::delete('/hotels/{id}', [App\Http\Controllers\HotelController::class, 'destroy']);
+
 Route::post('/hotels/add', [App\Http\Controllers\HotelController::class, 'store'])->name('hotels.add');
 Route::post('/hotels/edit/{hotel?}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.edit');
 

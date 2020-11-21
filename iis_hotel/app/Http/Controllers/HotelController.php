@@ -99,8 +99,16 @@ class HotelController extends Controller {
         return view('hotels.edit');
     }
 
-    public function update(){
+    public function update(Hotel $hotel){
+        //
+        }
 
+    public function destroy ($id){
+
+        $hotel = Hotel::findOrFail($id);
+        $hotel->delete();
+
+        return redirect('/home');
     }
 
     function fetch_hotel_image($hotel_id) {
