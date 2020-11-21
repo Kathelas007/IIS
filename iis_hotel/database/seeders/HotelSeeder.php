@@ -30,6 +30,7 @@ class HotelSeeder extends Seeder {
             'oznaceni' => 'Mánesovy koleje',
             'popis' => 'Nejlepší koleje v Brně',
             'image' => $img->encode('jpg', 80),
+            'user_id' => 1,
         ]);
 
         for ($i = 1; $i <= 20; $i++) {
@@ -37,7 +38,8 @@ class HotelSeeder extends Seeder {
             DB::table('hotels')->updateOrInsert([
                 'oznaceni' => 'hotel ' . Str::random(10),
                 'popis' => Str::random(200),
-                'image' => $img
+                'image' => $img,
+                'user_id' => 1,
             ]);
         }
 
@@ -46,6 +48,7 @@ class HotelSeeder extends Seeder {
                 'oznaceni' => 'pension ' . Str::random(10),
                 'popis' => Str::random(200),
                 'address_id' => rand(1, 18),
+                'user_id' => 1,
             ]);
         }
 

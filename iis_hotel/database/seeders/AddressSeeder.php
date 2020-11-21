@@ -27,7 +27,7 @@ class AddressSeeder extends Seeder
                 'c_popisne' => rand(1, 1000),
                 'mesto' =>  $faker->city,
                 'PSC' => rand(10000, 90000),
-                'stat' =>  $faker->country
+                'stat' =>  $faker->country,
             ]);
         }
 

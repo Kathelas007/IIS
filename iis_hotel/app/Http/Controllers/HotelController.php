@@ -3,16 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Address;
+use App\Models\User;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Table;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 use Intervention\Image\ImageManagerStatic as Im;
 
 class HotelController extends Controller {
-    public function index(Hotel $hotel) {
-        $hotels = Hotel::All();
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'oznaceni'  => ['required', 'string', 'max:255'],
+            'popis'     => ['required', 'string'],
+            //image
+            'street'    => ['string', 'max:255'],
+            'city'      => ['string', 'max:255'],
+            'c_popisne' => ['digits_between:0,10'],
+            'PSC'       => ['digits_between:0,10']
+        ]);
+    }
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
+    public function index(User $user = NULL) {
+       if ( $user != NULL){
+            $hotels = Hotel::where('user_id', $user->id)->get();
+        } else if (Auth::user()->isAtLeast(User::role_admin)) {
+            $hotels = Hotel::All();
+        } else {
+            return redirect('home');
+        }
 
         $data = [
             'hotels' => $hotels,
@@ -45,6 +73,57 @@ class HotelController extends Controller {
         return view('hotels.public_show', ['hotel' => $hotel, 'address' => $address]);
     }
 
+    public function owner_show(Hotel $hotel){
+
+        $address = Address::find($hotel->address_id);
+        $data = [
+            'hotel' => $hotel,
+            'address' => $address
+        ];
+        return view('hotels.owner_show', $data);
+    }
+
+    public function add(){
+
+        return view('hotels.add');
+    }
+
+    public function store(Request $request){
+
+        $this->validator($request->all())->validate();
+
+        $user = Auth::user();
+
+        $hotel = new Hotel();
+        $hotel->oznaceni = $request->oznaceni;
+        $hotel->popis    = $request->popis;
+
+        $hotel->user_id  = $user->id;
+
+        $hotel->save();
+
+        return redirect('home');
+    }
+
+    public function edit(Hotel $hotel){
+
+        $data = [
+            'hotel' => $hotel
+        ];
+        return view('hotels.edit', $data);
+    }
+
+    public function update(Hotel $hotel){
+
+        }
+
+    public function destroy ($id){
+
+        $hotel = Hotel::findOrFail($id);
+        $hotel->delete();
+
+        return redirect('/home');
+    }
 
     function fetch_hotel_image($hotel_id) {
         // TODO
