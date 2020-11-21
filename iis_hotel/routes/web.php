@@ -45,7 +45,7 @@ Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'd
 Route::get('/hotels/add', [App\Http\Controllers\HotelController::class, 'add'])->name('hotels.add');
 Route::get('/hotels/{user?}', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
 Route::get('/hotels/owner_show/{hotel}', [App\Http\Controllers\HotelController::class, 'owner_show'])->name('hotels.owner_show');
-Route::get('/hotels/edit/{hotel?}', [App\Http\Controllers\HotelController::class, 'edit'])->name('hotels.edit');
+Route::get('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class, 'edit'])->name('hotels.edit');
 
 Route::delete('/hotels/{id}', [App\Http\Controllers\HotelController::class, 'destroy']);
 

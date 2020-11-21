@@ -94,13 +94,16 @@ class HotelController extends Controller {
         return redirect('home');
     }
 
-    public function edit(){
+    public function edit(Hotel $hotel){
 
-        return view('hotels.edit');
+        $data = [
+            'hotel' => $hotel
+        ];
+        return view('hotels.edit', $data);
     }
 
     public function update(Hotel $hotel){
-        //
+
         }
 
     public function destroy ($id){
