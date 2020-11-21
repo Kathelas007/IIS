@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Table;
@@ -14,6 +15,19 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Im;
 
 class HotelController extends Controller {
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'oznaceni'  => ['required', 'string', 'max:255'],
+            'popis'     => ['required', 'string'],
+            //image
+            'street'    => ['string', 'max:255'],
+            'city'      => ['string', 'max:255'],
+            'c_popisne' => ['digits_between:0,10'],
+            'PSC'       => ['digits_between:0,10']
+        ]);
+    }
 
     public function __construct() {
         $this->middleware('auth');
@@ -50,10 +64,43 @@ class HotelController extends Controller {
 
     public function owner_show(Hotel $hotel){
 
+        $address = Address::find($hotel->address_id);
         $data = [
             'hotel' => $hotel,
+            'address' => $address
         ];
         return view('hotels.owner_show', $data);
+    }
+
+    public function add(){
+
+        return view('hotels.add');
+    }
+
+    public function store(Request $request){
+
+        $this->validator($request->all())->validate();
+
+        $user = Auth::user();
+
+        $hotel = new Hotel();
+        $hotel->oznaceni = $request->oznaceni;
+        $hotel->popis    = $request->popis;
+
+        $hotel->user_id  = $user->id;
+
+        $hotel->save();
+
+        return redirect('home');
+    }
+
+    public function edit(){
+
+        return view('hotels.edit');
+    }
+
+    public function update(){
+
     }
 
     function fetch_hotel_image($hotel_id) {

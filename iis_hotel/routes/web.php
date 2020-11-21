@@ -42,8 +42,13 @@ Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::c
 
 Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
+Route::get('/hotels/add', [App\Http\Controllers\HotelController::class, 'add'])->name('hotels.add');
 Route::get('/hotels/{user?}', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
 Route::get('/hotels/owner_show/{hotel}', [App\Http\Controllers\HotelController::class, 'owner_show'])->name('hotels.owner_show');
+Route::get('/hotels/edit/{hotel?}', [App\Http\Controllers\HotelController::class, 'edit'])->name('hotels.edit');
+
+Route::post('/hotels/add', [App\Http\Controllers\HotelController::class, 'store'])->name('hotels.add');
+Route::post('/hotels/edit/{hotel?}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.edit');
 
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
