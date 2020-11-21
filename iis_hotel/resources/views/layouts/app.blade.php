@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'IIS Hotel') }}</title>
 
     <!-- Scripts -->
-{{--    <script src="{{ asset('js/timepicker.js') }}" ></script>--}}
+    <script src="{{ asset('js/app.js') }}" ></script>
 
 <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
