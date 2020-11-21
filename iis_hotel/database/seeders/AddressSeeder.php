@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace Database\Seeders;
 
 use mysql_xdevapi\Table;
@@ -17,7 +17,7 @@ class AddressSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+ /*   public function run()
     {
         $faker = Faker::create();
 
@@ -42,3 +42,4 @@ class AddressSeeder extends Seeder
         }
     }
 }
+*/

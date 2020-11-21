@@ -7,7 +7,7 @@
 
             <div class="col-md-10">
                 <div class="card">
-                    <p>some page info</p>
+                    <p>Search for hotels and get the perfect room for you!</p>
                 </div>
             </div>
 

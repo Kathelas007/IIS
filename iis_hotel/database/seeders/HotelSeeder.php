@@ -47,7 +47,6 @@ class HotelSeeder extends Seeder {
             DB::table('hotels')->updateOrInsert([
                 'oznaceni' => 'pension ' . Str::random(10),
                 'popis' => Str::random(200),
-                'address_id' => rand(1, 18),
                 'user_id' => 1,
             ]);
         }

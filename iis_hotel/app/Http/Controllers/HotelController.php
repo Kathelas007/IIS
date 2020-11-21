@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
-use App\Models\Address;
 use App\Models\User;
 use Illuminate\Http\Request;
-use mysql_xdevapi\Table;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
@@ -53,32 +51,31 @@ class HotelController extends Controller {
         $by_hotel = DB::table('hotels')->where('oznaceni', 'like', "%$loc_pos%")
             ->select('hotels.id', 'hotels.oznaceni');
 
-        return DB::table('hotels')->join('addresses', function ($join) {
+        return DB::table('hotels')
+            ->where('mesto', 'like', "%$loc_pos%")
+            ->select('hotels.id', 'hotels.oznaceni')
+            ->union($by_hotel)
+            ->paginate(10);
+
+        /*return DB::table('hotels')->join('addresses', function ($join) {
             $join->on('addresses.id', '=', 'hotels.address_id');
         })
             ->where('addresses.mesto', 'like', "%$loc_pos%")
             ->select('hotels.id', 'hotels.oznaceni')
             ->union($by_hotel)
-            ->paginate(10);
+            ->paginate(10);*/
     }
 
     function public_show($id) {
         $hotel = Hotel::findOrFail($id);
-        $address = null;
 
-        if ($hotel->address_id != null) {
-            // TODO function from address model
-            $address = DB::table('addresses')->where("id", '=', "$hotel->address_id")->first();
-        }
-        return view('hotels.public_show', ['hotel' => $hotel, 'address' => $address]);
+        return view('hotels.public_show', ['hotel' => $hotel]);
     }
 
     public function owner_show(Hotel $hotel){
 
-        $address = Address::find($hotel->address_id);
         $data = [
             'hotel' => $hotel,
-            'address' => $address
         ];
         return view('hotels.owner_show', $data);
     }
@@ -97,9 +94,13 @@ class HotelController extends Controller {
         $hotel = new Hotel();
         $hotel->oznaceni = $request->oznaceni;
         $hotel->popis    = $request->popis;
+        $hotel->ulice    = $request->ulice;
+        $hotel->c_popisne = $request->c_popisne;
+        $hotel->mesto     = $request->mesto;
+        $hotel->PSC       = $request->PSC;
+        $hotel->stat      = $request->stat;
 
         $hotel->user_id  = $user->id;
-
         $hotel->save();
 
         return redirect('home');

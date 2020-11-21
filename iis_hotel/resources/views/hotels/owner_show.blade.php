@@ -31,46 +31,40 @@
                         </div>
                         <div class="col-5 text-right">
                             <div class="row">
-                            <h2>Address</h2>
+                                <h2>Address</h2>
                             </div>
-                            @if ($address != NULL)
-                                <div class="row">
-                                    <div class="col-5 text-left">
-                                        Country:
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        {{ $address->stat }}
-                                    </div>
+                            <div class="row">
+                                <div class="col-5 text-left">
+                                    Country:
                                 </div>
-                                <div class="row">
-                                    <div class="col-5 text-left">
-                                        City:
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        {{ $address->mesto }}
-                                    </div>
+                                <div class="col-6 text-left">
+                                    {{ $address->stat }}
                                 </div>
-                                <div class="row">
-                                    <div class="col-5 text-left">
-                                        Street, no.:
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        {{ $address->ulice }}, {{ $address->c_popisne }}
-                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 text-left">
+                                    City:
                                 </div>
-                                <div class="row">
-                                    <div class="col-5 text-left">
-                                        Postal code:
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        {{ $address->PSC }}
-                                    </div>
+                                <div class="col-6 text-left">
+                                    {{ $address->mesto }}
                                 </div>
-                            @else
-                                <div class="row">
-                                    No address to display
+                            </div>
+                            <div class="row">
+                                <div class="col-5 text-left">
+                                    Street, no.:
                                 </div>
-                            @endif
+                                <div class="col-6 text-left">
+                                    {{ $address->ulice }}, {{ $address->c_popisne }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 text-left">
+                                    Postal code:
+                                </div>
+                                <div class="col-6 text-left">
+                                    {{ $address->PSC }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

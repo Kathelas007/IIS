@@ -16,7 +16,12 @@ class Hotel extends Model {
     protected $fillable = [
         'oznaceni',
         'popis',
-        'address_id',
-        'image'
+        'image',
+
+        'ulice',
+        'c_popisne',
+        'mesto',
+        'PSC',
+        'stat'
     ];
 }

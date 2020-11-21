@@ -5,9 +5,9 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <h3>{{$hotel->oznaceni}}</h3>
-                @if($address != null)
-                    <p>{{$address->ulice}} {{$address->c_popisne}}, {{$address->mesto}}, {{$address->stat}}</p>
-                @endif
+               {{-- @if($address != null) --}}
+                    <p>{{$hotel->ulice}} {{$hotel->c_popisne}}, {{$hotel->mesto}}, {{$hotel->stat}}</p>
+               {{-- @endif --}}
 
                 {{--description--}}
                 <div class="card mt-3">
