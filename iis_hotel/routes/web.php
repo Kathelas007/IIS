@@ -53,7 +53,7 @@ Route::get('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class,
 Route::delete('/hotels/{id}', [App\Http\Controllers\HotelController::class, 'destroy']);
 
 Route::post('/hotels/add', [App\Http\Controllers\HotelController::class, 'store'])->name('hotels.add');
-Route::post('/hotels/edit/{hotel?}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.edit');
+Route::post('/hotels/edit/{hotel?}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.update');
 
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
