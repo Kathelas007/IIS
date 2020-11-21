@@ -59,4 +59,6 @@ class HotelController extends Controller {
         $img = Im::make('https://picsum.photos/100/100')->resize(100, 100);
         return $img->response('jpg');
     }
+
+    // TODO datepicker data
 }
