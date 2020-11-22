@@ -8,29 +8,29 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col text-left">
-                            Your hotels
+                            Rooms
                         </div>
                         <div class="col text-right">
-                            <a href="{{ route('hotels.add') }}">Add hotel</a>
+                            <a href="{{ route('rooms.create', $hotel) }}">
+                                <button class="btn btn-primary">
+                                    Add Room
+                                </button>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-body">
-                    @foreach ($hotels as $hotel)
-                    <div class="row">
+                    @foreach ($rooms as $room)
+                     <div class="row">
                         <div class="col-4 text-left">
-                            {{$hotel->oznaceni}}
+                            No.: {{ $room->number }}
                         </div>
-                        <div class="col-4 text-right">
-                                <a href="{{ route('hotels.owner_show', $hotel) }}">
-                                    <button class="btn btn-primary">
-                                        Detail
-                                     </button>
-                                </a>
+                        <div class="col-4 text-center">
+                            {{ $room->name }}
                         </div>
-                        <div class="col-3 text-right">
-                        <form method="POST", action="/hotels/{{ $hotel->id }}">
+                        <div class="col text-right">
+                        <form method="POST", action="/rooms/{{$room->id}}">
                                 @csrf
                                 @method('DELETE')
                                 <div class="form-group row mb-0">
@@ -40,7 +40,7 @@
                                        </button>
                                    </div>
                                 </div>
-                            </form>
+                          </form>
                         </div>
                     </div>
                     @endforeach

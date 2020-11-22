@@ -25,10 +25,9 @@
                     @authAtLeast(Auth::user()::role_owner)
                     <div class="row">
                         <div class="col-3"></div>
-                        <a href="{{ route('hotels.index') }}" class="col-9">Manage hotels</a>
+                        <a href="{{ route('hotels.index', Auth::user()) }}" class="col-9">Manage hotels</a>
                     </div>
                     @endauthAtLeast
-                    You are logged in as Customer
                     @authAtLeast(Auth::user()::role_clerk)
                         <div class="row">
                             <div class="col-3"></div>

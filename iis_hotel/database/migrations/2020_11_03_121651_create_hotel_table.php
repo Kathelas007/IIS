@@ -17,6 +17,11 @@ class CreateHotelTable extends Migration
             $table->bigIncrements('id');
             $table->string('oznaceni');
             $table->string('popis');
+            $table->string('ulice');
+            $table->string('c_popisne');
+            $table->string('mesto');
+            $table->string('PSC');
+            $table->string('stat');
             $table->timestamps();
         });
     }

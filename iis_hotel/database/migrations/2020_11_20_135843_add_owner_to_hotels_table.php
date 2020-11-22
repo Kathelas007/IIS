@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAddresseIdToHotelsTable extends Migration
+class AddOwnerToHotelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddAddresseIdToHotelsTable extends Migration
     public function up()
     {
         Schema::table('hotels', function (Blueprint $table) {
-            $table->foreignId('address_id')->nullable()->constrained();
+            $table->foreignId('user_id');
         });
     }
 
@@ -26,8 +26,8 @@ class AddAddresseIdToHotelsTable extends Migration
     public function down()
     {
         Schema::table('hotels', function (Blueprint $table) {
-            $table->dropForeign(['address_id']);
-            $table->dropColumn('address_id');
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 }

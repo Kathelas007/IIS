@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\RoomType;
 use Faker\Provider\Address;
 use Illuminate\Database\Seeder;
 
@@ -15,8 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            AddressSeeder::class,
             HotelSeeder::class,
+            RoomTypesSeeder::class,
         ]);
     }
 }
