@@ -16,4 +16,9 @@ class Order extends Model
         'finished',
         'cancelled',
     ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
 }
