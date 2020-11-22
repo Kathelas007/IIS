@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div class="card">
-                <div class="card-header">Create Hotel</div>
+                <div class="card-header">Add Hotel</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('hotels.add') }}">
@@ -98,8 +98,7 @@
                             <label for="popis" class="col-4 col-form-label text-right">Description</label>
 
                             <div class="col-6">
-                                <textarea id="popis" type="text" class="form-control @error('popis') is-invalid @enderror" name="popis" value="{{ old('popis') }}">
-                                </textarea>
+                                <textarea id="popis" type="text" class="form-control @error('popis') is-invalid @enderror" name="popis">{{ old('popis') }}</textarea>
 
                                 @error('popis')
                                     <span class="invalid-feedback" role="alert">

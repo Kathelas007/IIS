@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hotel;
 use App\Models\User;
+use App\Models\RoomType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -76,6 +77,7 @@ class HotelController extends Controller {
 
         $data = [
             'hotel' => $hotel,
+            'roomTypes' => RoomType::where('hotel_id', $hotel->id)->get()
         ];
         return view('hotels.owner_show', $data);
     }

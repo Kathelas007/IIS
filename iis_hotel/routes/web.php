@@ -55,6 +55,12 @@ Route::delete('/hotels/{id}', [App\Http\Controllers\HotelController::class, 'des
 Route::post('/hotels/add', [App\Http\Controllers\HotelController::class, 'store'])->name('hotels.add');
 Route::post('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.update');
 
+Route::get('/hotels/{hotel}/room_type/create', [App\Http\Controllers\RoomTypeController::class, 'create'])->name('roomTypes.create');
+
+Route::post('/hotels/{hotel}/room_type/create', [App\Http\Controllers\RoomTypeController::class, 'store'])->name('roomTypes.create');
+
+Route::delete('/room_types/{id}', [App\Http\Controllers\RoomTypeController::class, 'destroy']);
+
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
 Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');

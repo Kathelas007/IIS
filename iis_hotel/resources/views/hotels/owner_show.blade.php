@@ -5,8 +5,20 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Hotel Detail</div>
-
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col text-left">
+                        Hotel Detail
+                        </div>
+                        <div class="col text-right">
+                            <a href="{{ route('hotels.edit', $hotel) }}">
+                                <button class="btn btn-primary">
+                                    Edit hotel
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-7 text-left">
@@ -68,8 +80,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col text-right">
-                            <a href="{{ route('hotels.edit', $hotel) }}">Edit hotel</a>
+                    </div>
+                    <div class="row">
+                        <div class="col text-left">
+                            @include('roomTypes.index', ['roomTypes' => $roomTypes])
                         </div>
                     </div>
                 </div>
