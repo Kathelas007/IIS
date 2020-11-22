@@ -30,9 +30,13 @@
                                             <img src="/fetch_hotel_image/{{ $hotel->id }}"/>
                                         </div>
                                         <div class="col-8 text-left align-content-center">
-                                            <a href="{{ route('hotels.public_show', $hotel->id) }}">
-                                                {{$hotel->oznaceni}}
-                                            </a>
+                                            <form method="GET" class="d-inline" action="{{ route('hotels.public_show') }}">
+                                                <input type="hidden" name="hotel_id" value={{ $hotel->id }}>
+                                                <input type="hidden" name="start_date" value={{ $start_date}}>
+                                                <input type="hidden" name="end_date" value={{ $end_date }}>
+                                                <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+                                                    {{$hotel->oznaceni}}
+                                                <button>
                                         </div>
                                     </div>
                                 </li>

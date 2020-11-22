@@ -42,7 +42,7 @@ Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::c
 Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
 Route::get('/hotels/list', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
-Route::get('/hotels/public_show/{id}', [App\Http\Controllers\HotelController::class, 'public_show'])->name('hotels.public_show');
+Route::get('/hotels/public_show', [App\Http\Controllers\HotelController::class, 'public_show'])->name('hotels.public_show');
 
 Route::get('/hotels/add', [App\Http\Controllers\HotelController::class, 'add'])->name('hotels.add');
 Route::get('/hotels/{user?}', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
@@ -71,5 +71,5 @@ Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class,
 
 Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
 
-Route::post('orders/create', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.create');
+Route::post('orders/store', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.store');
 Route::post('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use App\Models\User;
 use App\Models\RoomType;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -67,10 +68,28 @@ class HotelController extends Controller {
             ->paginate(10);*/
     }
 
-    function public_show($id) {
-        $hotel = Hotel::findOrFail($id);
+    function public_show(Request $request) {
+        $hotel = Hotel::findOrFail($request->hotel_id);
 
-        return view('hotels.public_show', ['hotel' => $hotel]);
+        $types = RoomType::where('hotel_id', $hotel->id)->get();
+        $room_types = array();
+        foreach($types as $type) {
+            $rooms_count = Room::where('roomType_id', $type->id)->count();
+            // TODO: select only available rooms
+
+            $room_types[] = [
+                'type' => $type,
+                'count' => $rooms_count,
+            ];
+        }
+
+        $data = [
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'hotel' => $hotel,
+            'room_types' => $room_types,
+        ];
+        return view('hotels.public_show', $data);
     }
 
     public function owner_show(Hotel $hotel){

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Room;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -55,9 +57,21 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('orders.create');
+        $rooms = new Collection();
+        foreach($request->room_types as $type => $count) {
+            // TODO: select only available rooms
+            $rooms = $rooms->merge(Room::where('roomType_id', $type)->get()->take($count));
+        }
+
+        $data = [
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'rooms' => $rooms,
+        ];
+
+        return view('orders.create', $data);
     }
 
     /**
@@ -77,6 +91,8 @@ class OrderController extends Controller
         $order->phone = $request->phone;
         $order->user_id = Auth::user()->id;
         $order->state = 'filed';
+        $order->start_date = $request->start_date;
+        $order->end_date = $request->end_date;
 
         $order->save();
 

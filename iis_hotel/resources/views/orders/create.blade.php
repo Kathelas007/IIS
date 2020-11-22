@@ -8,8 +8,11 @@
                 <div class="card-header">File order</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('orders.create') }}">
+                    <form method="POST" action="{{ route('orders.store') }}">
                         @csrf
+
+                        <input type="hidden" name="start_date" value="{{ $start_date }}">
+                        <input type="hidden" name="end_date" value="{{ $end_date }}">
 
                         <div class="form-group row">
                             <label for="firstname" class="col-4 col-form-label text-right">First name</label>
