@@ -5,6 +5,9 @@
         <div class="row justify-content-center">
 
             @include('components.search_bar')
+{{--            <input type="date" id="start" name="trip-start"--}}
+{{--                   value="2018-07-22"--}}
+{{--                   min="2018-01-01" max="2018-12-31">--}}
 
             <div class="col-md-10">
                 @if($hotels->total() == 0)

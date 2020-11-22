@@ -23,40 +23,41 @@
                     </div>
                 </div>
 
+{{--                mozna to tu zustatne, zatim nemazat--}}
                 {{--  datepicker--}}
-                <div class="card mt-3">
-                    <div class="card-header">
-                        Availability
-                    </div>
-                    <div class="card-body">
-                        <div class="row-cols-1">
-                            <div class="card-text">
-                                <p>When would you like to stay at {{$hotel->oznaceni}}?</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label>Check in:</label>
-                            </div>
-                            <div class="col-md-3">
-                                <label>Check out:</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <input class="datepicker form-control" type="text">
-                            </div>
-                            <div class="col-md-3">
-                                <input class="datepicker form-control" type="text">
-                            </div>
-                            <div class="col-md-3">
-                                <button type="submit" class="btn btn-secondary">
-                                    Check
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="card mt-3">--}}
+{{--                    <div class="card-header">--}}
+{{--                        Availability--}}
+{{--                    </div>--}}
+{{--                    <div class="card-body">--}}
+{{--                        <div class="row-cols-1">--}}
+{{--                            <div class="card-text">--}}
+{{--                                <p>When would you like to stay at {{$hotel->oznaceni}}?</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-md-3">--}}
+{{--                                <label>Check in:</label>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-3">--}}
+{{--                                <label>Check out:</label>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-md-3">--}}
+{{--                                <input class="datepicker form-control" type="text">--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-3">--}}
+{{--                                <input class="datepicker form-control" type="text">--}}
+{{--                            </div>--}}
+{{--                            <div class="col-md-3">--}}
+{{--                                <button type="submit" class="btn btn-secondary">--}}
+{{--                                    Check--}}
+{{--                                </button>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 {{--room types --}}
                 <div class="card mt-3">
