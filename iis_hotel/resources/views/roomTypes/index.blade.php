@@ -26,7 +26,7 @@
                             {{$roomType->price}} EUR
                         </div>
                         <div class="col text-right">
-                            <a href="{{ route('rooms.index', $roomType) }}">
+                            <a href="{{ route('rooms.index', ['hotel' => $hotel, 'roomType' => $roomType]) }}">
                                 Rooms
                             </a>
                         </div>

@@ -7,13 +7,20 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col text-left">
+                        <div class="col-8 text-left">
                         Hotel Detail
                         </div>
                         <div class="col text-right">
                             <a href="{{ route('hotels.edit', $hotel) }}">
                                 <button class="btn btn-primary">
                                     Edit hotel
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col text-right">
+                            <a href="{{ route('rooms.index', $hotel) }}">
+                                <button class="btn btn-primary">
+                                    Show rooms
                                 </button>
                             </a>
                         </div>
