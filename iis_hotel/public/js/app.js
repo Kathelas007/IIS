@@ -49886,8 +49886,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/ladminster/Dokumenty/IIS/projekt/iis_hotel/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/ladminster/Dokumenty/IIS/projekt/iis_hotel/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/awesome/FIT/IIS/IIS_proj/iis_hotel/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/awesome/FIT/IIS/IIS_proj/iis_hotel/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
