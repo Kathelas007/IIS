@@ -33,11 +33,15 @@ class HotelController extends Controller {
     }
 
     public function index(User $user = NULL) {
-        if ($user != NULL) {
-            $hotels = Hotel::where('user_id', $user->id)->get();
-        } else if (Auth::user()->isAtLeast(User::role_admin)) {
+
+        if (Auth::user()->isAtLeast(User::role_admin)) {
             $hotels = Hotel::All();
-        } else {
+        }
+
+       else if (Auth::user()->isAtLeast(User::role_owner) && $user != NULL){
+            $hotels = Hotel::where('user_id', $user->id)->get();
+        }
+        else {
             return redirect('home');
         }
 
