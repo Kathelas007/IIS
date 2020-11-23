@@ -28,12 +28,20 @@ class HotelSeeder extends Seeder {
 
 //        $img = Im::make('https://picsum.photos/300/200')->resize(300, 200);
         $faker = Faker::create();
+        $owners = DB::table('users')
+            ->where('role', '=', Models\User::role_owner)
+            ->select('id')
+            ->get();
 
+        $owner_ids = [];
+        foreach ($owners as $owner){
+            array_push($owner_ids, $owner->id);
+        }
 
         DB::table('hotels')->updateOrInsert([
             'oznaceni' => 'Mánesovy koleje',
             'popis' => 'Nejlepší koleje v Brně',
-            'user_id' => 1,
+            'user_id' => $faker->randomElement($owner_ids),
 //            'image' => $img->encode('jpg', 80),
             'ulice' => $faker->streetName,
             'c_popisne' => $faker->streetAddress,
@@ -44,12 +52,10 @@ class HotelSeeder extends Seeder {
         ]);
 
         for ($i = 1; $i <= 20; $i++) {
-//            $img = Im::make('https://picsum.photos/300/200')->resize(300, 200);
             DB::table('hotels')->updateOrInsert([
                 'oznaceni' => 'hotel ' . Str::random(10),
                 'popis' => Str::random(200),
-                'user_id' => 1,
-                //            'image' => $img->encode('jpg', 80),
+                'user_id' => $faker->randomElement($owner_ids),
                 'ulice' => $faker->streetName,
                 'c_popisne' => $faker->streetAddress,
                 'mesto' => $faker->city,
@@ -62,8 +68,7 @@ class HotelSeeder extends Seeder {
             DB::table('hotels')->updateOrInsert([
                 'oznaceni' => 'pension ' . Str::random(10),
                 'popis' => Str::random(200),
-                'user_id' => 1,
-                //            'image' => $img->encode('jpg', 80),
+                'user_id' => $owner_ids[0],
                 'ulice' => $faker->streetName,
                 'c_popisne' => $faker->streetAddress,
                 'mesto' => "Brno",
