@@ -5,13 +5,10 @@
         <div class="row justify-content-center">
 
             @include('components.search_bar')
-{{--            <input type="date" id="start" name="trip-start"--}}
-{{--                   value="2018-07-22"--}}
-{{--                   min="2018-01-01" max="2018-12-31">--}}
 
             <div class="col-md-10">
                 @if($hotels->total() == 0)
-                    <p> Sorry, no results found for: {{request()->input('query')}}</p>
+                    <p> Sorry, no results found for: {{request()->input('query')}} from {{request()->input('query_in')}} to {{request()->input('query_out')}}</p>
                 @else
                     <div class="card">
                         @if($hotels->total() == 1)
@@ -34,9 +31,10 @@
                                                 <input type="hidden" name="hotel_id" value={{ $hotel->id }}>
                                                 <input type="hidden" name="start_date" value={{ $start_date}}>
                                                 <input type="hidden" name="end_date" value={{ $end_date }}>
-                                                <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
+                                                <button type="submit" class="btn btn-link align-baseline">
                                                     {{$hotel->oznaceni}}
-                                                <button>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </li>
