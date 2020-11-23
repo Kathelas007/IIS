@@ -46,35 +46,81 @@
 
                 <div class="row">
                     <div class="col-md-4 text-right">
-                        From
+                        From date
                     </div>
                     <div class="col-md-6">
-                        {{ $order->start_date }}
+                        {{ $order->start_date->format('Y-m-d') }}
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 text-right">
-                    To
+                <div class="row">
+                    <div class="col-md-4 text-right">
+                        To date
+                    </div>
+                    <div class="col-md-6">
+                        {{ $order->end_date->format('Y-m-d') }}
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    {{ $order->end_date }}
-                </div>
-            </div>
-            <form method="POST" action="{{ route('orders.store') }}">
-                @csrf
 
-                <div class="form-group row mb-0">
-                    <div class="col-md-6 offset-md-4">
-                        <button type="submit" class="btn btn-primary">
-                            Confirm
-                        </button>
-                        <a href="{{ route('orders.create') }}" class="btn btn-secondary">
-                            Back
-                        </a>
+                @foreach ($room_types as $room_type)
+                    <div class="row">
+                        <div class="col-3 text-right">
+                            Room:
+                        </div>
+                        <div class="col-2">
+                            {{ $room_type['type']->name }}
+                        </div>
+                        <div class="col-2 text-right">
+                            Quantity:
+                        </div>
+                        <div class="col-1">
+                            {{ $room_type['count']}}
+                        </div>
+                        <div class="col-2 text-right">
+                            Total price:
+                        </div>
+                        <div class="col-1">
+                            {{ $room_type['type']->price * $room_type['count'] }}
+                        </div>
+                    </div>
+                @endforeach
+
+                <div class="row">
+                    <div class="col-7 text-right">
+                        Total quantity:
+                    </div>
+                    <div class="col-1">
+                        {{ \App\Models\Order::totalCount($room_types) }}
+                    </div>
+                    <div class="col-2 text-right">
+                        Full price:
+                    </div>
+                    <div class="col-1">
+                        {{ \App\Models\Order::totalPrice($room_types) }}
                     </div>
                 </div>
-            </form>
+
+                <div class="form-group row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <b>Full price has to be paid at least 3 days before check-in date.</b>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ route('orders.store') }}">
+                    @csrf
+
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-4">
+                            <button type="submit" class="btn btn-primary">
+                                Confirm
+                            </button>
+                            <a href="{{ route('orders.create') }}" class="btn btn-secondary">
+                                Back
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
