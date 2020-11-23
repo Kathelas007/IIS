@@ -31,7 +31,6 @@
 </div>
 
 <script type="text/javascript">
-    document.onload = set_dates();
     window.onload = set_dates();
 
     function to_js_date(date_str, constant = 0) {
@@ -56,8 +55,12 @@
         const ch_in = document.getElementById('query_in');
         const ch_out = document.getElementById('query_out');
 
-        ch_in.value = to_html_date(null, 0, 1);
-        ch_out.value = to_html_date(null, 0, 2)
+        if (ch_in.value === "") {
+            ch_in.value = to_html_date(null, 0, 1);
+        }
+        if (ch_out.value === "") {
+            ch_out.value = to_html_date(null, 0, 2)
+        }
     }
 
     function check_ch_in() {

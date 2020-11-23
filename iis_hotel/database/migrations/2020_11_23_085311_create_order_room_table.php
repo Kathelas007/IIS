@@ -14,7 +14,7 @@ class CreateOrderRoomTable extends Migration
     public function up()
     {
         Schema::create('order_room', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->timestamps();
             $table->foreignId('order_id')->constrained();
             $table->foreignId('room_id')->constrained();

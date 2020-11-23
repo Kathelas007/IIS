@@ -17,9 +17,10 @@ class WelcomeController extends Controller
         $request->validate(['query' => 'required|min:3']);
 
         $query = $request->input('query');
-        $hotels = HotelController::get_search_paginator($query);
         $start_date = $request->input('query_in');
         $end_date = $request->input('query_out');
+
+        $hotels = HotelController::get_search_paginator($query, $start_date, $end_date);
 
         return view('welcome.search', compact('hotels', 'start_date', 'end_date'));
     }
