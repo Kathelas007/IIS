@@ -58,13 +58,6 @@ class HotelController extends Controller {
             ->orWhere('oznaceni', 'like', "%$loc_pos%")
             ->select('hotels.id', 'hotels.oznaceni');
 
-<<<<<<< HEAD
-        return DB::table('hotels')
-            ->where('mesto', 'like', "%$loc_pos%")
-            ->select('hotels.id', 'hotels.oznaceni')
-            ->union($by_hotel)
-            ->paginate(10);
-=======
         if ($all_hotels->get()->count() == 0) {
             Log::info('no hotels found');
             return $all_hotels->paginate(10);
@@ -103,7 +96,6 @@ class HotelController extends Controller {
     public static function get_hotel_by_oznaceni($oznaceni) {
         return Hotel::where('oznaceni', 'like', "%$oznaceni%")
             ->first();
->>>>>>> 5e897f53153f4f16f29350a6f06c59f649315693
     }
 
     function public_show(Request $request) {
