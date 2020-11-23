@@ -60,6 +60,9 @@ class OrderController extends Controller
         $order = $request->session()->get('order');
         $hotel = $request->session()->get('hotel');
         $room_types = $request->session()->get('room_types');
+        if(empty($order) || empty($hotel) || empty($room_types)) {
+            return redirect('/');
+        }
 
         return view('orders.create', compact('order', 'hotel', 'room_types'));
     }
@@ -69,6 +72,10 @@ class OrderController extends Controller
         $this->validator($request->all())->validate();
 
         $order = $request->session()->get('order');
+        if(empty($order)) {
+            return redirect('/');
+        }
+
         $order->firstname = $request->firstname;
         $order->lastname = $request->lastname;
         $order->email = request('e-mail');
@@ -92,6 +99,9 @@ class OrderController extends Controller
     {
         $order = $request->session()->get('order');
         $room_types = $request->session()->get('room_types');
+        if(empty($order) || empty($room_types)) {
+            return redirect('/');
+        }
 
         $rooms = new Collection();
         foreach($room_types as $room_type) {
@@ -110,7 +120,7 @@ class OrderController extends Controller
         if(Auth::check()) {
             return redirect('home');
         } else {
-            return redirect('register');
+            return redirect('register')->with('email', $order->email);
         }
     }
 
