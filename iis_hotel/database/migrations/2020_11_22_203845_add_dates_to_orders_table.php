@@ -14,7 +14,6 @@ class AddDatesToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            // todo tohle by nemelo byt nullable
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
         });

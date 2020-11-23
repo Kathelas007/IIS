@@ -14,6 +14,10 @@
                         <input type="hidden" name="start_date" value="{{ $start_date }}">
                         <input type="hidden" name="end_date" value="{{ $end_date }}">
 
+                        @foreach ($rooms as $room)
+                            <input type="hidden" name="rooms[]" value="{{ $room->id }}">
+                        @endforeach
+
                         <div class="form-group row">
                             <label for="firstname" class="col-4 col-form-label text-right">First name</label>
 
