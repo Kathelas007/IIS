@@ -120,7 +120,10 @@ class OrderController extends Controller
         if(Auth::check()) {
             return redirect('home');
         } else {
-            return redirect('register')->with('email', $order->email);
+            return redirect('register')
+            ->with('firstname', $order->firstname)
+            ->with('lastname', $order->lastname)
+            ->with('email', $order->email);
         }
     }
 
