@@ -88,7 +88,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-
         $order = $request->session()->get('order');
         $room_types = $request->session()->get('room_types');
 

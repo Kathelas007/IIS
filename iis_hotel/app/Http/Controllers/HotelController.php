@@ -71,19 +71,33 @@ class HotelController extends Controller {
 
     function public_show(Request $request) {
         $hotel = $request->session()->get('hotel');
+        $room_types = $request->session()->get('room_types');
+
         if(empty($hotel)) {
             $hotel = Hotel::findOrFail($request->hotel_id);
+            $request->session()->put('hotel', $hotel);
         }
 
         $types = RoomType::where('hotel_id', $hotel->id)->get();
-        $room_types = array();
+        $all_room_types = array();
         foreach($types as $type) {
             $rooms_count = Room::where('roomType_id', $type->id)->count();
             // TODO: select only available rooms
 
-            $room_types[] = [
+            $selected = 0;
+            if(!empty($room_types)) {
+                foreach($room_types as $room_type) {
+                    if($room_type['type']->id == $type->id) {
+                        $selected = $room_type['count'];
+                        break;
+                    }
+                }
+            }
+
+            $all_room_types[] = [
                 'type' => $type,
                 'count' => $rooms_count,
+                'selected' => $selected,
             ];
         }
 
@@ -93,13 +107,13 @@ class HotelController extends Controller {
         }
         $order->start_date = $request->start_date;
         $order->end_date = $request->end_date;
-        $request->session()->put('order', $order);
 
+        $request->session()->put('order', $order);
 
         $data = [
             'order' => $order,
             'hotel' => $hotel,
-            'room_types' => $room_types,
+            'room_types' => $all_room_types,
         ];
         return view('hotels.public_show', $data);
     }
