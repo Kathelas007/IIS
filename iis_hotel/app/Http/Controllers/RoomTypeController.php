@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoomType;
+use App\Models\user;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -28,6 +29,10 @@ class RoomTypeController extends Controller
 
     public function index(Hotel $hotel) {
 
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $roomTypes = RoomType::where('hotel_id', $hotel->id)->get();
 
         $data = [
@@ -39,6 +44,10 @@ class RoomTypeController extends Controller
 
     public function create(Hotel $hotel){
 
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $data = [
             'hotel' => $hotel
         ];
@@ -46,6 +55,10 @@ class RoomTypeController extends Controller
     }
 
     public function store(Request $request, Hotel $hotel){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $this->validator($request->all())->validate();
 
@@ -62,6 +75,10 @@ class RoomTypeController extends Controller
     }
 
     public function destroy ($id){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $roomType = RoomType::findOrFail($id);
         $roomType->delete();

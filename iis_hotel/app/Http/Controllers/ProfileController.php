@@ -14,17 +14,10 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
-
     private function getUser($id) {
-        if($id == NULL) {
+        if($id == NULL || !(Auth::user()->isAtLeast(User::role_admin))) {
             return Auth::user();
-        } else {
+        } else{
             return User::findOrFail($id);
         }
     }
@@ -36,6 +29,11 @@ class ProfileController extends Controller
     }
 
     public function index() {
+
+        if (! (Auth::user()->isAtLeast(User::role_admin))){
+            return redirect('home');
+        }
+
         $users = User::all();
 
         $data = [
@@ -48,8 +46,16 @@ class ProfileController extends Controller
         return view('profile.show', $this->getData($id));
     }
 
-    public function edit_name($id = NULL) {
-        return view('profile.edit.name', $this->getData($id));
+    public function edit_firstname($id = NULL) {
+        return view('profile.edit.firstname', $this->getData($id));
+    }
+
+    public function edit_lastname($id = NULL) {
+        return view('profile.edit.lastname', $this->getData($id));
+    }
+
+    public function edit_email($id = NULL) {
+        return view('profile.edit.email', $this->getData($id));
     }
 
     public function edit_role($id = NULL) {
@@ -60,10 +66,43 @@ class ProfileController extends Controller
         return view('profile.edit.password');
     }
 
-    public function update_name($id = NULL) {
+    public function update_firstname(Request $request, $id = NULL) {
+        $request->validate([
+            'firstname' => ['required', 'string', 'max:255'],
+        ]);
+
         $user = $this->getUser($id);
 
-        $user->name = request('name');
+        $user->firstname = request('firstname');
+
+        $user->save();
+
+        return redirect('/profile/'.$id);
+    }
+
+
+    public function update_lastname(Request $request, $id = NULL) {
+        $request->validate([
+            'lastname' => ['required', 'string', 'max:255'],
+        ]);
+
+        $user = $this->getUser($id);
+
+        $user->lastname = request('lastname');
+
+        $user->save();
+
+        return redirect('/profile/'.$id);
+    }
+
+    public function update_email(Request $request, $id = NULL) {
+        $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        ]);
+
+        $user = $this->getUser($id);
+
+        $user->email = request('email');
 
         $user->save();
 
@@ -81,7 +120,9 @@ class ProfileController extends Controller
     }
 
     public function update_password(Request $request) {
-        $this->validator($request->all())->validate();
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
 
         $user = Auth::user();
         if(Hash::check($request->old_password, $user->password)) {
@@ -99,6 +140,11 @@ class ProfileController extends Controller
     }
 
     public function destroy($id) {
+
+        if (! (Auth::user()->isAtLeast(User::role_admin))){
+            return redirect('home');
+        }
+
         $user = User::findOrFail($id);
         $user->delete();
 

@@ -12,4 +12,9 @@ class Room extends Model
     protected $fillable = [
         'number'
     ];
+
+    public function orders()
+    {
+        return $this->belongsToMany('App\Models\Order');
+    }
 }

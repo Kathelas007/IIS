@@ -11,10 +11,10 @@
                     @foreach ($users as $user)
                         <div class="row">
                             <div class="col-4 text-right">
-                                User:
+                                {{ $user->firstname.' '.$user->lastname }}
                             </div>
                             <div class="col-4">
-                                {{ $user->name }}
+                                {{ $user->email }}
                             </div>
                             @if(Auth::user()->id != $user->id)
                                 <div class="col-4">

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\RoomType;
 use App\Models\Room;
+//use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -29,10 +30,6 @@ class HotelController extends Controller {
             'c_popisne' => ['digits_between:0,10'],
             'PSC' => ['digits_between:0,10']
         ]);
-    }
-
-    public function __construct() {
-        $this->middleware('auth');
     }
 
     public function index(User $user = NULL) {
@@ -72,8 +69,8 @@ class HotelController extends Controller {
         }
 
         $orders_joined = $orders
-            ->join('room_orders', 'room_orders.order_id', '=', 'orders.id') //1
-            ->join('rooms', 'rooms.id', 'room_orders.room_id') //2
+            ->join('order_room', 'order_room.order_id', '=', 'orders.id') //1
+            ->join('rooms', 'rooms.id', 'order_room.room_id') //2
             ->join('room_types', 'room_types.id', 'rooms.roomType_id') //3
             ->join('hotels', 'hotels.id', '=', 'room_types.hotel_id') //4
             ->select('hotels.id AS hotels_id', 'room_types.id AS room_type_id', 'rooms.id AS room_id');
@@ -98,30 +95,77 @@ class HotelController extends Controller {
     }
 
     function public_show(Request $request) {
-        $hotel = Hotel::findOrFail($request->hotel_id);
+        $hotel = $request->session()->get('hotel');
+        $room_types = $request->session()->get('room_types');
+
+        if (empty($hotel)) {
+            $hotel = Hotel::findOrFail($request->hotel_id);
+            $request->session()->put('hotel', $hotel);
+        }
 
         $types = RoomType::where('hotel_id', $hotel->id)->get();
-        $room_types = array();
+
+        $all_room_types = array();
         foreach ($types as $type) {
+
+
             $rooms_count = Room::where('roomType_id', $type->id)->count();
             // TODO: select only available rooms
 
-            $room_types[] = [
+            $selected = 0;
+            if (!empty($room_types)) {
+                foreach ($room_types as $room_type) {
+                    if ($room_type['type']->id == $type->id) {
+                        $selected = $room_type['count'];
+                        break;
+                    }
+                }
+            }
+
+            $all_room_types[] = [
                 'type' => $type,
                 'count' => $rooms_count,
+                'selected' => $selected,
             ];
         }
 
+        $order = $request->session()->get('order');
+        if (empty($order)) {
+            $order = new Order();
+        }
+        $order->start_date = $request->start_date;
+        $order->end_date = $request->end_date;
+
+        $request->session()->put('order', $order);
+
         $data = [
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
+            'order' => $order,
             'hotel' => $hotel,
-            'room_types' => $room_types,
+            'room_types' => $all_room_types,
         ];
         return view('hotels.public_show', $data);
     }
 
+    public function public_show_post(Request $request)
+    {
+        $room_types = array();
+        foreach($request->room_types as $type_id => $count) {
+            $room_types[] = [
+                'type' => RoomType::findOrFail($type_id),
+                'count' => $count,
+            ];
+        }
+
+        $request->session()->put('room_types', $room_types);
+
+        return redirect()->route('orders.create');
+    }
+
     public function owner_show(Hotel $hotel) {
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $data = [
             'hotel' => $hotel,
@@ -132,10 +176,18 @@ class HotelController extends Controller {
 
     public function add() {
 
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         return view('hotels.add');
     }
 
     public function store(Request $request) {
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $this->validator($request->all())->validate();
 
@@ -158,6 +210,10 @@ class HotelController extends Controller {
 
     public function edit(Hotel $hotel) {
 
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $data = [
             'hotel' => $hotel
         ];
@@ -165,6 +221,10 @@ class HotelController extends Controller {
     }
 
     public function update(Request $request, Hotel $hotel) {
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $this->validator($request->all())->validate();
 
@@ -182,6 +242,10 @@ class HotelController extends Controller {
     }
 
     public function destroy($id) {
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $hotel = Hotel::findOrFail($id);
         $hotel->delete();

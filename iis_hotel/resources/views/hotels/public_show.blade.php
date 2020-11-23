@@ -61,11 +61,8 @@
 
                 {{--room types --}}
                 <div class="card mt-3">
-                    <form method="GET" action="{{ route('orders.create') }}">
+                    <form method="POST" action="{{ route('hotels.public_show') }}">
                         @csrf
-
-                        <input type="hidden" name="start_date" value="{{ $start_date }}">
-                        <input type="hidden" name="end_date" value="{{ $end_date }}">
 
                         @foreach ($room_types as $room_type)
                             <div class="form-group row">
@@ -74,7 +71,9 @@
                                 <div class="col-6">
                                     <select name="room_types[{{ $room_type['type']->id }}]" id="room_types" class="form-control">
                                         @for ($i = 0; $i <= $room_type['count']; $i++)
-                                            <option value="{{ $i }}">{{ $i }}</option>
+                                            <option value="{{ $i }}"  @if($i == $room_type['selected']) selected @endif>
+                                                {{ $i }}
+                                            </option>
                                         @endfor
                                     </select>
                                 </div>

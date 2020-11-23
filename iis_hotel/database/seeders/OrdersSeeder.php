@@ -50,7 +50,7 @@ class OrdersSeeder extends Seeder {
             ->first();
 
 
-        DB::table('room_orders')->updateOrInsert([
+        DB::table('order_room')->updateOrInsert([
             'room_id' => $rooms_manesky->room_id,
             'order_id' => $order_id
         ]);
