@@ -43,6 +43,7 @@ Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'd
 
 Route::get('/hotels/list', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index')->middleware('auth');
 Route::get('/hotels/public_show', [App\Http\Controllers\HotelController::class, 'public_show'])->name('hotels.public_show');
+Route::post('/hotels/public_show', [App\Http\Controllers\HotelController::class, 'public_show_post'])->name('hotels.public_show');
 
 Route::get('/hotels/add', [App\Http\Controllers\HotelController::class, 'add'])->name('hotels.add')->middleware('auth');
 Route::get('/hotels/{user?}', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index')->middleware('auth');
@@ -65,10 +66,14 @@ Route::post('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController:
 Route::delete('/rooms/{id}', [App\Http\Controllers\RoomController::class, 'destroy']);
 
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
+Route::post('/orders/create', [\App\Http\Controllers\OrderController::class, 'create_post'])->name('orders.create');
+
+Route::get('/orders/summary', [\App\Http\Controllers\OrderController::class, 'summary'])->name('orders.summary');
+
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index')->middleware('auth');
 Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show')->middleware('auth');
 
 Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update')->middleware('auth');
 
-Route::post('orders/store', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+Route::post('orders/store', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.store');
 Route::post('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update')->middleware('auth');

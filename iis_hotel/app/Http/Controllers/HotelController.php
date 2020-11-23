@@ -6,6 +6,7 @@ use App\Models\Hotel;
 use App\Models\User;
 use App\Models\RoomType;
 use App\Models\Room;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -69,7 +70,10 @@ class HotelController extends Controller {
     }
 
     function public_show(Request $request) {
-        $hotel = Hotel::findOrFail($request->hotel_id);
+        $hotel = $request->session()->get('hotel');
+        if(empty($hotel)) {
+            $hotel = Hotel::findOrFail($request->hotel_id);
+        }
 
         $types = RoomType::where('hotel_id', $hotel->id)->get();
         $room_types = array();
@@ -83,16 +87,39 @@ class HotelController extends Controller {
             ];
         }
 
+        $order = $request->session()->get('order');
+        if(empty($order)) {
+            $order = new Order();
+        }
+        $order->start_date = $request->start_date;
+        $order->end_date = $request->end_date;
+        $request->session()->put('order', $order);
+
+
         $data = [
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
+            'order' => $order,
             'hotel' => $hotel,
             'room_types' => $room_types,
         ];
         return view('hotels.public_show', $data);
     }
 
-    public function owner_show(Hotel $hotel){
+    public function public_show_post(Request $request)
+    {
+        $room_types = array();
+        foreach($request->room_types as $type_id => $count) {
+            $room_types[] = [
+                'type' => RoomType::findOrFail($type_id),
+                'count' => $count,
+            ];
+        }
+
+        $request->session()->put('room_types', $room_types);
+
+        return redirect()->route('orders.create');
+    }
+
+    public function owner_show(Hotel $hotel) {
 
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');

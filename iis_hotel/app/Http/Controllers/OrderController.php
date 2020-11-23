@@ -25,7 +25,7 @@ class OrderController extends Controller
     {
         return Validator::make($data, [
             'e-mail' => ['required', 'string', 'email', 'max:255'],
-            'phone' => ['digits:9'],
+            //'phone' => ['digits:9'],
         ]);
     }
 
@@ -57,19 +57,27 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
-        $rooms = new Collection();
-        foreach($request->room_types as $type => $count) {
-            // TODO: select only available rooms
-            $rooms = $rooms->merge(Room::where('roomType_id', $type)->get()->take($count));
-        }
+        $order = $request->session()->get('order');
+        $hotel = $request->session()->get('hotel');
+        $room_types = $request->session()->get('room_types');
 
-        $data = [
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'rooms' => $rooms,
-        ];
+        return view('orders.create', compact('order', 'hotel', 'room_types'));
+    }
 
-        return view('orders.create', $data);
+    public function create_post(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $order = $request->session()->get('order');
+        $order->firstname = $request->firstname;
+        $order->lastname = $request->lastname;
+        $order->email = request('e-mail');
+        $order->phone = $request->phone;
+        $order->user_id = Auth::user()->id;
+        $order->state = 'filed';
+        $request->session()->put('order', $order);
+
+        return redirect()->route('orders.summary');
     }
 
     /**
@@ -80,27 +88,23 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validator($request->all())->validate();
 
-        $order = new Order();
-        $order->firstname = $request->firstname;
-        $order->lastname = $request->lastname;
-        $order->email = request('e-mail');
-        $order->phone = $request->phone;
-        $order->user_id = Auth::user()->id;
-        $order->state = 'filed';
-        $order->start_date = $request->start_date;
-        $order->end_date = $request->end_date;
+        $order = $request->session()->get('order');
+        $room_types = $request->session()->get('room_types');
 
-        $order->save();
-
-        foreach($request->rooms as $id) {
-            $room_order = new RoomOrder();
-            $room_order->room_id = $id;
-            $room_order->order_id = $order->id;
-
-            $room_order->save();
+        $rooms = new Collection();
+        foreach($room_types as $room_type) {
+            // TODO: select only available rooms
+            $rooms = $rooms->merge(Room::where('roomType_id', $room_type['type']->id)->get()->take($room_type['count']));
         }
+
+        if($order->save()) {
+            $order->rooms()->attach($rooms);
+        }
+
+        $request->session()->forget('order');
+        $request->session()->forget('hotel');
+        $request->session()->forget('room_types');
 
         return redirect('/');
     }
@@ -119,15 +123,12 @@ class OrderController extends Controller
         return view('orders.show', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
+    public function summary(Request $request) {
+        $order = $request->session()->get('order');
+        $hotel = $request->session()->get('hotel');
+        $room_types = $request->session()->get('room_types');
+
+        return view('orders.summary', compact('order', 'hotel', 'room_types'));
     }
 
     /**
@@ -144,16 +145,5 @@ class OrderController extends Controller
         $order->save();
 
         return redirect('/orders');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
     }
 }

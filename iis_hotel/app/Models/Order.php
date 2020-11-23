@@ -17,8 +17,17 @@ class Order extends Model
         'cancelled',
     ];
 
+    protected $fillable = [
+
+    ];
+
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
+
+    public function rooms()
+    {
+        return $this->belongsToMany('App\Models\Room');
+    }
 }

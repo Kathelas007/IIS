@@ -61,11 +61,8 @@
 
                 {{--room types --}}
                 <div class="card mt-3">
-                    <form method="GET" action="{{ route('orders.create') }}">
+                    <form method="POST" action="{{ route('hotels.public_show') }}">
                         @csrf
-
-                        <input type="hidden" name="start_date" value="{{ $start_date }}">
-                        <input type="hidden" name="end_date" value="{{ $end_date }}">
 
                         @foreach ($room_types as $room_type)
                             <div class="form-group row">
