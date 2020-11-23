@@ -31,11 +31,15 @@ class HotelController extends Controller {
     }
 
     public function index(User $user = NULL) {
-       if ( $user != NULL){
-            $hotels = Hotel::where('user_id', $user->id)->get();
-        } else if (Auth::user()->isAtLeast(User::role_admin)) {
+
+        if (Auth::user()->isAtLeast(User::role_admin)) {
             $hotels = Hotel::All();
-        } else {
+        }
+
+       else if (Auth::user()->isAtLeast(User::role_owner) && $user != NULL){
+            $hotels = Hotel::where('user_id', $user->id)->get();
+        }
+        else {
             return redirect('home');
         }
 
@@ -55,14 +59,6 @@ class HotelController extends Controller {
             ->select('hotels.id', 'hotels.oznaceni')
             ->union($by_hotel)
             ->paginate(10);
-
-        /*return DB::table('hotels')->join('addresses', function ($join) {
-            $join->on('addresses.id', '=', 'hotels.address_id');
-        })
-            ->where('addresses.mesto', 'like', "%$loc_pos%")
-            ->select('hotels.id', 'hotels.oznaceni')
-            ->union($by_hotel)
-            ->paginate(10);*/
     }
 
     function public_show(Request $request) {
