@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('state');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
         });
     }
 
