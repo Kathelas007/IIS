@@ -73,7 +73,9 @@ class OrderController extends Controller
         $order->lastname = $request->lastname;
         $order->email = request('e-mail');
         $order->phone = $request->phone;
-        $order->user_id = Auth::user()->id;
+        if(Auth::check()) {
+            $order->user_id = Auth::user()->id;
+        }
         $order->state = 'filed';
         $request->session()->put('order', $order);
 
@@ -88,7 +90,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-
         $order = $request->session()->get('order');
         $room_types = $request->session()->get('room_types');
 
@@ -106,7 +107,11 @@ class OrderController extends Controller
         $request->session()->forget('hotel');
         $request->session()->forget('room_types');
 
-        return redirect('/');
+        if(Auth::check()) {
+            return redirect('home');
+        } else {
+            return redirect('register');
+        }
     }
 
     /**

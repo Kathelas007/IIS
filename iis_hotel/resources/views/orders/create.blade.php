@@ -43,7 +43,17 @@
                             <label for="e-mail" class="col-4 col-form-label text-right">E-mail</label>
 
                             <div class="col-6">
-                                <input id="e-mail" type="text" class="form-control @error('e-mail') is-invalid @enderror" name="e-mail" value="{{ $order->email ?? Auth::user()->email }}">
+                                <input id="e-mail" type="text" class="form-control @error('e-mail') is-invalid @enderror" name="e-mail"
+                                    @isset($order->email)
+                                        value="{{ $order->email }}"
+                                    @else
+                                        @auth
+                                            value="{{ Auth::user()->email }}"
+                                        @else
+                                            value=""
+                                        @endauth
+                                    @endisset
+                                >
 
                                 @error('e-mail')
                                     <span class="invalid-feedback" role="alert">
