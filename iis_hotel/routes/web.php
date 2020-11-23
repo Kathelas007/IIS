@@ -41,18 +41,18 @@ Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::c
 
 Route::delete('profile/{id}', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
-Route::get('/hotels/list', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
+Route::get('/hotels/list', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index')->middleware('auth');
 Route::get('/hotels/public_show', [App\Http\Controllers\HotelController::class, 'public_show'])->name('hotels.public_show');
 
-Route::get('/hotels/add', [App\Http\Controllers\HotelController::class, 'add'])->name('hotels.add');
-Route::get('/hotels/{user?}', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index');
-Route::get('/hotels/owner_show/{hotel}', [App\Http\Controllers\HotelController::class, 'owner_show'])->name('hotels.owner_show');
-Route::get('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class, 'edit'])->name('hotels.edit');
+Route::get('/hotels/add', [App\Http\Controllers\HotelController::class, 'add'])->name('hotels.add')->middleware('auth');
+Route::get('/hotels/{user?}', [App\Http\Controllers\HotelController::class, 'index'])->name('hotels.index')->middleware('auth');
+Route::get('/hotels/owner_show/{hotel}', [App\Http\Controllers\HotelController::class, 'owner_show'])->name('hotels.owner_show')->middleware('auth');;
+Route::get('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class, 'edit'])->name('hotels.edit')->middleware('auth');
 
-Route::delete('/hotels/{id}', [App\Http\Controllers\HotelController::class, 'destroy']);
+Route::delete('/hotels/{id}', [App\Http\Controllers\HotelController::class, 'destroy'])->middleware('auth');
 
-Route::post('/hotels/add', [App\Http\Controllers\HotelController::class, 'store'])->name('hotels.add');
-Route::post('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.update');
+Route::post('/hotels/add', [App\Http\Controllers\HotelController::class, 'store'])->name('hotels.add')->middleware('auth');
+Route::post('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.update')->middleware('auth');
 
 Route::get('/hotels/{hotel}/room_type/create', [App\Http\Controllers\RoomTypeController::class, 'create'])->name('roomTypes.create');
 Route::post('/hotels/{hotel}/room_type/create', [App\Http\Controllers\RoomTypeController::class, 'store'])->name('roomTypes.create');
@@ -62,14 +62,13 @@ Route::get('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController::
 Route::get('hotels/{hotel}/rooms/{roomType?}', [App\Http\Controllers\RoomController::class, 'index'])->name('rooms.index');
 
 Route::post('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController::class, 'store'])->name('rooms.create');
-
 Route::delete('/rooms/{id}', [App\Http\Controllers\RoomController::class, 'destroy']);
 
-Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
-Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
-Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
+Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create'); //Middleware v ordercontrolleru porad je
+Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index')->middleware('auth');
+Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show')->middleware('auth');
 
-Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
+Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update')->middleware('auth');
 
-Route::post('orders/store', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.store');
-Route::post('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
+Route::post('orders/store', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.store')->middleware('auth');
+Route::post('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update')->middleware('auth');
