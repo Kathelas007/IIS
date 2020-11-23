@@ -36,11 +36,29 @@ class OrderController extends Controller
      */
     public function index(User $user = NULL)
     {
-        if($user != NULL) {
+        /*if($user != NULL) {
             $orders = Order::where('user_id', $user->id)->get();
         } else if(Auth::user()->isAtLeast(User::role_clerk)) {
             $orders = Order::all();
         } else {
+            return redirect('home');
+        }*/
+
+        if (Auth::user()->isAtLeast(User::role_clerk)) {
+            if ($user != NULL){
+                $orders = Order::where('user_id', $user->id)->get();
+            }
+
+            else{
+                $orders = Order::all();
+            }
+        }
+
+        else if(Auth::check()){
+            $orders = Order::where('user_id', Auth::user()->id)->get();
+        }
+
+        else{
             return redirect('home');
         }
 
@@ -158,6 +176,10 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+        if (! (Auth::user()->isAtLeast(User::role_clerk))){
+            return redirect('home');
+        }
+
         $order->state = $request->state;
 
         $order->save();
