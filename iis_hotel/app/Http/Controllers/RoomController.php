@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\Hotel;
 use App\Models\RoomType;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,10 @@ class RoomController extends Controller
      */
     public function index(Hotel $hotel, RoomType $roomType = NULL)
     {
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         if ($roomType != NULL){
             $rooms = Room::join('room_types','room_types.id', '=', 'rooms.roomType_id')
             ->where('room_types.id', $roomType->id)
@@ -57,6 +62,10 @@ class RoomController extends Controller
      */
     public function create(Hotel $hotel)
     {
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $roomTypes = RoomType::where('hotel_id', $hotel->id)->get();
         $data = [
             'hotel'     => $hotel,
@@ -74,6 +83,10 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $this->validator($request->all())->validate();
 
         $room = new Room();
@@ -92,6 +105,9 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
         //
     }
 
@@ -104,6 +120,9 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
         //
     }
 
@@ -115,6 +134,10 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $room = Room::findOrFail($id);
         $room->delete();
 

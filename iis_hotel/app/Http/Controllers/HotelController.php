@@ -94,6 +94,10 @@ class HotelController extends Controller {
 
     public function owner_show(Hotel $hotel){
 
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $data = [
             'hotel' => $hotel,
             'roomTypes' => RoomType::where('hotel_id', $hotel->id)->get()
@@ -103,10 +107,18 @@ class HotelController extends Controller {
 
     public function add(){
 
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         return view('hotels.add');
     }
 
     public function store(Request $request){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $this->validator($request->all())->validate();
 
@@ -129,6 +141,10 @@ class HotelController extends Controller {
 
     public function edit(Hotel $hotel){
 
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
         $data = [
             'hotel' => $hotel
         ];
@@ -136,6 +152,10 @@ class HotelController extends Controller {
     }
 
     public function update(Request $request, Hotel $hotel){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $this->validator($request->all())->validate();
 
@@ -153,6 +173,10 @@ class HotelController extends Controller {
         }
 
     public function destroy ($id){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
 
         $hotel = Hotel::findOrFail($id);
         $hotel->delete();

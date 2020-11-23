@@ -64,7 +64,7 @@ Route::get('hotels/{hotel}/rooms/{roomType?}', [App\Http\Controllers\RoomControl
 Route::post('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController::class, 'store'])->name('rooms.create');
 Route::delete('/rooms/{id}', [App\Http\Controllers\RoomController::class, 'destroy']);
 
-Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create'); //Middleware v ordercontrolleru porad je
+Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
 Route::get('orders/{user?}', [\App\Http\Controllers\OrderController::class, 'index'])->name('orders.index')->middleware('auth');
 Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class, 'show'])->name('orders.show')->middleware('auth');
 
