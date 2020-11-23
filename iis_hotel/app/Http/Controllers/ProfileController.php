@@ -22,9 +22,9 @@ class ProfileController extends Controller
     }
 
     private function getUser($id) {
-        if($id == NULL) {
+        if($id == NULL || !(Auth::user()->isAtLeast(User::role_admin))) {
             return Auth::user();
-        } else {
+        } else{
             return User::findOrFail($id);
         }
     }
@@ -36,6 +36,11 @@ class ProfileController extends Controller
     }
 
     public function index() {
+
+        if (! (Auth::user()->isAtLeast(User::role_admin))){
+            return redirect('home');
+        }
+
         $users = User::all();
 
         $data = [
@@ -99,6 +104,11 @@ class ProfileController extends Controller
     }
 
     public function destroy($id) {
+
+        if (! (Auth::user()->isAtLeast(User::role_admin))){
+            return redirect('home');
+        }
+
         $user = User::findOrFail($id);
         $user->delete();
 
