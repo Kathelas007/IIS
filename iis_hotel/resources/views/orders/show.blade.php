@@ -42,10 +42,42 @@
                             </div>
                         </div>
                     @endisset
+
+                    <div class="row">
+                        <div class="col-md-4 text-right">
+                            From date
+                        </div>
+                        <div class="col-md-6">
+                            {{ $order->start_date->format('Y-m-d') }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-right">
+                            To date
+                        </div>
+                        <div class="col-md-6">
+                            {{ $order->end_date->format('Y-m-d') }}
+                        </div>
+                    </div>
+
                     @authAtLeast(Auth::user()::role_clerk)
                         <form method="POST" action="{{ route('orders.update', $order) }}">
                             @csrf
 
+
+                            <div class="form-group row">
+                                    <div class="col-4 text-right">
+                                        Rooms
+                                    </div>
+                                    <div class="col-4">
+                                        @foreach($order->rooms()->get() as $room)
+                                            {{ $room->number }}
+                                            @if(!$loop->last)
+                                                ,
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
                             <div class="form-group row">
                                 <label for="state" class="col-md-4 col-form-label text-md-right">State</label>
 
