@@ -31,11 +31,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/profile/list', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
 Route::get('/profile/{id?}', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-Route::get('/profile/{id?}/edit/name', [\App\Http\Controllers\ProfileController::class, 'edit_name'])->name('profile.edit.name');
+Route::get('/profile/{id?}/edit/firstname', [App\Http\Controllers\ProfileController::class, 'edit_firstname'])->name('profile.edit.firstname');
+Route::get('/profile/{id?}/edit/lastname', [App\Http\Controllers\ProfileController::class, 'edit_lastname'])->name('profile.edit.lastname');
+Route::get('/profile/{id?}/edit/email', [App\Http\Controllers\ProfileController::class, 'edit_email'])->name('profile.edit.email');
 Route::get('/profile/{id?}/edit/role', [\App\Http\Controllers\ProfileController::class, 'edit_role'])->name('profile.edit.role');
 Route::get('/profile/edit/password', [\App\Http\Controllers\ProfileController::class, 'edit_password'])->name('profile.edit.password');
 
-Route::post('/profile/{id?}/edit/name', [App\Http\Controllers\ProfileController::class, 'update_name'])->name('profile.edit.name');
+Route::post('/profile/{id?}/edit/firstname', [App\Http\Controllers\ProfileController::class, 'update_firstname'])->name('profile.edit.firstname');
+Route::post('/profile/{id?}/edit/lastname', [App\Http\Controllers\ProfileController::class, 'update_lastname'])->name('profile.edit.lastname');
+Route::post('/profile/{id?}/edit/email', [App\Http\Controllers\ProfileController::class, 'update_email'])->name('profile.edit.email');
 Route::post('/profile/{id?}/edit/role', [\App\Http\Controllers\ProfileController::class, 'update_role'])->name('profile.edit.role');
 Route::post('/profile/edit/password', [App\Http\Controllers\ProfileController::class, 'update_password'])->name('profile.edit.password');
 

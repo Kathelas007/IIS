@@ -10,21 +10,35 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-4 text-right" >
-                            Name:
+                            First name:
                         </div>
                         <div class="col-4">
-                            {{ $user->name }}
+                            {{ $user->firstname }}
                         </div>
                         <div class="col-4">
-                            <a href="{{ route('profile.edit.name', $user->id) }}">Change</a>
+                            <a href="{{ route('profile.edit.firstname', $user->id) }}">Change</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-right" >
+                            Last name:
+                        </div>
+                        <div class="col-4">
+                            {{ $user->lastname }}
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('profile.edit.lastname', $user->id) }}">Change</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-4 text-right">
                             E-mail:
                         </div>
-                        <div class="col-8">
+                        <div class="col-4">
                             {{ $user->email }}
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ route('profile.edit.email', $user->id) }}">Change</a>
                         </div>
                     </div>
                     @authAtLeast(Auth::user()::role_clerk)
