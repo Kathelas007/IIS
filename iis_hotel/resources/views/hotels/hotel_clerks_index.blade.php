@@ -15,9 +15,9 @@
                 <div class="collapse" id="collapseClerks">
                     <div class="card-body">
                         @foreach ($clerks as $clerk)
-                        <div class="row">
-                            <div class="col-3 text-left">
-                                {{ $clerk->lastname }}
+                        <div class="row mt-1">
+                            <div class="col-4 text-left">
+                                {{ $clerk->lastname }} {{ $clerk->firstname }}
                             </div>
                             <div class="col-5 text-left">
                                 {{ $clerk->email }}

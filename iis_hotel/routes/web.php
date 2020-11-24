@@ -60,7 +60,11 @@ Route::post('/hotels/add', [App\Http\Controllers\HotelController::class, 'store'
 Route::post('/hotels/edit/{hotel}', [App\Http\Controllers\HotelController::class, 'update'])->name('hotels.update')->middleware('auth');
 
 Route::get('/hotels/{hotel}/room_type/create', [App\Http\Controllers\RoomTypeController::class, 'create'])->name('roomTypes.create');
+Route::get('/hotels/{hotel}/room_type/edit/{roomType}', [App\Http\Controllers\RoomTypeController::class, 'edit'])->name('roomTypes.edit');
+
 Route::post('/hotels/{hotel}/room_type/create', [App\Http\Controllers\RoomTypeController::class, 'store'])->name('roomTypes.create');
+Route::post('/hotels/{hotel}/room_type/edit/{roomType}', [App\Http\Controllers\RoomTypeController::class, 'update'])->name('roomTypes.edit');
+
 Route::delete('/room_types/{id}', [App\Http\Controllers\RoomTypeController::class, 'destroy'])->middleware('auth');
 
 Route::get('/hotels/{hotel}/hotel_clerk/assign', [App\Http\Controllers\HotelController::class, 'clerk_choose'])->name('hotels.clerk_choose')->middleware('auth');
@@ -71,7 +75,7 @@ Route::get('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController::
 Route::get('hotels/{hotel}/rooms/{roomType?}', [App\Http\Controllers\RoomController::class, 'index'])->name('rooms.index');
 
 Route::post('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController::class, 'store'])->name('rooms.create');
-Route::delete('/rooms/{id}', [App\Http\Controllers\RoomController::class, 'destroy'])->middleware('auth');
+Route::delete('/rooms/{hotel}/{id}', [App\Http\Controllers\RoomController::class, 'destroy'])->name('rooms.destroy')->middleware('auth');
 
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
 Route::post('/orders/create', [\App\Http\Controllers\OrderController::class, 'create_post'])->name('orders.create');

@@ -18,7 +18,7 @@
 
                 <div class="card-body">
                     @foreach ($hotels as $hotel)
-                    <div class="row">
+                    <div class="row mt-1">
                         <div class="col-4 text-left">
                             {{$hotel->oznaceni}}
                         </div>

@@ -9,7 +9,7 @@
 
                 <div class="card-body">
                     @foreach ($orders as $order)
-                        <div class="row">
+                        <div class="row mt-1">
                             <div class="col-4 text-right" >
                                 {{ $order->firstname }} {{ $order->lastname }}:
                             </div>

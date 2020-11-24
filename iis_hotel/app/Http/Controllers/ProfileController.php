@@ -148,6 +148,6 @@ class ProfileController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect('home');
+        return redirect(route('profile.index'));
     }
 }

@@ -22,7 +22,7 @@
 
                 <div class="card-body">
                     @foreach ($rooms as $room)
-                     <div class="row">
+                     <div class="row mt-1">
                         <div class="col-4 text-left">
                             No.: {{ $room->number }}
                         </div>
@@ -30,7 +30,7 @@
                             {{ $room->name }}
                         </div>
                         <div class="col text-right">
-                        <form method="POST", action="/rooms/{{$room->id}}">
+                        <form method="POST", action="{{ route('rooms.destroy',[ 'hotel' => $hotel, 'id' => $room->id]) }}">
                                 @csrf
                                 @method('DELETE')
                                 <div class="form-group row mb-0">
