@@ -89,11 +89,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8 text-left">
-                    @include('roomTypes.index', ['roomTypes' => $roomTypes])
-                </div>
-                <div class="col-md-4 text-right">
+                <div class="col-md-12 text-right">
                     @include('hotels.hotel_clerks_index', ['hotel' => $hotel, 'clerks' => $clerks])
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-left">
+                    @include('roomTypes.index', ['roomTypes' => $roomTypes])
                 </div>
             </div>
         </div>
