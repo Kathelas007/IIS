@@ -49,6 +49,64 @@ class HotelController extends Controller {
         return view('hotels.index', $data);
     }
 
+
+    private static function join_orders_to_hotel_direction($start, $end, $to_hotel) {
+
+        $orders = DB::table('orders')->where([['end_date', '>=', "$start"], ['start_date', '<=', "$end"]]);
+
+        if ($orders->get()->count() == 0)
+            return null;
+
+        $orders_joined = $orders
+            ->join('order_room', 'order_room.order_id', '=', 'orders.id') //1
+            ->join('rooms', 'rooms.id', 'order_room.room_id'); //2
+
+        if ($to_hotel) {
+            $orders_joined
+                ->join('room_types', 'room_types.id', 'rooms.roomType_id') //3
+                ->join('hotels', 'hotels.id', '=', 'room_types.hotel_id') //4
+                ->select('hotels.id AS hotels_id', 'room_types.id AS room_type_id', 'rooms.id AS room_id');
+        } else {
+            $orders_joined->select('rooms.id AS rooms_id', 'rooms.roomType_id AS rooms_roomType_id');
+        }
+
+        return $orders_joined;
+    }
+
+
+    private static function get_available_room_types($hotel_id, $start_date, $end_date) {
+        $all_room_types = DB::table('room_types')->where('hotel_id', '=', "$hotel_id");
+        if ($all_room_types->get()->count() == 0){
+            return $all_room_types->get();
+        }
+
+        $orders_joined = HotelController::join_orders_to_hotel_direction($start_date, $end_date, false);
+
+        $filtered_room_types = null;
+        if ($orders_joined == null) {
+            $filtered_room_types = $all_room_types->join('rooms', 'rooms.roomType_id', '=', 'room_types.id');
+        } else {
+            $hotels_orders_joined = $all_room_types->leftJoinSub($orders_joined, 'orders', function ($join) {
+                $join->on('orders.rooms_id', '=', 'room_types.id');
+            });
+            $filtered_room_types = $hotels_orders_joined->whereNull('orders.rooms_id');
+        }
+
+        $all_room_types = $filtered_room_types
+            ->select(
+                'room_types.id AS id',
+                'room_types.name AS name',
+                'room_types.beds_count AS beds_count',
+                'room_types.equipment AS equipment',
+                'room_types.price AS price',
+                DB::raw('count(rooms.id) as total'))
+            ->groupBy('room_types.id')
+            ->orderBy('room_types.id')
+            ->get();
+
+        return $all_room_types;
+    }
+
     public static function get_search_paginator($loc_pos = null, $start, $end) {
         if ($loc_pos == null) {
             $all_hotels = DB::table('hotels')
@@ -65,29 +123,22 @@ class HotelController extends Controller {
             return $all_hotels->paginate(10);
         }
 
-        $orders = DB::table('orders')->where([['end_date', '>=', "$start"], ['start_date', '<=', "$end"]]);
-
-        if ($orders->get()->count() == 0) {
-            Log::info('no orders found in this date, return all hotels');
-            return $all_hotels->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni')->paginate(10);
-        } else {
-            Log::info('found orders, filter hotels');
+        $orders_joined = HotelController::join_orders_to_hotel_direction($start, $end, true);
+        if ($orders_joined == null) {
+            return $all_hotels
+                ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni')
+                ->leftJoin('room_types', 'room_types.hotel_id', '=', 'hotels.id')
+                ->whereNotNull('room_types.id')
+                ->leftJoin('rooms', 'rooms.roomType_id', '=', 'room_types.id')
+                ->whereNotNull('rooms.id')
+                ->groupBy('hotels.id')
+                ->paginate(10);
         }
-
-        $orders_joined = $orders
-            ->join('order_room', 'order_room.order_id', '=', 'orders.id') //1
-            ->join('rooms', 'rooms.id', 'order_room.room_id') //2
-            ->join('room_types', 'room_types.id', 'rooms.roomType_id') //3
-            ->join('hotels', 'hotels.id', '=', 'room_types.hotel_id') //4
-            ->select('hotels.id AS hotels_id', 'room_types.id AS room_type_id', 'rooms.id AS room_id');
-
-        $count = $orders_joined->get()->count();
-        echo " celkem orders: $count";
-
 
         $hotels_orders_joined = $all_hotels->leftJoinSub($orders_joined, 'orders', function ($join) {
             $join->on('orders.hotels_id', '=', 'hotels.id');
         });
+
 
         $filtered_hotels = $hotels_orders_joined->whereNull('orders.hotels_id');
 
@@ -102,38 +153,29 @@ class HotelController extends Controller {
 
     function public_show(Request $request) {
         $hotel = $request->session()->get('hotel');
-        $room_types = $request->session()->get('room_types');
+        $selected = $request->session()->get('selected');
 
         if (empty($hotel)) {
             $hotel = Hotel::findOrFail($request->hotel_id);
             $request->session()->put('hotel', $hotel);
         }
 
-        $types = RoomType::where('hotel_id', $hotel->id)->get();
+        $all_room_types = HotelController::get_available_room_types(
+            $request->hotel_id, $request->start_date, $request->end_date);
 
-        $all_room_types = array();
-        foreach ($types as $type) {
-
-
-            $rooms_count = Room::where('roomType_id', $type->id)->count();
-            // TODO: select only available rooms
-
-            $selected = 0;
-            if (!empty($room_types)) {
-                foreach ($room_types as $room_type) {
-                    if ($room_type['type']->id == $type->id) {
-                        $selected = $room_type['count'];
-                        break;
-                    }
-                }
+        if (empty($selected)) {
+            $selected = [];
+            foreach ($all_room_types as $room_type) {
+                array_push($selected, 0);
             }
-
-            $all_room_types[] = [
-                'type' => $type,
-                'count' => $rooms_count,
-                'selected' => $selected,
-            ];
         }
+
+//        'room_types.id AS id',
+//                'room_types.name AS name',
+//                'room_types.beds_count AS beds_count',
+//                'room_types.equipment AS equipment',
+//                'room_types.price AS price',
+//                DB::raw('count(rooms.id) as total'))
 
         $order = $request->session()->get('order');
         if (empty($order)) {
@@ -143,12 +185,15 @@ class HotelController extends Controller {
         $order->end_date = $request->end_date;
 
         $request->session()->put('order', $order);
+        $request->session()->put('selected', $selected);
 
         $data = [
             'order' => $order,
             'hotel' => $hotel,
             'room_types' => $all_room_types,
+            'selected' => $selected
         ];
+
         return view('hotels.public_show', $data);
     }
 
@@ -166,43 +211,41 @@ class HotelController extends Controller {
         return redirect()->route('orders.create');
     }
 
-    private function get_assigned_clerks($hotelId = null){
-        if ( $hotelId == NULL ){
+    private function get_assigned_clerks($hotelId = null) {
+        if ($hotelId == NULL) {
             return DB::table('users')->join('hotel_clerk', 'users.id', '=', 'hotel_clerk.user_id')
-            ->where('users.role', User::role_clerk)
-            ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname','users.email')
-            ->get();
-        }
-
-        else{
+                ->where('users.role', User::role_clerk)
+                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname', 'users.email')
+                ->get();
+        } else {
 
             return DB::table('users')->join('hotel_clerk', 'users.id', '=', 'hotel_clerk.user_id')
-            ->where('users.role', User::role_clerk)
-            ->where('hotel_clerk.hotel_id', $hotelId)
-            ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname','users.email')
-            ->get();
+                ->where('users.role', User::role_clerk)
+                ->where('hotel_clerk.hotel_id', $hotelId)
+                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname', 'users.email')
+                ->get();
         }
     }
 
-    private function get_clerks_except($hotelId){
+    private function get_clerks_except($hotelId) {
 
         $ignore = DB::table('hotel_clerk')
-        ->where('hotel_id', $hotelId)
-        ->select('user_id')
-        ->get();
+            ->where('hotel_id', $hotelId)
+            ->select('user_id')
+            ->get();
 
         $query = DB::table('users')->where('role', User::role_clerk);
 
         foreach ($ignore as $ignoreId) {
-            $query = $query->where('id','<>',$ignoreId->user_id);
+            $query = $query->where('id', '<>', $ignoreId->user_id);
         }
 
         return $query->get();
     }
 
-    public function clerk_choose(Hotel $hotel){
+    public function clerk_choose(Hotel $hotel) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
@@ -214,24 +257,24 @@ class HotelController extends Controller {
         return view('hotels.clerk_choose', $data);
     }
 
-    public function clerk_assign(Request $request, Hotel $hotel){
+    public function clerk_assign(Request $request, Hotel $hotel) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
-        foreach ($request->clerks as $selected){
+        foreach ($request->clerks as $selected) {
 
-            DB::table('hotel_clerk')->insert(['hotel_id' => $hotel->id, 'user_id' => $selected ]);
+            DB::table('hotel_clerk')->insert(['hotel_id' => $hotel->id, 'user_id' => $selected]);
 
         }
 
         return redirect(route('hotels.owner_show', $hotel));
     }
 
-    public function clerk_unassign(Hotel $hotel, $id){
+    public function clerk_unassign(Hotel $hotel, $id) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
@@ -249,7 +292,7 @@ class HotelController extends Controller {
         $data = [
             'hotel' => $hotel,
             'roomTypes' => RoomType::where('hotel_id', $hotel->id)->get(),
-            'clerks'    => $this->get_assigned_clerks($hotel->id)
+            'clerks' => $this->get_assigned_clerks($hotel->id)
         ];
         return view('hotels.owner_show', $data);
     }
