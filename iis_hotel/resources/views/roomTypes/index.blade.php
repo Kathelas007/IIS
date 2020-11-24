@@ -1,6 +1,3 @@
-<div class="container">
-    <div class="row justify-content-left">
-      <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -16,7 +13,7 @@
                 <div class="card-body">
                     @foreach ($roomTypes as $roomType)
                     <div class="row">
-                        <div class="col-4 text-left">
+                        <div class="col-3 text-left">
                             {{$roomType->name}}
                         </div>
                         <div class="col-2 text-left">
@@ -55,6 +52,3 @@
                     @endforeach
                 </div>
             </div>
-       </div>
-    </div>
-</div>

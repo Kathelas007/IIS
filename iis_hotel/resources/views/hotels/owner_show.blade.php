@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -86,13 +86,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                    </div>
-                    <div class="row">
-                        <div class="col text-left">
-                            @include('roomTypes.index', ['roomTypes' => $roomTypes])
-                        </div>
-                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 text-left">
+                    @include('roomTypes.index', ['roomTypes' => $roomTypes])
+                </div>
+                <div class="col-md-4 text-right">
+                    @include('hotels.hotel_clerks_index', ['hotel' => $hotel, 'clerks' => $clerks])
                 </div>
             </div>
         </div>

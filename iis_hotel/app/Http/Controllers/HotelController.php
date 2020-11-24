@@ -165,6 +165,80 @@ class HotelController extends Controller {
         return redirect()->route('orders.create');
     }
 
+    private function get_assigned_clerks($hotelId = null){
+        if ( $hotelId == NULL ){
+            return DB::table('users')->join('hotel_clerk', 'users.id', '=', 'hotel_clerk.user_id')
+            ->where('users.role', User::role_clerk)
+            ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname','users.email')
+            ->get();
+        }
+
+        else{
+
+            return DB::table('users')->join('hotel_clerk', 'users.id', '=', 'hotel_clerk.user_id')
+            ->where('users.role', User::role_clerk)
+            ->where('hotel_clerk.hotel_id', $hotelId)
+            ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname','users.email')
+            ->get();
+        }
+    }
+
+    private function get_clerks_except($hotelId){
+
+        $ignore = DB::table('hotel_clerk')
+        ->where('hotel_id', $hotelId)
+        ->select('user_id')
+        ->get();
+
+        $query = DB::table('users')->where('role', User::role_clerk);
+
+        foreach ($ignore as $ignoreId) {
+            $query = $query->where('id','<>',$ignoreId->user_id);
+        }
+
+        return $query->get();
+    }
+
+    public function clerk_choose(Hotel $hotel){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
+        $data = [
+            'hotel' => $hotel,
+            'clerks' => $this->get_clerks_except($hotel->id)
+        ];
+
+        return view('hotels.clerk_choose', $data);
+    }
+
+    public function clerk_assign(Request $request, Hotel $hotel){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
+        foreach ($request->clerks as $selected){
+
+            DB::table('hotel_clerk')->insert(['hotel_id' => $hotel->id, 'user_id' => $selected ]);
+
+        }
+
+        return redirect(route('hotels.owner_show', $hotel));
+    }
+
+    public function clerk_unassign(Hotel $hotel, $id){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
+        DB::table('hotel_clerk')->where('id', $id)->delete();
+
+        return redirect(route('hotels.owner_show', $hotel));
+    }
+
     public function owner_show(Hotel $hotel) {
 
         if (! (Auth::user()->isAtLeast(User::role_owner))){
@@ -173,7 +247,8 @@ class HotelController extends Controller {
 
         $data = [
             'hotel' => $hotel,
-            'roomTypes' => RoomType::where('hotel_id', $hotel->id)->get()
+            'roomTypes' => RoomType::where('hotel_id', $hotel->id)->get(),
+            'clerks'    => $this->get_assigned_clerks($hotel->id)
         ];
         return view('hotels.owner_show', $data);
     }
