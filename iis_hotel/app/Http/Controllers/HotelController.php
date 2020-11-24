@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\RoomType;
 use App\Models\Room;
+
 //use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,12 +37,9 @@ class HotelController extends Controller {
 
         if (Auth::user()->isAtLeast(User::role_admin)) {
             $hotels = Hotel::All();
-        }
-
-       else if (Auth::user()->isAtLeast(User::role_owner) && $user != NULL){
+        } else if (Auth::user()->isAtLeast(User::role_owner) && $user != NULL) {
             $hotels = Hotel::where('user_id', $user->id)->get();
-        }
-        else {
+        } else {
             return redirect('home');
         }
 
@@ -51,12 +49,16 @@ class HotelController extends Controller {
         return view('hotels.index', $data);
     }
 
-    public static function get_search_paginator($loc_pos, $start, $end) {
-
-        $all_hotels = DB::table('hotels')
-            ->where('mesto', 'like', "%$loc_pos%")
-            ->orWhere('oznaceni', 'like', "%$loc_pos%")
-            ->select('hotels.id', 'hotels.oznaceni');
+    public static function get_search_paginator($loc_pos = null, $start, $end) {
+        if ($loc_pos == null) {
+            $all_hotels = DB::table('hotels')
+                ->select('hotels.id', 'hotels.oznaceni');
+        } else {
+            $all_hotels = DB::table('hotels')
+                ->where('mesto', 'like', "%$loc_pos%")
+                ->orWhere('oznaceni', 'like', "%$loc_pos%")
+                ->select('hotels.id', 'hotels.oznaceni');
+        }
 
         if ($all_hotels->get()->count() == 0) {
             Log::info('no hotels found');
@@ -150,10 +152,9 @@ class HotelController extends Controller {
         return view('hotels.public_show', $data);
     }
 
-    public function public_show_post(Request $request)
-    {
+    public function public_show_post(Request $request) {
         $room_types = array();
-        foreach($request->room_types as $type_id => $count) {
+        foreach ($request->room_types as $type_id => $count) {
             $room_types[] = [
                 'type' => RoomType::findOrFail($type_id),
                 'count' => $count,
@@ -167,7 +168,7 @@ class HotelController extends Controller {
 
     public function owner_show(Hotel $hotel) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
@@ -180,7 +181,7 @@ class HotelController extends Controller {
 
     public function add() {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
@@ -189,7 +190,7 @@ class HotelController extends Controller {
 
     public function store(Request $request) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
@@ -214,7 +215,7 @@ class HotelController extends Controller {
 
     public function edit(Hotel $hotel) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
@@ -226,7 +227,7 @@ class HotelController extends Controller {
 
     public function update(Request $request, Hotel $hotel) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 
@@ -247,7 +248,7 @@ class HotelController extends Controller {
 
     public function destroy($id) {
 
-        if (! (Auth::user()->isAtLeast(User::role_owner))){
+        if (!(Auth::user()->isAtLeast(User::role_owner))) {
             return redirect('home');
         }
 

@@ -14,7 +14,6 @@ class WelcomeController extends Controller
     }
 
     public function search(Request $request) {
-        $request->validate(['query' => 'required|min:3']);
 
         $query = $request->input('query');
         $start_date = $request->input('query_in');

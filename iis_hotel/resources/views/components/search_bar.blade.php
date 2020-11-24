@@ -3,8 +3,7 @@
         <div class="input-group">
             <input type="text" class="form-control" name="query" id="query"
                    value="{{ request()->input('query') }}"
-                   placeholder="Location or Hotel name"
-                   required="required">
+                   placeholder="Location or Hotel name">
             <input type="date" name="query_in" id="query_in"
                    value="{{ request()->input('query_in') }}"
                    placeholder="Check-in"
