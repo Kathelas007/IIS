@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hotel;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Room;
@@ -59,8 +60,10 @@ class OrderController extends Controller {
      */
     public function create(Request $request) {
         $order = $request->session()->get('order');
-        $hotel = $request->session()->get('hotel');
+        $hotel_id = $request->session()->get('hotel_id');
         $room_types = $request->session()->get('room_types');
+
+        $hotel = Hotel::where('id', '=', $hotel_id);
 
         if (empty($order) || empty($hotel) || empty($room_types)) {
             return redirect('/');

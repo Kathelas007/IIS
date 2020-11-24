@@ -192,7 +192,7 @@ class HotelController extends Controller {
         $request->session()->put('start_date', $start_date);
         $request->session()->put('end_date', $end_date);
         $request->session()->put('selected', $selected);
-
+        $request->session()->put('room_types', $all_room_types);
 
         $data = [
             'order' => $order,
