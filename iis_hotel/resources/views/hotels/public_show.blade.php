@@ -28,14 +28,6 @@
                     <form method="POST" action="{{ route('hotels.public_show') }}">
                         @csrf
 
-
-                        {{--                                                //        'room_types.id AS id',--}}
-                        {{--                                                //                'room_types.name AS name',--}}
-                        {{--                                                //                'room_types.beds_count AS beds_count',--}}
-                        {{--                                                //                'room_types.equipment AS equipment',--}}
-                        {{--                                                //                'room_types.price AS price',--}}
-                        {{--                                                //                DB::raw('count(rooms.id) as total'))--}}
-
                         <ul class="pagination list-group list-group-flush">
                             @foreach ($room_types as $index => $room_type)
                                 <li class="list-group-item">
@@ -50,8 +42,8 @@
                                             <div style="margin-bottom: 10px">
                                                 <input name="room_types[{{ $room_type->id }}]" id="room_types"
                                                        type="number"
-                                                       min="0" max={{ $room_type->total }} value="0" required
-                                                       value= {{$selected[$index]}}>
+                                                       min="0" max="{{ $room_type->total }}"
+                                                       value="{{$selected[0]}}" required>
                                             </div>
                                             <div>
                                                 Price: {{ $room_type->price }}

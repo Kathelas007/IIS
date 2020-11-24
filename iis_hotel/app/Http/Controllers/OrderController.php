@@ -12,17 +12,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 
-class OrderController extends Controller
-{
+class OrderController extends Controller {
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
+    protected function validator(array $data) {
         return Validator::make($data, [
             'e-mail' => ['required', 'string', 'email', 'max:255'],
             //'phone' => ['digits:9'],
@@ -34,8 +32,7 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user = NULL)
-    {
+    public function index(User $user = NULL) {
         /*if($user != NULL) {
             $orders = Order::where('user_id', $user->id)->get();
         } else if(Auth::user()->isAtLeast(User::role_clerk)) {
@@ -45,20 +42,14 @@ class OrderController extends Controller
         }*/
 
         if (Auth::user()->isAtLeast(User::role_clerk)) {
-            if ($user != NULL){
+            if ($user != NULL) {
                 $orders = Order::where('user_id', $user->id)->get();
-            }
-
-            else{
+            } else {
                 $orders = Order::all();
             }
-        }
-
-        else if(Auth::check()){
+        } else if (Auth::check()) {
             $orders = Order::where('user_id', Auth::user()->id)->get();
-        }
-
-        else{
+        } else {
             return redirect('home');
         }
 
@@ -73,24 +64,33 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         $order = $request->session()->get('order');
         $hotel = $request->session()->get('hotel');
         $room_types = $request->session()->get('room_types');
-        if(empty($order) || empty($hotel) || empty($room_types)) {
+
+        if (empty($order) || empty($hotel) || empty($room_types)) {
             return redirect('/');
         }
+
+        $selected = [];
+        foreach ($room_types as $room_type) {
+            array_push($selected, $room_type['count']);
+        }
+
+        var_dump($selected);
+
+        $request->session()->put('selected', $selected);
+
 
         return view('orders.create', compact('order', 'hotel', 'room_types'));
     }
 
-    public function create_post(Request $request)
-    {
+    public function create_post(Request $request) {
         $this->validator($request->all())->validate();
 
         $order = $request->session()->get('order');
-        if(empty($order)) {
+        if (empty($order)) {
             return redirect('/');
         }
 
@@ -98,7 +98,7 @@ class OrderController extends Controller
         $order->lastname = $request->lastname;
         $order->email = request('e-mail');
         $order->phone = $request->phone;
-        if(Auth::check()) {
+        if (Auth::check()) {
             $order->user_id = Auth::user()->id;
         }
         $order->state = 'filed';
@@ -110,24 +110,23 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $order = $request->session()->get('order');
         $room_types = $request->session()->get('room_types');
-        if(empty($order) || empty($room_types)) {
+        if (empty($order) || empty($room_types)) {
             return redirect('/');
         }
 
         $rooms = new Collection();
-        foreach($room_types as $room_type) {
+        foreach ($room_types as $room_type) {
             // TODO: select only available rooms
             $rooms = $rooms->merge(Room::where('roomType_id', $room_type['type']->id)->get()->take($room_type['count']));
         }
 
-        if($order->save()) {
+        if ($order->save()) {
             $order->rooms()->attach($rooms);
         }
 
@@ -135,24 +134,23 @@ class OrderController extends Controller
         $request->session()->forget('hotel');
         $request->session()->forget('room_types');
 
-        if(Auth::check()) {
+        if (Auth::check()) {
             return redirect('home');
         } else {
             return redirect('register')
-            ->with('firstname', $order->firstname)
-            ->with('lastname', $order->lastname)
-            ->with('email', $order->email);
+                ->with('firstname', $order->firstname)
+                ->with('lastname', $order->lastname)
+                ->with('email', $order->email);
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param \App\Models\Order $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
-    {
+    public function show(Order $order) {
         $data = [
             'order' => $order,
         ];
@@ -170,13 +168,12 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Order $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
-    {
-        if (! (Auth::user()->isAtLeast(User::role_clerk))){
+    public function update(Request $request, Order $order) {
+        if (!(Auth::user()->isAtLeast(User::role_clerk))) {
             return redirect('home');
         }
 

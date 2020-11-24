@@ -76,7 +76,7 @@ class HotelController extends Controller {
 
     private static function get_available_room_types($hotel_id, $start_date, $end_date) {
         $all_room_types = DB::table('room_types')->where('hotel_id', '=', "$hotel_id");
-        if ($all_room_types->get()->count() == 0){
+        if ($all_room_types->get()->count() == 0) {
             return $all_room_types->get();
         }
 
@@ -152,18 +152,29 @@ class HotelController extends Controller {
     }
 
     function public_show(Request $request) {
-        $hotel = $request->session()->get('hotel');
-        $selected = $request->session()->get('selected');
+        // TODO selected se musi resit jinak
+        // zatim na nej kaslu
 
-        if (empty($hotel)) {
-            $hotel = Hotel::findOrFail($request->hotel_id);
-            $request->session()->put('hotel', $hotel);
+        $hotel_id = $request->hotel_id;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $selected = null;
+
+        // back from orders
+        // no requests
+        if ($hotel_id == null) {
+            $hotel_id = $request->session()->get('hotel_id');
+            $start_date = $request->session()->get('start_date');
+            $end_date = $request->session()->get('end_date');
+            $selected = $request->session()->get('selected');
         }
 
-        $all_room_types = HotelController::get_available_room_types(
-            $request->hotel_id, $request->start_date, $request->end_date);
+        $hotel = Hotel::findOrFail($hotel_id);
 
-        if (empty($selected)) {
+        $all_room_types = HotelController::get_available_room_types(
+            $hotel_id, $start_date, $end_date);
+        
+        if ($selected == null) {
             $selected = [];
             foreach ($all_room_types as $room_type) {
                 array_push($selected, 0);
@@ -174,11 +185,16 @@ class HotelController extends Controller {
         if (empty($order)) {
             $order = new Order();
         }
-        $order->start_date = $request->start_date;
-        $order->end_date = $request->end_date;
+        $order->start_date = $start_date;
+        $order->end_date = $end_date;
 
         $request->session()->put('order', $order);
         $request->session()->put('selected', $selected);
+        $request->session()->put('hotel_id', $hotel_id);
+        $request->session()->put('start_date', $start_date);
+        $request->session()->put('end_date', $end_date);
+        $request->session()->put('selected', $selected);
+
 
         $data = [
             'order' => $order,
