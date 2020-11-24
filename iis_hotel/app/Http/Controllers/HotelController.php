@@ -59,14 +59,7 @@ class HotelController extends Controller {
             ->join('order_room', 'order_room.order_id', '=', 'orders.id') //1
             ->join('rooms', 'rooms.id', 'order_room.room_id'); //2
 
-        if ($to_hotel) {
-            $orders_joined
-                ->join('room_types', 'room_types.id', 'rooms.roomType_id') //3
-                ->join('hotels', 'hotels.id', '=', 'room_types.hotel_id') //4
-                ->select('hotels.id AS hotels_id', 'room_types.id AS room_type_id', 'rooms.id AS room_id');
-        } else {
-            $orders_joined->select('rooms.id AS rooms_id', 'rooms.roomType_id AS rooms_roomType_id');
-        }
+        $orders_joined = $orders_joined->select('rooms.id AS rooms_id', 'rooms.roomType_id AS rooms_roomType_id');
 
         return $orders_joined;
     }
@@ -78,17 +71,34 @@ class HotelController extends Controller {
             return $all_room_types->get();
         }
 
+        $all_room_types->join('rooms', 'rooms.roomType_id', '=', 'room_types.id');
+
         $orders_joined = HotelController::join_orders_to_hotel_direction($start_date, $end_date, false);
 
         $filtered_room_types = null;
         if ($orders_joined == null) {
-            $filtered_room_types = $all_room_types->join('rooms', 'rooms.roomType_id', '=', 'room_types.id');
+            $filtered_room_types = $all_room_types;
         } else {
             $hotels_orders_joined = $all_room_types->leftJoinSub($orders_joined, 'orders', function ($join) {
-                $join->on('orders.rooms_id', '=', 'room_types.id');
+                $join->on('orders.rooms_id', '=', 'rooms.id');
             });
             $filtered_room_types = $hotels_orders_joined->whereNull('orders.rooms_id');
         }
+
+        // musi byt jeste jeden join
+        // aby se mohli spocitat rooms
+
+        var_dump($filtered_room_types
+            ->select(
+                'room_types.id AS id',
+                'room_types.name AS name',
+                'room_types.beds_count AS beds_count',
+                'room_types.equipment AS equipment',
+                'room_types.price AS price'
+                , DB::raw('count(rooms.id) as total')
+            )
+            ->groupBy('room_types.id')
+            ->get()->toArray());
 
         $all_room_types = $filtered_room_types
             ->select(
@@ -96,10 +106,10 @@ class HotelController extends Controller {
                 'room_types.name AS name',
                 'room_types.beds_count AS beds_count',
                 'room_types.equipment AS equipment',
-                'room_types.price AS price',
-                DB::raw('count(rooms.id) as total'))
+                'room_types.price AS price'
+                , DB::raw('count(rooms.id) as total')
+            )
             ->groupBy('room_types.id')
-            ->orderBy('room_types.id')
             ->get();
 
         return $all_room_types;
@@ -121,24 +131,29 @@ class HotelController extends Controller {
             return $all_hotels->paginate(10);
         }
 
+        $all_hotels
+            ->leftJoin('room_types', 'room_types.hotel_id', '=', 'hotels.id')
+            ->whereNotNull('room_types.id')
+            ->leftJoin('rooms', 'rooms.roomType_id', '=', 'room_types.id')
+            ->whereNotNull('rooms.id');
+
         $orders_joined = HotelController::join_orders_to_hotel_direction($start, $end, true);
         if ($orders_joined == null) {
             return $all_hotels
                 ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni')
-                ->leftJoin('room_types', 'room_types.hotel_id', '=', 'hotels.id')
-                ->whereNotNull('room_types.id')
-                ->leftJoin('rooms', 'rooms.roomType_id', '=', 'room_types.id')
-                ->whereNotNull('rooms.id')
                 ->groupBy('hotels.id')
                 ->paginate(10);
         }
 
         $hotels_orders_joined = $all_hotels->leftJoinSub($orders_joined, 'orders', function ($join) {
-            $join->on('orders.hotels_id', '=', 'hotels.id');
+            $join->on('orders.rooms_id', '=', 'rooms.id');
         });
 
 
-        $filtered_hotels = $hotels_orders_joined->whereNull('orders.hotels_id');
+        $filtered_hotels = $hotels_orders_joined
+            ->whereNull('orders.rooms_id')
+            ->select('hotels.id', 'hotels.oznaceni')
+            ->groupBy('hotels.id')->having(DB::raw('count(room_types.id)'), '>', '0');
 
         return $filtered_hotels->paginate(10);
 
