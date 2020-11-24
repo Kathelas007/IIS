@@ -85,7 +85,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-md-4 text-right">
+al                                <div class="col-md-4 text-right">
                                     From date
                                 </div>
                                 <div class="col-md-6">
