@@ -15,8 +15,8 @@
                 <div class="collapse" id="collapseTypes">
                     <div class="card-body">
                      @foreach ($roomTypes as $roomType)
-                        <div class="row">
-                            <div class="col-3 text-left">
+                        <div class="row mt-1">
+                            <div class="col-4 text-left">
                                 {{$roomType->name}}
                             </div>
                             <div class="col-2 text-left">
@@ -31,12 +31,11 @@
                                 </a>
                             </div>
                             <div class="col text-right">
-                                {{--<a href="{{ route('hotels.owner_show', $hotel) }}">
+                                <a href="{{ route('roomTypes.edit', ['hotel' => $hotel, 'roomType' => $roomType]) }}">
                                     <button class="btn btn-primary">
                                         Edit
                                      </button>
-                                </a> --}}
-                                Edit
+                                </a>
                             </div>
                             <div class="col text-right">
                                 <form method="POST", action="/room_types/{{ $roomType->id }}">

@@ -33,13 +33,6 @@ class OrderController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(User $user = NULL) {
-        /*if($user != NULL) {
-            $orders = Order::where('user_id', $user->id)->get();
-        } else if(Auth::user()->isAtLeast(User::role_clerk)) {
-            $orders = Order::all();
-        } else {
-            return redirect('home');
-        }*/
 
         if (Auth::user()->isAtLeast(User::role_clerk)) {
             if ($user != NULL) {
@@ -50,7 +43,7 @@ class OrderController extends Controller {
         } else if (Auth::check()) {
             $orders = Order::where('user_id', Auth::user()->id)->get();
         } else {
-            return redirect('home');
+            return redirect('/');
         }
 
         $data = [

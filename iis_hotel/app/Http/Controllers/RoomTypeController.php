@@ -74,6 +74,38 @@ class RoomTypeController extends Controller
         return redirect('home');
     }
 
+    public function edit (Hotel $hotel, RoomType $roomType){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
+        $data = [
+            'hotel' => $hotel,
+            'roomType' => $roomType
+        ];
+
+        return view('roomTypes.edit', $data);
+    }
+
+    public function update (Request $request, Hotel $hotel, RoomType $roomType){
+
+        if (! (Auth::user()->isAtLeast(User::role_owner))){
+            return redirect('home');
+        }
+
+        $this->validator($request->all())->validate();
+
+        $roomType->name = $request->name;
+        $roomType->beds_count = $request->beds_count;
+        $roomType->equipment  = $request->equipment;
+        $roomType->price      = $request->price;
+
+        $roomType->save();
+
+        return redirect(route('hotels.owner_show', $hotel));
+    }
+
     public function destroy ($id){
 
         if (! (Auth::user()->isAtLeast(User::role_owner))){

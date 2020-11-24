@@ -6,9 +6,7 @@ use App\Models\Hotel;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\RoomType;
-use App\Models\Room;
 
-//use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -224,14 +222,14 @@ class HotelController extends Controller {
         if ($hotelId == NULL) {
             return DB::table('users')->join('hotel_clerk', 'users.id', '=', 'hotel_clerk.user_id')
                 ->where('users.role', User::role_clerk)
-                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname', 'users.email')
+                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname','users.firstname', 'users.email')
                 ->get();
         } else {
 
             return DB::table('users')->join('hotel_clerk', 'users.id', '=', 'hotel_clerk.user_id')
                 ->where('users.role', User::role_clerk)
                 ->where('hotel_clerk.hotel_id', $hotelId)
-                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname', 'users.email')
+                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname', 'users.firstname', 'users.email')
                 ->get();
         }
     }
@@ -337,7 +335,7 @@ class HotelController extends Controller {
         $hotel->user_id = $user->id;
         $hotel->save();
 
-        return redirect('home');
+        return redirect(route('hotels.owner_show', $hotel));
     }
 
     public function edit(Hotel $hotel) {
@@ -370,7 +368,7 @@ class HotelController extends Controller {
 
         $hotel->save();
 
-        return redirect('home');
+        return redirect(route('hotels.owner_show', $hotel));
     }
 
     public function destroy($id) {
@@ -382,7 +380,7 @@ class HotelController extends Controller {
         $hotel = Hotel::findOrFail($id);
         $hotel->delete();
 
-        return redirect('/home');
+        return redirect(route('hotels.index', Auth::user()));
     }
 
     function fetch_hotel_image($hotel_id) {

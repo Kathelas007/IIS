@@ -81,7 +81,7 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Hotel $hotel)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
@@ -94,7 +94,7 @@ class RoomController extends Controller
         $room->roomType_id = $request->type_id;
 
         $room->save();
-        return redirect('home');
+        return redirect(route('hotels.owner_show', $hotel));
     }
 
     /**
@@ -132,7 +132,7 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Hotel $hotel, $id)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
@@ -141,6 +141,6 @@ class RoomController extends Controller
         $room = Room::findOrFail($id);
         $room->delete();
 
-        return redirect('home');
+        return redirect(route('hotels.owner_show', $hotel));
     }
 }
