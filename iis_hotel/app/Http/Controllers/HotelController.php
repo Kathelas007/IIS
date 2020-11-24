@@ -170,13 +170,6 @@ class HotelController extends Controller {
             }
         }
 
-//        'room_types.id AS id',
-//                'room_types.name AS name',
-//                'room_types.beds_count AS beds_count',
-//                'room_types.equipment AS equipment',
-//                'room_types.price AS price',
-//                DB::raw('count(rooms.id) as total'))
-
         $order = $request->session()->get('order');
         if (empty($order)) {
             $order = new Order();

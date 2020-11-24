@@ -41,14 +41,21 @@
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-8">
-                                            {{ $room_type->name }}
+                                            <div><b> {{ $room_type->name }} </b></div>
+                                            <div> Bed count: {{ $room_type->beds_count }}</div>
+                                            <div> Equipment: {{ $room_type->equipment}}</div>
                                         </div>
-                                        <div class="col-4">
-                                            <input name="room_types[{{ $room_type->id }}]" id="room_types"
-                                                   type="number"
-                                                   min="0" max={{ $room_type->total }} value="0" required
-                                                   value= {{$selected[$index]}}
-                                            >
+
+                                        <div class="cols-4">
+                                            <div style="margin-bottom: 10px">
+                                                <input name="room_types[{{ $room_type->id }}]" id="room_types"
+                                                       type="number"
+                                                       min="0" max={{ $room_type->total }} value="0" required
+                                                       value= {{$selected[$index]}}>
+                                            </div>
+                                            <div>
+                                                Price: {{ $room_type->price }}
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
