@@ -35,18 +35,6 @@ class OrderController extends Controller {
      */
     public function index(User $user = NULL) {
 
-        /*if (Auth::user()->isAtLeast(User::role_clerk)) {
-            if ($user != NULL) {
-                $orders = Order::where('user_id', $user->id)->get();
-            } else {
-                $orders = Order::all();
-            }
-        } else if (Auth::check()) {
-            $orders = Order::where('user_id', Auth::user()->id)->get();
-        } else {
-            return redirect('/');
-        }*/
-
         if ( $user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))){
             $orders = Order::where('user_id', $user->id)->get();
         }
