@@ -78,10 +78,7 @@ class OrderController extends Controller {
             array_push($selected, $room_type['count']);
         }
 
-        var_dump($selected);
-
         $request->session()->put('selected', $selected);
-
 
         return view('orders.create', compact('order', 'hotel', 'room_types'));
     }

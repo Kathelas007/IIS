@@ -28,7 +28,7 @@
                     <form method="POST" action="{{ route('hotels.public_show') }}">
                         @csrf
 
-                        <ul class="pagination list-group list-group-flush">
+                        <ul class="list-group list-group-flush">
                             @foreach ($room_types as $index => $room_type)
                                 <li class="list-group-item">
                                     <div class="row">

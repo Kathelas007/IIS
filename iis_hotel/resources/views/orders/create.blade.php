@@ -1,151 +1,159 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-8">
-            <div class="card">
-                <div class="card-header">File order</div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-header">File order</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('orders.create') }}">
-                        @csrf
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('orders.create') }}">
+                            @csrf
 
-                        <div class="form-group row">
-                            <label for="firstname" class="col-4 col-form-label text-right">First name</label>
-
-                            <div class="col-6">
-                                <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ $order->firstname }}" autofocus>
-
-                                @error('firstname')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="lastname" class="col-4 col-form-label text-right">Last name</label>
-
-                            <div class="col-6">
-                                <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ $order->lastname }}" required>
-
-                                @error('lastname')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="e-mail" class="col-4 col-form-label text-right">E-mail</label>
-
-                            <div class="col-6">
-                                <input id="e-mail" type="text" class="form-control @error('e-mail') is-invalid @enderror" name="e-mail"
-                                    @isset($order->email)
-                                        value="{{ $order->email }}"
-                                    @else
-                                        @auth
-                                            value="{{ Auth::user()->email }}"
-                                        @else
-                                            value=""
-                                        @endauth
-                                    @endisset
-                                >
-
-                                @error('e-mail')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="phone" class="col-4 col-form-label text-right">Phone number</label>
-
-                            <div class="col-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $order->phone }}">
-
-                                @error('phone')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-4 text-right">
-                                From date
-                            </div>
-                            <div class="col-md-6">
-                                {{ $order->start_date->format('Y-m-d') }}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-4 text-right">
-                                To date
-                            </div>
-                            <div class="col-md-6">
-                                {{ $order->end_date->format('Y-m-d') }}
-                            </div>
-                        </div>
-
-                        @foreach ($room_types as $room_type)
                             <div class="form-group row">
-                                <div class="col-3 text-right">
-                                    Room:
+                                <label for="firstname" class="col-4 col-form-label text-right">First name</label>
+
+                                <div class="col-6">
+                                    <input id="firstname" type="text"
+                                           class="form-control @error('firstname') is-invalid @enderror"
+                                           name="firstname" value="{{ $order->firstname }}" autofocus>
+
+                                    @error('firstname')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
-                                <div class="col-2">
-                                    {{ $room_type['type']->name }}
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastname" class="col-4 col-form-label text-right">Last name</label>
+
+                                <div class="col-6">
+                                    <input id="lastname" type="text"
+                                           class="form-control @error('lastname') is-invalid @enderror" name="lastname"
+                                           value="{{ $order->lastname }}" required>
+
+                                    @error('lastname')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
-                                <div class="col-2 text-right">
-                                    Quantity:
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="e-mail" class="col-4 col-form-label text-right">E-mail</label>
+
+                                <div class="col-6">
+                                    <input id="e-mail" type="text"
+                                           class="form-control @error('e-mail') is-invalid @enderror" name="e-mail"
+                                           @isset($order->email)
+                                           value="{{ $order->email }}"
+                                           @else
+                                           @auth
+                                           value="{{ Auth::user()->email }}"
+                                           @else
+                                           value=""
+                                        @endauth
+                                        @endisset
+                                    >
+
+                                    @error('e-mail')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="phone" class="col-4 col-form-label text-right">Phone number</label>
+
+                                <div class="col-6">
+                                    <input id="phone" type="text"
+                                           class="form-control @error('phone') is-invalid @enderror" name="phone"
+                                           value="{{ $order->phone }}">
+
+                                    @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-4 text-right">
+                                    From date
+                                </div>
+                                <div class="col-md-6">
+                                    {{ $order->start_date->format('Y-m-d') }}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4 text-right">
+                                    To date
+                                </div>
+                                <div class="col-md-6">
+                                    {{ $order->end_date->format('Y-m-d') }}
+                                </div>
+                            </div>
+
+                            @foreach ($room_types as $room_type)
+                                <div class="form-group row">
+                                    <div class="col-3 text-right">
+                                        Room:
+                                    </div>
+                                    <div class="col-2">
+                                        {{ $room_type['type']->name }}
+                                    </div>
+                                    <div class="col-2 text-right">
+                                        Quantity:
+                                    </div>
+                                    <div class="col-1">
+                                        {{ $room_type['count']}}
+                                    </div>
+                                    <div class="col-2 text-right">
+                                        Total price:
+                                    </div>
+                                    <div class="col-1">
+                                        {{ $room_type['type']->price * $room_type['count'] }}
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <div class="form-group row">
+                                <div class="col-7 text-right">
+                                    Total quantity:
                                 </div>
                                 <div class="col-1">
-                                    {{ $room_type['count']}}
+                                    {{ \App\Models\Order::totalCount($room_types) }}
                                 </div>
                                 <div class="col-2 text-right">
                                     Total price:
                                 </div>
                                 <div class="col-1">
-                                    {{ $room_type['type']->price * $room_type['count'] }}
+                                    {{ \App\Models\Order::totalPrice($room_types) }}
                                 </div>
                             </div>
-                        @endforeach
 
-                        <div class="form-group row">
-                            <div class="col-7 text-right">
-                                Total quantity:
-                            </div>
-                            <div class="col-1">
-                                {{ \App\Models\Order::totalCount($room_types) }}
-                            </div>
-                            <div class="col-2 text-right">
-                                Total price:
-                            </div>
-                            <div class="col-1">
-                                {{ \App\Models\Order::totalPrice($room_types) }}
-                            </div>
-                        </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <a href="{{ route('hotels.public_show') }}" class="btn btn-secondary">
+                                        Back
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        Next
+                                    </button>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Next
-                                </button>
-                                <a href="{{ route('hotels.public_show') }}" class="btn btn-secondary">
-                                    Back
-                                </a>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

@@ -173,7 +173,7 @@ class HotelController extends Controller {
 
         $all_room_types = HotelController::get_available_room_types(
             $hotel_id, $start_date, $end_date);
-        
+
         if ($selected == null) {
             $selected = [];
             foreach ($all_room_types as $room_type) {
