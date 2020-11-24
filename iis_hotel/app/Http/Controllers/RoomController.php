@@ -44,6 +44,7 @@ class RoomController extends Controller
         else{
 
             $rooms = Room::join('room_types','room_types.id', '=', 'rooms.roomType_id')
+            ->where('room_types.hotel_id', $hotel->id)
             ->get(['rooms.id','rooms.number','room_types.name']);
         }
 

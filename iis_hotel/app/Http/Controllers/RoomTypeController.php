@@ -71,7 +71,7 @@ class RoomTypeController extends Controller
         $roomType->hotel_id   = $hotel->id;
         $roomType->save();
 
-        return redirect('home');
+        return redirect(route('hotels.owner_show', $hotel));
     }
 
     public function edit (Hotel $hotel, RoomType $roomType){

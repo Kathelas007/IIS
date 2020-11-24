@@ -335,6 +335,8 @@ class HotelController extends Controller {
         $hotel->user_id = $user->id;
         $hotel->save();
 
+        DB::table('hotel_clerk')->insert(['hotel_id' => $hotel->id, 'user_id' => $user->id]);
+
         return redirect(route('hotels.owner_show', $hotel));
     }
 
