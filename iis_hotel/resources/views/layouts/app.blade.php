@@ -86,6 +86,11 @@
                                 <a href="{{ route('profile.show') }}" class="dropdown-item">
                                     Profile
                                 </a>
+                                @if (Auth::user()->isAtLeast(10))
+                                    <a href="{{ route('hotels.index', Auth::user()) }}" class="dropdown-item">
+                                        Hotels
+                                    </a>
+                                @endif
                                 <a href="{{ route('orders.index', Auth::user()) }}" class="dropdown-item">
                                     Orders
                                 </a>
