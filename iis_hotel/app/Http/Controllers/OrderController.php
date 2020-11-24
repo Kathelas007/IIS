@@ -35,7 +35,7 @@ class OrderController extends Controller {
      */
     public function index(User $user = NULL) {
 
-        if (Auth::user()->isAtLeast(User::role_clerk)) {
+        /*if (Auth::user()->isAtLeast(User::role_clerk)) {
             if ($user != NULL) {
                 $orders = Order::where('user_id', $user->id)->get();
             } else {
@@ -44,6 +44,18 @@ class OrderController extends Controller {
         } else if (Auth::check()) {
             $orders = Order::where('user_id', Auth::user()->id)->get();
         } else {
+            return redirect('/');
+        }*/
+
+        if ( $user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))){
+            $orders = Order::where('user_id', $user->id)->get();
+        }
+
+        else if ( $user == NULL && Auth::user()->isAtLeast(User::role_clerk)) {
+            //$orders = Order::where('id',)
+        }
+
+        else {
             return redirect('/');
         }
 
