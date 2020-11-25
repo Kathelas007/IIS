@@ -24,7 +24,7 @@ class OrderController extends Controller {
     protected function validator(array $data) {
         return Validator::make($data, [
             'e-mail' => ['required', 'string', 'email', 'max:255'],
-            //'phone' => ['digits:9'],
+            'phone' => ['digits_between:0,9'],
         ]);
     }
 
@@ -40,7 +40,8 @@ class OrderController extends Controller {
         }
 
         else if ( $user == NULL && Auth::user()->isAtLeast(User::role_clerk)) {
-            //$orders = Order::where('id',)
+            $orders = Order::join('hotel_clerk', 'hotel_clerk.hotel_id','=', 'orders.hotel_id')
+            ->where('hotel_clerk.user_id', Auth::user()->id)->select('orders.*')->get();
         }
 
         else {
@@ -48,7 +49,32 @@ class OrderController extends Controller {
         }
 
         $data = [
+            'user'   => $user,
             'orders' => $orders,
+            'filter'  => 'all'
+        ];
+        return view('orders.index', $data);
+    }
+
+    public function filter(Request $request, User $user = NULL){
+
+        if ( $user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))){
+            $orders = Order::where('user_id', $user->id)->get();
+        }
+
+        else if ( $user == NULL && Auth::user()->isAtLeast(User::role_clerk)) {
+            $orders = Order::join('hotel_clerk', 'hotel_clerk.hotel_id','=', 'orders.hotel_id')
+            ->where('hotel_clerk.user_id', Auth::user()->id)->select('orders.*')->get();
+        }
+
+        else {
+            return redirect('/');
+        }
+
+        $data = [
+            'user'    => $user,
+            'orders'  => $orders,
+            'filter'  => $request->filter
         ];
         return view('orders.index', $data);
     }
@@ -87,6 +113,7 @@ class OrderController extends Controller {
             return redirect('/');
         }
 
+        $order->hotel_id  = $request->session()->get('hotel_id');
         $order->firstname = $request->firstname;
         $order->lastname = $request->lastname;
         $order->email = request('e-mail');

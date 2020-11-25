@@ -88,4 +88,5 @@ Route::get('orders/show/{order}', [\App\Http\Controllers\OrderController::class,
 Route::post('/profile/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update')->middleware('auth');
 
 Route::post('orders/store', [\App\Http\Controllers\OrderController::class, 'store'])->name('orders.store');
+Route::post('orders/filter/{user?}', [\App\Http\Controllers\OrderController::class, 'filter'])->name('orders.filter')->middleware('auth');
 Route::post('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->name('orders.update')->middleware('auth');
