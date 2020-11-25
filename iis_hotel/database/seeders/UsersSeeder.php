@@ -55,7 +55,7 @@ class UsersSeeder extends Seeder {
         DB::table('users')->insertOrIgnore([
             'firstname' => 'Jill',
             'lastname' => 'Clerk',
-            'email' => 'clerk@gmail . com',
+            'email' => 'clerk@gmail.com',
             'password' => Hash::make("12345678"),
             'role' => User::role_clerk,
         ]);
@@ -64,6 +64,14 @@ class UsersSeeder extends Seeder {
             'firstname' => 'Joe',
             'lastname' => 'Costumer',
             'email' => 'costumer@gmail.com',
+            'password' => Hash::make("12345678"),
+            'role' => User::role_customer,
+        ]);
+
+        DB::table('users')->insertOrIgnore([
+            'firstname' => 'k',
+            'lastname' => 'm',
+            'email' => 'k@m.com',
             'password' => Hash::make("12345678"),
             'role' => User::role_customer,
         ]);

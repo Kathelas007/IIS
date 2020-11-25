@@ -47,14 +47,14 @@ class RoomsSeeder extends Seeder {
 
         $faker = Faker::create();
 
-        $all_room_types = DB::table('room_types')->get();
-        foreach ($all_room_types as $room_type) {
-            DB::table('rooms')->updateOrInsert([
-                'number' => 111,
-                'roomType_id' => $room_type->id,
-            ]);
-        }
-
-
+//        $all_room_types = DB::table('room_types')->get();
+//        foreach ($all_room_types as $room_type) {
+//            if($room_type->id == $manesky_type[0]->id or $room_type->id == $manesky_type[1]->id)
+//                break;
+//            DB::table('rooms')->updateOrInsert([
+//                'number' => 111,
+//                'roomType_id' => $room_type->id,
+//            ]);
+//        }
     }
 }

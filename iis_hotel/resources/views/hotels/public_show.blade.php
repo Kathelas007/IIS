@@ -30,6 +30,8 @@
 
                         <ul class="list-group list-group-flush">
                             @foreach ($room_types as $index => $room_type)
+                                @if( $room_type->total > 0)
+
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-8">
@@ -51,6 +53,7 @@
                                         </div>
                                     </div>
                                 </li>
+                                @endif
                             @endforeach
                             <li>
                                 <div class="row">

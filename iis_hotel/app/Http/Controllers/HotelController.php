@@ -66,34 +66,25 @@ class HotelController extends Controller {
     }
 
     public static function get_available_rooms($room_type_id, $count, $start, $end) {
+
         $orders = HotelController::join_orders_to_rooms($start, $end);
 
         if ($orders == null) {
-            $room_type = Room::where('roomType_id', '=', "$room_type_id")
+            $rooms = Room::where('roomType_id', '=', "$room_type_id")
                 ->select('rooms.id AS id')
                 ->get()->take($count);
-            return $room_type;
+            return $rooms;
         }
 
-        $room_type = Room::where('id', '=', "$room_type_id")
-            ->join('rooms', 'rooms.roomType_id', '=', 'room_types.id');
+        $rooms = Room::where('roomType_id', '=', "$room_type_id");
 
-//        $room_type = DB::table('room_types')
-//            ->where('id', '=', "$room_type_id")
-//            ->join('rooms', 'rooms.roomType_id', '=', 'room_types.id');
-
-        $room_type = $room_type->leftJoinSub($orders, 'orders', function ($join) {
+        $rooms = $rooms->leftJoinSub($orders, 'orders', function ($join) {
             $join->on('orders.rooms_id', '=', 'rooms.id');
         });
 
-        $room_type = $room_type->leftJoinSub($orders, 'orders', function ($join) {
-            $join->on('orders.rooms_id', '=', 'rooms.id');
-        });
+        $rooms = $rooms->whereNull('orders.rooms_id');
 
-
-        $room_type = $room_type->whereNull('orders.rooms_id');
-
-        return $room_type
+        return $rooms->groupby('rooms.id')
             ->select('rooms.id AS id')->get()->take($count);
     }
 
