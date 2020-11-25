@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hotel;
 use App\Models\Order;
+use App\Models\Room;
 use App\Models\User;
 use App\Models\RoomType;
 
@@ -48,7 +49,7 @@ class HotelController extends Controller {
     }
 
 
-    private static function join_orders_to_hotel_direction($start, $end, $to_hotel) {
+    private static function join_orders_to_rooms($start, $end) {
 
         $orders = DB::table('orders')->where([['end_date', '>=', "$start"], ['start_date', '<=', "$end"]]);
 
@@ -64,6 +65,29 @@ class HotelController extends Controller {
         return $orders_joined;
     }
 
+    public static function get_available_rooms($room_type_id, $count, $start, $end) {
+
+        $orders = HotelController::join_orders_to_rooms($start, $end);
+
+        if ($orders == null) {
+            $rooms = Room::where('roomType_id', '=', "$room_type_id")
+                ->select('rooms.id AS id')
+                ->get()->take($count);
+            return $rooms;
+        }
+
+        $rooms = Room::where('roomType_id', '=', "$room_type_id");
+
+        $rooms = $rooms->leftJoinSub($orders, 'orders', function ($join) {
+            $join->on('orders.rooms_id', '=', 'rooms.id');
+        });
+
+        $rooms = $rooms->whereNull('orders.rooms_id');
+
+        return $rooms->groupby('rooms.id')
+            ->select('rooms.id AS id')->get()->take($count);
+    }
+
 
     private static function get_available_room_types($hotel_id, $start_date, $end_date) {
         $all_room_types = DB::table('room_types')->where('hotel_id', '=', "$hotel_id");
@@ -73,7 +97,7 @@ class HotelController extends Controller {
 
         $all_room_types->join('rooms', 'rooms.roomType_id', '=', 'room_types.id');
 
-        $orders_joined = HotelController::join_orders_to_hotel_direction($start_date, $end_date, false);
+        $orders_joined = HotelController::join_orders_to_rooms($start_date, $end_date);
 
         $filtered_room_types = null;
         if ($orders_joined == null) {
@@ -87,18 +111,6 @@ class HotelController extends Controller {
 
         // musi byt jeste jeden join
         // aby se mohli spocitat rooms
-
-        var_dump($filtered_room_types
-            ->select(
-                'room_types.id AS id',
-                'room_types.name AS name',
-                'room_types.beds_count AS beds_count',
-                'room_types.equipment AS equipment',
-                'room_types.price AS price'
-                , DB::raw('count(rooms.id) as total')
-            )
-            ->groupBy('room_types.id')
-            ->get()->toArray());
 
         $all_room_types = $filtered_room_types
             ->select(
@@ -137,7 +149,7 @@ class HotelController extends Controller {
             ->leftJoin('rooms', 'rooms.roomType_id', '=', 'room_types.id')
             ->whereNotNull('rooms.id');
 
-        $orders_joined = HotelController::join_orders_to_hotel_direction($start, $end, true);
+        $orders_joined = HotelController::join_orders_to_rooms($start, $end);
         if ($orders_joined == null) {
             return $all_hotels
                 ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni')
@@ -165,9 +177,6 @@ class HotelController extends Controller {
     }
 
     function public_show(Request $request) {
-        // TODO selected se musi resit jinak
-        // zatim na nej kaslu
-
         $hotel_id = $request->hotel_id;
         $start_date = $request->start_date;
         $end_date = $request->end_date;
@@ -237,7 +246,7 @@ class HotelController extends Controller {
         if ($hotelId == NULL) {
             return DB::table('users')->join('hotel_clerk', 'users.id', '=', 'hotel_clerk.user_id')
                 ->where('users.role', User::role_clerk)
-                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname','users.firstname', 'users.email')
+                ->select('hotel_clerk.id', 'hotel_clerk.user_id', 'users.lastname', 'users.firstname', 'users.email')
                 ->get();
         } else {
 
@@ -413,6 +422,4 @@ class HotelController extends Controller {
         $img = Im::make('https://picsum.photos/100/100')->resize(100, 100);
         return $img->response('jpg');
     }
-
-    // TODO datepicker data
 }

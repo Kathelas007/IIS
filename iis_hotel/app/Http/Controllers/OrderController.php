@@ -35,7 +35,7 @@ class OrderController extends Controller {
      */
     public function index(User $user = NULL) {
 
-        if ( $user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))){
+        if ($user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))) {
             $orders = Order::where('user_id', $user->id)->get();
         }
 
@@ -142,8 +142,8 @@ class OrderController extends Controller {
 
         $rooms = new Collection();
         foreach ($room_types as $room_type) {
-            // TODO: select only available rooms
-            $rooms = $rooms->merge(Room::where('roomType_id', $room_type['type']->id)->get()->take($room_type['count']));
+            $new_rooms = HotelController::get_available_rooms($room_type['type']->id, $room_type['count'], $order->start_date, $order->end_date);
+            $rooms = $rooms->merge($new_rooms);
         }
 
         if ($order->save()) {
