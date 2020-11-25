@@ -73,7 +73,11 @@
                                     Street, no.:
                                 </div>
                                 <div class="col-6 text-left">
-                                    {{ $hotel->ulice }}, {{ $hotel->c_popisne }}
+                                    {{ $hotel->ulice }}
+                                    @if ($hotel->ulice != null && $hotel->c_popisne != null)
+                                    ,
+                                    @endif
+                                    {{ $hotel->c_popisne }}
                                 </div>
                             </div>
                             <div class="row">

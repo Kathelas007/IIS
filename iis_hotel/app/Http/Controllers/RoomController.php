@@ -6,8 +6,8 @@ use App\Models\Room;
 use App\Models\Hotel;
 use App\Models\RoomType;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -89,9 +89,16 @@ class RoomController extends Controller
         }
 
         $this->validator($request->all())->validate();
+        $request->validate([
+            'number' => [Rule::unique('rooms','number')
+            ->where(function($query) use ($request) {
+                return $query->where('hotel_id', $request->hotel_id);
+            })],
+            ]);
 
         $room = new Room();
         $room->number = $request->number;
+        $room->hotel_id = $request->hotel_id;
         $room->roomType_id = $request->type_id;
 
         $room->save();

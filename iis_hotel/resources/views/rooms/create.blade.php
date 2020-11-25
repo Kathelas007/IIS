@@ -10,6 +10,8 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('rooms.create', $hotel) }}">
                         @csrf
+
+                        <input type="hidden" id="hotel_id" name="hotel_id" value="{{$hotel->id}}">
                         <div class="form-group row">
                             <label for="number" class="col-4 col-form-label text-right">No.:</label>
 

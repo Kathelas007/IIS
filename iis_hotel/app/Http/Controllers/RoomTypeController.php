@@ -17,9 +17,8 @@ class RoomTypeController extends Controller
     {
         return Validator::make($data, [
             'name'      => ['required', 'string', 'max:127'],
-            'beds_count'=> ['digits_between:0,2'],
-            'equipment' => ['required', 'string'],
-            'price'     => ['required','digits_between:0,16'],
+            'beds_count'=> ['required', 'digits_between:1,2'],
+            'price'     => ['required','digits_between:1,16'],
         ]);
     }
 

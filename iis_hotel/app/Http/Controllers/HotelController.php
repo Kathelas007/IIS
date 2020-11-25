@@ -23,12 +23,11 @@ class HotelController extends Controller {
     protected function validator(array $data) {
         return Validator::make($data, [
             'oznaceni' => ['required', 'string', 'max:255'],
-            'popis' => ['required', 'string'],
+            'stat' => ['required', 'string', 'max:255'],
+            'mesto'=> ['required', 'string', 'max:255'],
             //image
-            'street' => ['string', 'max:255'],
-            'city' => ['string', 'max:255'],
             'c_popisne' => ['digits_between:0,10'],
-            'PSC' => ['digits_between:0,10']
+            'PSC' => ['digits_between:0,8']
         ]);
     }
 

@@ -25,6 +25,8 @@ class OrderController extends Controller {
         return Validator::make($data, [
             'e-mail' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['digits_between:0,9'],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname'  => ['required', 'string', 'max:255']
         ]);
     }
 
