@@ -7,8 +7,6 @@ use App\Http\Controllers\HotelController;
 
 class WelcomeController extends Controller
 {
-//  TODO seeds
-
     public function index() {
         return view('welcome.index');
     }
