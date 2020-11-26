@@ -8,8 +8,8 @@ use App\Models\Room;
 use App\Models\User;
 use App\Models\RoomType;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;

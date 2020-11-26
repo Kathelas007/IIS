@@ -6,6 +6,8 @@ use App\Models\Room;
 use App\Models\Hotel;
 use App\Models\RoomType;
 use App\Models\User;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,7 +104,7 @@ class RoomController extends Controller
         $room->roomType_id = $request->type_id;
 
         $room->save();
-        return redirect(route('hotels.owner_show', $hotel));
+        return redirect(route('rooms.index', $hotel));
     }
 
     /**
@@ -111,12 +113,20 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function edit(Room $room)
+    public function edit(Hotel $hotel, Room $room)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
         }
-        //
+
+        $roomTypes = RoomType::where('hotel_id', $hotel->id)->get();
+        $data = [
+            'hotel' => $hotel,
+            'roomTypes' => $roomTypes,
+            'room' => $room
+        ];
+
+        return view('rooms.edit', $data);
     }
 
     /**
@@ -126,13 +136,28 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Room $room)
+    public function update(Request $request, Hotel $hotel, Room $room)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
         }
-        //
+
+        $this->validator($request->all())->validate();
+        $request->validate([
+            'number' => [Rule::unique('rooms','number')
+            ->where(function($query) use ($request, $room) {
+                return $query->where('hotel_id', $request->hotel_id)
+                        ->where('rooms.id','<>',$room->id);
+            })],
+            ]);
+
+        $room->number = $request->number;
+        $room->roomType_id = $request->type_id;
+
+        $room->save();
+        return redirect(route('rooms.index',$hotel));
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -140,15 +165,39 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
+
+    public function can_delete_room($id){
+
+        Room::findOrFail($id);
+        $orders = Order::join('order_room', 'order_room.order_id','=', 'orders.id')
+                  ->where('order_room.room_id', $id)
+                  ->whereNotIn('orders.state',['cancelled', 'finished'])
+                  ->select('orders.*')
+                  ->get();
+        return (!(count($orders) > 0));
+    }
+
+    public function delete_room($id){
+        $room = Room::findOrFail($id);
+        Order::join('order_room', 'order_room.order_id', '=', 'orders.id')
+               ->where('order_room.room_id', $id)
+               ->select('orders.*')->delete();
+
+        $room->delete();
+    }
+
     public function destroy(Hotel $hotel, $id)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
         }
 
-        $room = Room::findOrFail($id);
-        $room->delete();
+        Room::findOrFail($id);
+        if ($this->can_delete_room($id) == false){
+            return redirect(route('hotels.owner_show', $hotel));
+        }
 
-        return redirect(route('hotels.owner_show', $hotel));
+        $this->delete_room($id);
+        return redirect(route('rooms.index', $hotel));
     }
 }

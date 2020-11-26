@@ -72,9 +72,11 @@ Route::post('/hotels/{hotel}/hotel_clerk/assign', [App\Http\Controllers\HotelCon
 Route::delete('/hotel_clerk/{hotel}/{id}', [App\Http\Controllers\HotelController::class, 'clerk_unassign'])->name('hotels.clerk_unassign')->middleware('auth');
 
 Route::get('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController::class, 'create'])->name('rooms.create');
+Route::get('hotels/{hotel}/rooms/edit/{room}', [App\Http\Controllers\RoomController::class, 'edit'])->name('rooms.edit');
 Route::get('hotels/{hotel}/rooms/{roomType?}', [App\Http\Controllers\RoomController::class, 'index'])->name('rooms.index');
 
 Route::post('hotels/{hotel}/rooms/create', [App\Http\Controllers\RoomController::class, 'store'])->name('rooms.create');
+Route::post('hotels/{hotel}/rooms/edit/{room}', [App\Http\Controllers\RoomController::class, 'update'])->name('rooms.edit');
 Route::delete('/rooms/{hotel}/{id}', [App\Http\Controllers\RoomController::class, 'destroy'])->name('rooms.destroy')->middleware('auth');
 
 Route::get('/orders/create', [\App\Http\Controllers\OrderController::class, 'create'])->name('orders.create');
