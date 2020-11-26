@@ -177,22 +177,27 @@ class RoomController extends Controller
         return (!(count($orders) > 0));
     }
 
+    public function delete_room($id){
+        $room = Room::findOrFail($id);
+        Order::join('order_room', 'order_room.order_id', '=', 'orders.id')
+               ->where('order_room.room_id', $id)
+               ->select('orders.*')->delete();
+
+        $room->delete();
+    }
+
     public function destroy(Hotel $hotel, $id)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
         }
 
-        $room = Room::findOrFail($id);
+        Room::findOrFail($id);
         if ($this->can_delete_room($id) == false){
             return redirect(route('hotels.owner_show', $hotel));
         }
 
-        Order::join('order_room', 'order_room.order_id', '=', 'orders.id')
-               ->where('order_room.room_id', $id)
-               ->select('orders.*')->delete();
-
-        $room->delete();
+        $this->delete_room($id);
         return redirect(route('rooms.index', $hotel));
     }
 }
