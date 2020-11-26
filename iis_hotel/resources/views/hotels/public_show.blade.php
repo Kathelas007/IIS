@@ -11,7 +11,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-4">
-                                <img class="card-img" src="/fetch_hotel_image/{{ $hotel->id }}"/>
+                                @if($hotel->image == null)
+                                    <img src="{{ asset('storage/images/default.png')}}"
+                                         width="200" height="200"/>
+                                @else
+                                    <img src="{{ asset('storage/' . $hotel->image)}}"
+                                         width="200" height="200"/>
+                                @endif
                             </div>
                             <div class="col-8">
                                 <p>{{$hotel->popis}}</p>

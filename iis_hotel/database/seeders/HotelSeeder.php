@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Faker\Factory;
 use Faker\Provider\Image;
 use Intervention\Image\ImageManager;
-use mysql_xdevapi\Table;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -18,15 +17,26 @@ use App\Models;
 
 
 class HotelSeeder extends Seeder {
+    private function get_and_save_image() {
+
+        $image = Im::make('https://picsum.photos/400/400');
+        $image->encode('png');
+        $name = "seed" . '_' . time() . '.png';
+        $folder = 'images/';
+        $filePath = $folder . $name;
+        $image->save('public/storage/' . $filePath);
+
+        return $filePath;
+    }
+
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
     public function run() {
-        $manager = new ImageManager(array('driver' => 'imagick'));
 
-//        $img = Im::make('https://picsum.photos/300/200')->resize(300, 200);
         $faker = Faker::create();
         $owners = DB::table('users')
             ->where('role', '=', Models\User::role_owner)
@@ -34,43 +44,47 @@ class HotelSeeder extends Seeder {
             ->get();
 
         $owner_ids = [];
-        foreach ($owners as $owner){
+        foreach ($owners as $owner) {
             array_push($owner_ids, $owner->id);
         }
 
         DB::table('hotels')->updateOrInsert([
             'oznaceni' => 'Mánesovy koleje',
-            'popis' => 'Nejlepší koleje v Brně',
+            'popis' => 'Best dormitory in Brno',
             'user_id' => $faker->randomElement($owner_ids),
-//            'image' => $img->encode('jpg', 80),
-            'ulice' => $faker->streetName,
-            'c_popisne' => $faker->streetAddress,
-            'mesto' => $faker->city,
-            'PSC' => $faker->postcode,
-            'stat' => $faker->state,
+            'image' => 'images/manesky_640.jpg',
+            'ulice' => 'Mánesova',
+            'c_popisne' => 2556,
+            'mesto' => "Brno-Královo Pole",
+            'PSC' => '61200',
+            'stat' => "Czech republick",
 
         ]);
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             DB::table('hotels')->updateOrInsert([
                 'oznaceni' => 'hotel ' . Str::random(10),
                 'popis' => Str::random(200),
                 'user_id' => $faker->randomElement($owner_ids),
                 'ulice' => $faker->streetName,
-                'c_popisne' => $faker->streetAddress,
+                'c_popisne' => rand(1, 1000),
                 'mesto' => $faker->city,
                 'PSC' => $faker->postcode,
                 'stat' => $faker->state,
+                'image' => $this->get_and_save_image(),
             ]);
         }
 
         for ($i = 1; $i <= 10; $i++) {
+            $img = null;
+            if (rand(0, 9) > 7)
+                $img = $this->get_and_save_image();
             DB::table('hotels')->updateOrInsert([
                 'oznaceni' => 'pension ' . Str::random(10),
                 'popis' => Str::random(200),
                 'user_id' => $owner_ids[0],
                 'ulice' => $faker->streetName,
-                'c_popisne' => $faker->streetAddress,
+                'c_popisne' => rand(1, 1000),
                 'mesto' => "Brno",
                 'PSC' => $faker->postcode,
                 'stat' => $faker->state,
