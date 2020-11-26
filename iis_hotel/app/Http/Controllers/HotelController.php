@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 use Intervention\Image\ImageManagerStatic as Im;
+use Illuminate\Support\Str;
+
 use function Psy\debug;
 
 class HotelController extends Controller {
@@ -24,7 +27,7 @@ class HotelController extends Controller {
         return Validator::make($data, [
             'oznaceni' => ['required', 'string', 'max:255'],
             'stat' => ['required', 'string', 'max:255'],
-            'mesto'=> ['required', 'string', 'max:255'],
+            'mesto' => ['required', 'string', 'max:255'],
             //image
             'c_popisne' => ['digits_between:0,10'],
             'PSC' => ['digits_between:0,8']
@@ -107,9 +110,6 @@ class HotelController extends Controller {
             });
             $filtered_room_types = $hotels_orders_joined->whereNull('orders.rooms_id');
         }
-
-        // musi byt jeste jeden join
-        // aby se mohli spocitat rooms
 
         $all_room_types = $filtered_room_types
             ->select(
@@ -336,6 +336,23 @@ class HotelController extends Controller {
         return view('hotels.add');
     }
 
+    public function store_image($request) {
+        if (!$request->has('image'))
+            return null;
+
+        $image = $request->file('image');
+        $name = Str::slug($request->input('oznaceni')) . '_' . time() . '.' . $image->getClientOriginalExtension();
+        $folder = 'images';
+        $filePath = $image->storeAs($folder, $name, 'public');
+        return $filePath;
+    }
+
+    public function delete_image($path) {
+        if (Storage::exists($path)) {
+            Storage::delete($path);
+        }
+    }
+
     public function store(Request $request) {
 
         if (!(Auth::user()->isAtLeast(User::role_owner))) {
@@ -354,8 +371,9 @@ class HotelController extends Controller {
         $hotel->mesto = $request->mesto;
         $hotel->PSC = $request->PSC;
         $hotel->stat = $request->stat;
-
         $hotel->user_id = $user->id;
+        $hotel->image = $this->store_image($request);
+
         $hotel->save();
 
         DB::table('hotel_clerk')->insert(['hotel_id' => $hotel->id, 'user_id' => $user->id]);
@@ -390,6 +408,11 @@ class HotelController extends Controller {
         $hotel->mesto = $request->mesto;
         $hotel->PSC = $request->PSC;
         $hotel->stat = $request->stat;
+
+        if ($hotel->image != null)
+            $this->delete_image($hotel->image);
+
+        $hotel->image = $this->store_image($request);
 
         $hotel->save();
 

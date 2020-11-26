@@ -36,15 +36,6 @@ class Order extends Model {
         return $this->belongsToMany('App\Models\Room');
     }
 
-    public function create_binding_table_rows($order_id, $rooms) {
-        foreach ($rooms as $room) {
-            DB::table('order_room')->insert([
-                'room_id' => $room->id,
-                'order_id' => $order_id,
-            ]);
-        }
-    }
-
     public static function totalCount($room_types) {
         $total = 0;
         foreach ($room_types as $room_type) {

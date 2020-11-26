@@ -33,28 +33,32 @@ class RoomsSeeder extends Seeder {
         DB::table('rooms')->updateOrInsert([
             'number' => 7,
             'roomType_id' => $manesky_type[0]->id,
+            'hotel_id' => $manesky->id,
         ]);
 
         DB::table('rooms')->updateOrInsert([
             'number' => 8,
             'roomType_id' => $manesky_type[0]->id,
+            'hotel_id' => $manesky->id
         ]);
 
         DB::table('rooms')->updateOrInsert([
             'number' => 9,
             'roomType_id' => $manesky_type[1]->id,
+            'hotel_id' => $manesky->id,
         ]);
 
         $faker = Faker::create();
 
-//        $all_room_types = DB::table('room_types')->get();
-//        foreach ($all_room_types as $room_type) {
-//            if($room_type->id == $manesky_type[0]->id or $room_type->id == $manesky_type[1]->id)
-//                break;
-//            DB::table('rooms')->updateOrInsert([
-//                'number' => 111,
-//                'roomType_id' => $room_type->id,
-//            ]);
-//        }
+        $all_room_types = DB::table('room_types')->get();
+        foreach ($all_room_types as $room_type) {
+            if ($room_type->hotel_id == $manesky->id)
+                break;
+            DB::table('rooms')->updateOrInsert([
+                'number' => 111,
+                'roomType_id' => $room_type->id,
+                'hotel_id' => $room_type->hotel_id,
+            ]);
+        }
     }
 }

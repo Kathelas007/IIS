@@ -8,7 +8,7 @@
                 <div class="card-header">Edit Hotel</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('hotels.update', $hotel) }}">
+                    <form method="POST" action="{{ route('hotels.update', $hotel) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
                             <label for="oznaceni" class="col-4 col-form-label text-right">Hotel name</label>
@@ -102,6 +102,19 @@
 
                                 @error('popis')
                                     <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="image" class="col-4 col-form-label text-right">Image</label>
+
+                            <div class="col-6">
+                                <input type="file" name="image" id="image">
+                                @error('image')
+                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
