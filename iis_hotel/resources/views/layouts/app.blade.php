@@ -10,9 +10,9 @@
     <title>{{ config('app.name', 'IIS Hotel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" ></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
-<!-- Fonts -->
+    <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
@@ -116,7 +116,7 @@
     </main>
 </div>
 
-@yield('javascript');
+@yield('javascript')
 
 </body>
 </html>

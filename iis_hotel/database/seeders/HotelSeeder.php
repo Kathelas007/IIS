@@ -58,6 +58,7 @@ class HotelSeeder extends Seeder {
             'mesto' => "Brno-Královo Pole",
             'PSC' => '61200',
             'stat' => "Czech republick",
+            'ucet' => " 932932932/0300",
 
         ]);
 
@@ -72,6 +73,7 @@ class HotelSeeder extends Seeder {
                 'PSC' => $faker->postcode,
                 'stat' => $faker->state,
                 'image' => $this->get_and_save_image(),
+                'ucet' => $faker->bankAccountNumber,
             ]);
         }
 
@@ -88,6 +90,7 @@ class HotelSeeder extends Seeder {
                 'mesto' => "Brno",
                 'PSC' => $faker->postcode,
                 'stat' => $faker->state,
+                'ucet' => $faker->bankAccountNumber,
             ]);
         }
 

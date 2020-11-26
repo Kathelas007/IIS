@@ -4,12 +4,14 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-8">
-                <div class="card">
-                    <div class="card-header">File order</div>
 
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('orders.create') }}">
-                            @csrf
+                <form method="POST" action="{{ route('orders.create') }}">
+                    @csrf
+                    <div class="card mt-3">
+
+                        {{-- Personal details --}}
+                        <div class="card-header">Personal details {{$hotel_oznaceni}}</div>
+                        <div class="card-body">
 
                             <div class="form-group row">
                                 <label for="firstname" class="col-4 col-form-label text-right">First name</label>
@@ -85,7 +87,7 @@
                             </div>
 
                             <div class="form-group row">
-al                                <div class="col-md-4 text-right">
+                                <div class="col-md-4 text-right">
                                     From date
                                 </div>
                                 <div class="col-md-6">
@@ -100,45 +102,6 @@ al                                <div class="col-md-4 text-right">
                                     {{ $order->end_date->format('Y-m-d') }}
                                 </div>
                             </div>
-
-                            @foreach ($room_types as $room_type)
-                                <div class="form-group row">
-                                    <div class="col-3 text-right">
-                                        Room:
-                                    </div>
-                                    <div class="col-2">
-                                        {{ $room_type['type']->name }}
-                                    </div>
-                                    <div class="col-2 text-right">
-                                        Quantity:
-                                    </div>
-                                    <div class="col-1">
-                                        {{ $room_type['count']}}
-                                    </div>
-                                    <div class="col-2 text-right">
-                                        Total price:
-                                    </div>
-                                    <div class="col-1">
-                                        {{ $room_type['type']->price * $room_type['count'] }}
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            <div class="form-group row">
-                                <div class="col-7 text-right">
-                                    Total quantity:
-                                </div>
-                                <div class="col-1">
-                                    {{ \App\Models\Order::totalCount($room_types) }}
-                                </div>
-                                <div class="col-2 text-right">
-                                    Total price:
-                                </div>
-                                <div class="col-1">
-                                    {{ \App\Models\Order::totalPrice($room_types) }}
-                                </div>
-                            </div>
-
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <a href="{{ route('hotels.public_show') }}" class="btn btn-secondary">
@@ -150,9 +113,12 @@ al                                <div class="col-md-4 text-right">
 
                                 </div>
                             </div>
-                        </form>
+
+                        </div>
                     </div>
-                </div>
+
+
+                </form>
             </div>
         </div>
     </div>

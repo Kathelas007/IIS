@@ -45,7 +45,15 @@
 
                     <div class="row">
                         <div class="col-md-4 text-right">
-                            From date
+                            Hotel
+                        </div>
+                        <div class="col-md-6">
+                            {{ $hotel->oznaceni }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-right">
+                            From date:
                         </div>
                         <div class="col-md-6">
                             {{ $order->start_date->format('Y-m-d') }}
@@ -53,10 +61,18 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4 text-right">
-                            To date
+                            To date:
                         </div>
                         <div class="col-md-6">
                             {{ $order->end_date->format('Y-m-d') }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 text-right">
+                            Account:
+                        </div>
+                        <div class="col-md-6">
+                            {{ $hotel->ucet }}
                         </div>
                     </div>
 

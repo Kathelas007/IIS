@@ -106,6 +106,21 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="ucet" class="col-4 col-form-label text-right">Account</label>
+
+                                <div class="col-6">
+                                    <input id="ucet" type="text" class="form-control @error('ucet') is-invalid @enderror"
+                                           name="ucet" value="{{ old('ucet') }}">
+
+                                    @error('ucet')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="popis" class="col-4 col-form-label text-right">Description</label>
 
                                 <div class="col-6">
