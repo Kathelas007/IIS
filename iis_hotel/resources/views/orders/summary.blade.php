@@ -118,7 +118,7 @@
                                     Bank account:
                                 </div>
                                 <div class="col-6">
-                                    account
+                                    {{session()->get('hotel_ucet')}}
                                 </div>
                             </div>
                             <div class="row">

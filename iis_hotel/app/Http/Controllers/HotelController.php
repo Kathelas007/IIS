@@ -372,6 +372,7 @@ class HotelController extends Controller {
         $hotel->PSC = $request->PSC;
         $hotel->stat = $request->stat;
         $hotel->user_id = $user->id;
+        $hotel->ucet = $request->ucet;
         $hotel->image = $this->store_image($request);
 
         $hotel->save();

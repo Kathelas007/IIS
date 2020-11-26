@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAccountToHotelTable extends Migration
+class AddAccountToHotelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddAccountToHotelTable extends Migration
      */
     public function up()
     {
-        Schema::table('hotel', function (Blueprint $table) {
-            //
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->string('ucet');
         });
     }
 
@@ -25,8 +25,8 @@ class AddAccountToHotelTable extends Migration
      */
     public function down()
     {
-        Schema::table('hotel', function (Blueprint $table) {
-            //
+        Schema::table('hotels', function (Blueprint $table) {
+            $table->dropColumn('ucet');
         });
     }
 }

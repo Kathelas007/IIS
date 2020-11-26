@@ -97,7 +97,7 @@ class OrderController extends Controller {
 
         $request->session()->put('selected', $selected);
 
-        return view('orders.create', compact('hotel_oznaceni', 'order',  'room_types'));
+        return view('orders.create', compact('hotel_oznaceni', 'order', 'room_types'));
     }
 
     public function create_post(Request $request) {
@@ -121,7 +121,7 @@ class OrderController extends Controller {
 
         $hotel = Hotel::where('id', '=', $order->hotel_id)->first();
 
-        return redirect()->route('orders.summary')->with(['hotel_name' => $hotel->oznaceni]);
+        return redirect()->route('orders.summary')->with(['hotel_name' => $hotel->oznaceni, 'hotel_ucet' => $hotel->ucet]);
     }
 
     /**
@@ -168,8 +168,11 @@ class OrderController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Order $order) {
+        $hotel = Hotel::where('id', '=', $order->hotel_id)->first();
+
         $data = [
             'order' => $order,
+            'hotel' => $hotel
         ];
         return view('orders.show', $data);
     }
