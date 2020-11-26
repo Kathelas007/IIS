@@ -91,10 +91,16 @@ class OrderController extends Controller {
             return redirect('/');
         }
 
+
         $selected = [];
+        $total = 0;
         foreach ($room_types as $room_type) {
             array_push($selected, $room_type['count']);
+            $total += $room_type['count'];
         }
+
+        if ($total == 0)
+            return redirect()->back();
 
         $request->session()->put('selected', $selected);
 

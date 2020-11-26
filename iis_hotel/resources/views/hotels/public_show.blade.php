@@ -27,56 +27,56 @@
                 </div>
 
                 {{--room types--}}
-                <div class="card mt-3">
-                    <div class="card-header">
-                        Available room types
-                    </div>
-                    <form method="POST" action="{{ route('hotels.public_show') }}">
-                        @csrf
+                <form method="POST" action="{{ route('hotels.public_show') }}">
+                    @csrf
+
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            Available room types
+                        </div>
 
                         <ul class="list-group list-group-flush">
                             @foreach ($room_types as $index => $room_type)
                                 @if( $room_type->total > 0)
 
-                                <li class="list-group-item">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <div><b> {{ $room_type->name }} </b></div>
-                                            <div> Bed count: {{ $room_type->beds_count }}</div>
-                                            <div> Equipment: {{ $room_type->equipment}}</div>
-                                        </div>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div><b> {{ $room_type->name }} </b></div>
+                                                <div> Bed count: {{ $room_type->beds_count }}</div>
+                                                <div> Equipment: {{ $room_type->equipment}}</div>
+                                            </div>
 
-                                        <div class="cols-4">
-                                            <div style="margin-bottom: 10px">
-                                                <input name="room_types[{{ $room_type->id }}]" id="room_types"
-                                                       type="number"
-                                                       min="0" max="{{ $room_type->total }}"
-                                                       value="{{$selected[0]}}" required>
-                                            </div>
-                                            <div>
-                                                Price: {{ $room_type->price }}
+                                            <div class="cols-4">
+                                                <div style="margin-bottom: 10px">
+                                                    <input name="room_types[{{ $room_type->id }}]" id="room_types"
+                                                           type="number"
+                                                           min="0" max="{{ $room_type->total }}"
+                                                           value="{{$selected[0]}}" required>
+                                                </div>
+                                                <div>
+                                                    Price: {{ $room_type->price }}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
                                 @endif
                             @endforeach
-                            <li>
-                                <div class="row">
-                                    <div class="col-4"></div>
-                                    <div class="col-4 text-center">
-                                        <button type="submit" style="width: 300px"
-                                                class="btn btn-primary align-self-center">
-                                            Order
-                                        </button>
-                                    </div>
-                                    <div class="col-4"></div>
-                                </div>
-                            </li>
 
                         </ul>
-                    </form>
-                </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-4"></div>
+                        <button type="submit"
+                                style="width: 300px"
+                                class="btn btn-primary align-self-center">
+                            Order
+                        </button>
+                        <div class="col-4"></div>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>

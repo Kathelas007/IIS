@@ -25,8 +25,6 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome.index');
 Route::get('/search', [App\Http\Controllers\WelcomeController::class, 'search'])->name('welcome.search');
 
-Route::get('/fetch_hotel_image/{id}', [App\Http\Controllers\HotelController::class, 'fetch_hotel_image']);
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/profile/list', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');

@@ -181,8 +181,6 @@ class HotelController extends Controller {
         $end_date = $request->end_date;
         $selected = null;
 
-        // back from orders
-        // no requests
         if ($hotel_id == null) {
             $hotel_id = $request->session()->get('hotel_id');
             $start_date = $request->session()->get('start_date');
@@ -436,17 +434,4 @@ class HotelController extends Controller {
         return redirect(route('hotels.index', Auth::user()));
     }
 
-    function fetch_hotel_image($hotel_id) {
-        // TODO
-
-//        $hotel = Hotel::findOrFail($hotel_id);
-//        $image_file = $hotel->image;
-//        $response = Response::make($image_file->encode('jpg'));
-//        $response->header('Content-Type', 'image/jpg');
-//        return $response;
-
-
-        $img = Im::make('https://picsum.photos/100/100')->resize(100, 100);
-        return $img->response('jpg');
-    }
 }
