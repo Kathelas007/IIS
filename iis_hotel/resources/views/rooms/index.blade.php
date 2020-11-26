@@ -23,11 +23,18 @@
                 <div class="card-body">
                     @foreach ($rooms as $room)
                      <div class="row mt-1">
-                        <div class="col-4 text-left">
+                        <div class="col-3 text-left">
                             No.: {{ $room->number }}
                         </div>
-                        <div class="col-4 text-center">
+                        <div class="col-5 text-center">
                             {{ $room->name }}
+                        </div>
+                        <div class="col text-right">
+                            <a href="{{ route('rooms.edit',['hotel' => $hotel, 'room' => $room]) }}">
+                                <button class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </a>
                         </div>
                         <div class="col text-right">
                         <form method="POST", action="{{ route('rooms.destroy',[ 'hotel' => $hotel, 'id' => $room->id]) }}">

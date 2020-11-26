@@ -113,12 +113,20 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function edit(Room $room)
+    public function edit(Hotel $hotel, Room $room)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
         }
-        //
+
+        $roomTypes = RoomType::where('hotel_id', $hotel->id)->get();
+        $data = [
+            'hotel' => $hotel,
+            'roomTypes' => $roomTypes,
+            'room' => $room
+        ];
+
+        return view('rooms.edit', $data);
     }
 
     /**
@@ -128,12 +136,26 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Room $room)
+    public function update(Request $request, Hotel $hotel, Room $room)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
         }
-        //
+
+        $this->validator($request->all())->validate();
+        $request->validate([
+            'number' => [Rule::unique('rooms','number')
+            ->where(function($query) use ($request, $room) {
+                return $query->where('hotel_id', $request->hotel_id)
+                        ->where('rooms.id','<>',$room->id);
+            })],
+            ]);
+
+        $room->number = $request->number;
+        $room->roomType_id = $request->type_id;
+
+        $room->save();
+        return redirect(route('rooms.index',$hotel));
     }
 
 
@@ -146,7 +168,7 @@ class RoomController extends Controller
 
     public function can_delete_room($id){
 
-        $room = Room::findOrFail($id);
+        Room::findOrFail($id);
         $orders = Order::join('order_room', 'order_room.order_id','=', 'orders.id')
                   ->where('order_room.room_id', $id)
                   ->whereNotIn('orders.state',['cancelled', 'finished'])
@@ -162,13 +184,7 @@ class RoomController extends Controller
         }
 
         $room = Room::findOrFail($id);
-        $orders = Order::join('order_room', 'order_room.order_id','=', 'orders.id')
-                  ->where('order_room.room_id', $id)
-                  ->whereNotIn('orders.state',['cancelled', 'finished'])
-                  ->select('orders.*')
-                  ->get();
-
-        if (! $this->can_delete_room($id)){
+        if ($this->can_delete_room($id) == false){
             return redirect(route('hotels.owner_show', $hotel));
         }
 
