@@ -6,6 +6,8 @@ use App\Models\Room;
 use App\Models\Hotel;
 use App\Models\RoomType;
 use App\Models\User;
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -134,6 +136,7 @@ class RoomController extends Controller
         //
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -147,8 +150,21 @@ class RoomController extends Controller
         }
 
         $room = Room::findOrFail($id);
-        $room->delete();
+        $orders = Order::join('order_room', 'order_room.order_id','=', 'orders.id')
+                  ->where('order_room.room_id', $id)
+                  ->whereNotIn('orders.state',['cancelled', 'finished'])
+                  ->select('orders.*')
+                  ->get();
 
+        if (count($orders) > 0){
+            return redirect(route('hotels.owner_show', $hotel));
+        }
+
+        Order::join('order_room', 'order_room.order_id', '=', 'orders.id')
+               ->where('order_room.room_id', $id)
+               ->select('orders.*')->delete();
+
+        $room->delete();
         return redirect(route('hotels.owner_show', $hotel));
     }
 }
