@@ -126,7 +126,7 @@
                                     Variable symbol:
                                 </div>
                                 <div class="col-6">
-                                    symbol
+                                    {{$order->var_num}}
                                 </div>
                             </div>
 
