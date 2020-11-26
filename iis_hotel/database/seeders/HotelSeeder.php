@@ -17,18 +17,22 @@ use App\Models;
 
 
 class HotelSeeder extends Seeder {
-    private function get_and_save_image() {
+    private function get_and_save_image($url = null) {
+        $image = null;
+        if ($url)
+            $image = Im::make($url);
+        else
+            $image = Im::make('https://picsum.photos/400/400');
 
-        $image = Im::make('https://picsum.photos/400/400');
         $image->encode('png');
-        $name = "seed" . '_' . time() . '.png';
+        $rand_num = rand(1000, 2000);
+        $name = "seed" . '_' . time() . "_$rand_num" . '.png';
         $folder = 'images/';
         $filePath = $folder . $name;
         $image->save('public/storage/' . $filePath);
 
         return $filePath;
     }
-
 
     /**
      * Run the database seeds.
@@ -52,7 +56,7 @@ class HotelSeeder extends Seeder {
             'oznaceni' => 'Mánesovy koleje',
             'popis' => 'Best dormitory in Brno',
             'user_id' => $faker->randomElement($owner_ids),
-            'image' => 'images/manesky_640.jpg',
+            'image' =>  $this->get_and_save_image('https://i.vutbr.cz/media/document_images/fotogalerie_doc/ostra/149411/manesky_640.jpg'),
             'ulice' => 'Mánesova',
             'c_popisne' => 2556,
             'mesto' => "Brno-Královo Pole",

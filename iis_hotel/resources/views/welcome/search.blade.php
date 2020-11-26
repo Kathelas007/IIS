@@ -24,7 +24,14 @@
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col-2 text-left">
-                                            <img src="/fetch_hotel_image/{{ $hotel->id }}"/>
+                                            @if($hotel->image == null)
+                                                <img src="{{ asset('storage/images/default.png')}}"
+                                                     width="100" height="100"/>
+                                            @else
+                                                <img src="{{ asset('storage/' . $hotel->image)}}"
+                                                     width="100" height="100"/>
+                                            @endif
+{{--                                            <img src="/fetch_hotel_image/{{ $hotel->id }}"/>--}}
                                         </div>
                                         <div class="col-8 text-left align-content-center">
                                             <form method="GET" class="d-inline" action="{{ route('hotels.public_show') }}">

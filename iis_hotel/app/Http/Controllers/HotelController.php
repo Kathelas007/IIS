@@ -129,12 +129,12 @@ class HotelController extends Controller {
     public static function get_search_paginator($loc_pos = null, $start, $end) {
         if ($loc_pos == null) {
             $all_hotels = DB::table('hotels')
-                ->select('hotels.id', 'hotels.oznaceni');
+                ->select('hotels.id', 'hotels.oznaceni', 'hotels.image');
         } else {
             $all_hotels = DB::table('hotels')
                 ->where('mesto', 'like', "%$loc_pos%")
                 ->orWhere('oznaceni', 'like', "%$loc_pos%")
-                ->select('hotels.id', 'hotels.oznaceni');
+                ->select('hotels.id', 'hotels.oznaceni', 'hotels.image');
         }
 
         if ($all_hotels->get()->count() == 0) {
@@ -151,7 +151,7 @@ class HotelController extends Controller {
         $orders_joined = HotelController::join_orders_to_rooms($start, $end);
         if ($orders_joined == null) {
             return $all_hotels
-                ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni')
+                ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni', 'hotels.image AS image')
                 ->groupBy('hotels.id')
                 ->paginate(10);
         }
@@ -163,7 +163,7 @@ class HotelController extends Controller {
 
         $filtered_hotels = $hotels_orders_joined
             ->whereNull('orders.rooms_id')
-            ->select('hotels.id', 'hotels.oznaceni')
+            ->select('hotels.id', 'hotels.oznaceni', 'hotels.image')
             ->groupBy('hotels.id')->having(DB::raw('count(room_types.id)'), '>', '0');
 
         return $filtered_hotels->paginate(10);
