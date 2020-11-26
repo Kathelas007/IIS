@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoomType;
+use App\Models\Room;
 use App\Models\user;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
@@ -112,6 +113,18 @@ class RoomTypeController extends Controller
         }
 
         $roomType = RoomType::findOrFail($id);
+        $rooms = Room::where('roomType_id',$id)->get();
+
+        foreach($rooms as $room){
+            if( RoomController::can_delete_room($room->id) == false){
+                return redirect('home');
+            }
+        }
+
+        foreach($rooms as $room){
+            RoomController::delete_room($room->id);
+        }
+
         $roomType->delete();
 
         return redirect('home');
