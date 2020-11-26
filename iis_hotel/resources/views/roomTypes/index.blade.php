@@ -38,7 +38,7 @@
                                 </a>
                             </div>
                             <div class="col text-right">
-                                <form method="POST", action="/room_types/{{ $roomType->id }}">
+                            <form method="POST", action="{{ route('roomTypes.destroy', ['hotel' => $hotel, 'id' => $roomType->id]) }}">
                                     @csrf
                                     @method('DELETE')
                                     <div class="form-group row mb-0">

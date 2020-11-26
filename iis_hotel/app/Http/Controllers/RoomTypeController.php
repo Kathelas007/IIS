@@ -106,7 +106,7 @@ class RoomTypeController extends Controller
         return redirect(route('hotels.owner_show', $hotel));
     }
 
-    public function destroy ($id){
+    public function destroy (Hotel $hotel, $id){
 
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
@@ -117,7 +117,7 @@ class RoomTypeController extends Controller
 
         foreach($rooms as $room){
             if( RoomController::can_delete_room($room->id) == false){
-                return redirect('home');
+                return redirect(route('hotels.owner_show', $hotel));
             }
         }
 
@@ -127,6 +127,6 @@ class RoomTypeController extends Controller
 
         $roomType->delete();
 
-        return redirect('home');
+        return redirect(route('hotels.owner_show', $hotel));
     }
 }
