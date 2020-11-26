@@ -14,7 +14,7 @@ class AddHotelToRoomsTable extends Migration
     public function up()
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->foreignId('hotel_id');
+            $table->foreignId('hotel_id')->constrained('hotels')->onDelete('cascade');
         });
     }
 

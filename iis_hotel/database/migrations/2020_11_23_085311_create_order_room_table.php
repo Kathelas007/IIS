@@ -15,9 +15,9 @@ class CreateOrderRoomTable extends Migration {
             $table->bigIncrements('id');
             $table->timestamps();
             $table->foreignId('order_id')
-                ->constrained();
+                ->constrained('orders')->onDelete('cascade');
             $table->foreignId('room_id')
-                ->constrained();
+                ->constrained('rooms')->onDelete('cascade');
         });
     }
 

@@ -89,7 +89,7 @@ class HotelController extends Controller {
 
 
     private static function get_available_room_types($hotel_id, $start_date, $end_date) {
-        $all_room_types = DB::table('room_types')->where('hotel_id', '=', "$hotel_id");
+        $all_room_types = DB::table('room_types')->where('room_types.hotel_id', '=', "$hotel_id");
         if ($all_room_types->get()->count() == 0) {
             return $all_room_types->get();
         }
@@ -403,6 +403,10 @@ class HotelController extends Controller {
         }
 
         $hotel = Hotel::findOrFail($id);
+
+        //DB::table('hotel_clerk')->where('hotel_id', $hotel->id)->delete();
+
+
         $hotel->delete();
 
         return redirect(route('hotels.index', Auth::user()));
