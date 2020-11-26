@@ -26,7 +26,7 @@ class OrderController extends Controller {
             'e-mail' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['digits_between:0,9'],
             'firstname' => ['required', 'string', 'max:255'],
-            'lastname'  => ['required', 'string', 'max:255']
+            'lastname' => ['required', 'string', 'max:255']
         ]);
     }
 
@@ -39,44 +39,36 @@ class OrderController extends Controller {
 
         if ($user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))) {
             $orders = Order::where('user_id', $user->id)->get();
-        }
-
-        else if ( $user == NULL && Auth::user()->isAtLeast(User::role_clerk)) {
-            $orders = Order::join('hotel_clerk', 'hotel_clerk.hotel_id','=', 'orders.hotel_id')
-            ->where('hotel_clerk.user_id', Auth::user()->id)->select('orders.*')->get();
-        }
-
-        else {
+        } else if ($user == NULL && Auth::user()->isAtLeast(User::role_clerk)) {
+            $orders = Order::join('hotel_clerk', 'hotel_clerk.hotel_id', '=', 'orders.hotel_id')
+                ->where('hotel_clerk.user_id', Auth::user()->id)->select('orders.*')->get();
+        } else {
             return redirect('/');
         }
 
         $data = [
-            'user'   => $user,
+            'user' => $user,
             'orders' => $orders,
-            'filter'  => 'all'
+            'filter' => 'all'
         ];
         return view('orders.index', $data);
     }
 
-    public function filter(Request $request, User $user = NULL){
+    public function filter(Request $request, User $user = NULL) {
 
-        if ( $user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))){
+        if ($user != NULL && ($user->id == Auth::user()->id || Auth::user()->isAtLeast(User::role_admin))) {
             $orders = Order::where('user_id', $user->id)->get();
-        }
-
-        else if ( $user == NULL && Auth::user()->isAtLeast(User::role_clerk)) {
-            $orders = Order::join('hotel_clerk', 'hotel_clerk.hotel_id','=', 'orders.hotel_id')
-            ->where('hotel_clerk.user_id', Auth::user()->id)->select('orders.*')->get();
-        }
-
-        else {
+        } else if ($user == NULL && Auth::user()->isAtLeast(User::role_clerk)) {
+            $orders = Order::join('hotel_clerk', 'hotel_clerk.hotel_id', '=', 'orders.hotel_id')
+                ->where('hotel_clerk.user_id', Auth::user()->id)->select('orders.*')->get();
+        } else {
             return redirect('/');
         }
 
         $data = [
-            'user'    => $user,
-            'orders'  => $orders,
-            'filter'  => $request->filter
+            'user' => $user,
+            'orders' => $orders,
+            'filter' => $request->filter
         ];
         return view('orders.index', $data);
     }
@@ -84,14 +76,15 @@ class OrderController extends Controller {
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create(Request $request) {
         $order = $request->session()->get('order');
         $hotel_id = $request->session()->get('hotel_id');
         $room_types = $request->session()->get('room_types');
 
-        $hotel = Hotel::where('id', '=', $hotel_id);
+        $hotel = Hotel::where('id', '=', $hotel_id)->first();
+        $hotel_oznaceni = $hotel->oznaceni;
 
         if (empty($order) || empty($hotel) || empty($room_types)) {
             return redirect('/');
@@ -104,7 +97,7 @@ class OrderController extends Controller {
 
         $request->session()->put('selected', $selected);
 
-        return view('orders.create', compact('order', 'hotel', 'room_types'));
+        return view('orders.create', compact('hotel_oznaceni', 'order',  'room_types'));
     }
 
     public function create_post(Request $request) {
@@ -115,7 +108,7 @@ class OrderController extends Controller {
             return redirect('/');
         }
 
-        $order->hotel_id  = $request->session()->get('hotel_id');
+        $order->hotel_id = $request->session()->get('hotel_id');
         $order->firstname = $request->firstname;
         $order->lastname = $request->lastname;
         $order->email = request('e-mail');
@@ -126,7 +119,9 @@ class OrderController extends Controller {
         $order->state = 'filed';
         $request->session()->put('order', $order);
 
-        return redirect()->route('orders.summary');
+        $hotel = Hotel::where('id', '=', $order->hotel_id)->first();
+
+        return redirect()->route('orders.summary')->with(['hotel_name' => $hotel->oznaceni]);
     }
 
     /**
