@@ -104,7 +104,7 @@ class RoomController extends Controller
         $room->roomType_id = $request->type_id;
 
         $room->save();
-        return redirect(route('hotels.owner_show', $hotel));
+        return redirect(route('rooms.index', $hotel));
     }
 
     /**
@@ -143,6 +143,18 @@ class RoomController extends Controller
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Http\Response
      */
+
+    public function can_delete_room($id){
+
+        $room = Room::findOrFail($id);
+        $orders = Order::join('order_room', 'order_room.order_id','=', 'orders.id')
+                  ->where('order_room.room_id', $id)
+                  ->whereNotIn('orders.state',['cancelled', 'finished'])
+                  ->select('orders.*')
+                  ->get();
+        return (!(count($orders) > 0));
+    }
+
     public function destroy(Hotel $hotel, $id)
     {
         if (! (Auth::user()->isAtLeast(User::role_owner))){
@@ -156,7 +168,7 @@ class RoomController extends Controller
                   ->select('orders.*')
                   ->get();
 
-        if (count($orders) > 0){
+        if (! $this->can_delete_room($id)){
             return redirect(route('hotels.owner_show', $hotel));
         }
 
@@ -165,6 +177,6 @@ class RoomController extends Controller
                ->select('orders.*')->delete();
 
         $room->delete();
-        return redirect(route('hotels.owner_show', $hotel));
+        return redirect(route('rooms.index', $hotel));
     }
 }
