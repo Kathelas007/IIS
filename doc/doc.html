@@ -168,14 +168,27 @@ Všechny pohledy byly implementovány v <a href="https://laravel-guide.readthedo
 		<li><b>Auth/RegisterController</b></li> - vygenerovaný, upravený soubor, zajišťuje, že po registraci se spravným způsobem vytvoří na modelu (a tedy v databázi) nový uživatel.
 		<li><b>HomeController</b> -obsahuje jedinou funkci, jejíž zavolání zobrazí domovskou stránku uživatele.
 		</li>
-		<li><b>HotelController</b> - </li>
+		<li><b>HotelController</b> - obsahuje funkce pro zobrazování všech pohledů souvisejících s hotely, včetně seznamu hotelů nalezeného vyhledáváním. Zajišťuje nahrávání vhodných dat z databáze podle uživatelů a hotelů, kterúm jsou data určena, a především validaci dat před uložením do databáze. Obsahuje vyhledávací logiku, včetně načítání informací o volných pokojích a jejich typech. Zajišťuje korektní mazání celých hotelů a všech s nimi souvisejících informací (počítá se znalostí kontextu nastavení databáze v migracích, například spolehá na kaskádování). Pracuje zejména s objektovým modelem hotelu a s vazebními tabulkami, např. pro zjišťování a změny recepčních pracujících v hotelu.
+		</li>
+		<li><b>OrderController</b> -obsahuje funkce pro zobrazování jednotlivých kroků tvorby nové objednávky, zajišťuje spojení těchto kroků do uživatelského sezení, validaci a uložení výsledné objednávky do databáze a v případě neregistrovaných uživatelů přesměrování na registrační formulář. Podle identity a role zákazníka dále vybírá z datového modelu náležité informace o objednávkách. Obsahuje funkci pro změnu stavu objednávky, je-li uživatel přinejmenším recepční. Samotné objednávky se nikdy nemažou, logika pro jejich mazání zde tedy není implementována.
+		</li>
+		<li><b>ProfileController</b> - analogicky s předchozími kontroléry se stará o příslušné pohledy pro zobrazování a úpravy dat a odstraňování uživatelů.</li>
+		<li><b>RoomController</b> - analogický s předchozími kontroléry, za zmínku stojí kontrola při mazání pokoje: pokoj nesmí mít v okamžiku smazání žádnou aktivní objednávku, jinak nebude smazán. Při mazání pokoje se smažou všechny s ním spojené neaktivní objednávky.
+		</li>
+		<li><b>RoomTypeController</b> - analogicky k předchozím, při mazání typu pokoje se nejdřív s využitím logiky pro mazání pokoje ověří, že všechny pokoje tohoto typu lze smazat. Pokud ne, mazání selže.</li>
+		<li><b>WelcomeController</b> - obsahuje funkce pro zobrazení uvítací stránky a stránky s výsledky hledání.</li>
 	</ul>
 
-<h3>Models<h3>
+<h3>Models</h3>
+<p>Modely obsahují třidy s objektovými reprezentacemi datových entit. Jsou odvozeny od mateřské třidy poskytnuté Laravelem. Za zmínku zde stojí enumerátor <i>user_role</i> a funkce <i>isAtLeast()</i>, které společně tvoří rozhraní pro ověřování role uživatele napříč celým systémem. Funkce <i>isAtLeast()</i> ověřuje, že uživatel je přinejmenším majitelem zadané role (protože uživatelská oprávnění se podle zadání stupňují a každý stupeň má kromě vlastních práv i práva nižších stupňů).
+</p>
+<p>
+Přesné podoby tabulek včetně integritních omezení a vazebních tabulek jsou dodefinovány v migracích projektu. Připojení k fyzické databázi je konfigurováno (nutno nakonfigurovat) ve skrytém souboru <i>.env</i> v kořenovém adresáři projektu.
+</p>
 <h3>Databáze</h3>
 
 
-<i>Zde vlo¾te grafické schéma relaèní databáze (tabulek v databázi).</i>
+<i>Zde vložte grafické schéma relaèní databáze (tabulek v databázi).</i>
 
 <h2>Instalace</h2>
 <h3>Postup instalace na server</h3>
