@@ -34,6 +34,17 @@ class HotelSeeder extends Seeder {
         return $filePath;
     }
 
+    private function assign_owners_as_clerks(){
+        $all_hotels = DB::table('hotels')->select('id', 'user_id')->get();
+
+        foreach ($all_hotels as $hotel){
+            DB::table('hotel_clerk')->updateOrInsert([
+                'hotel_id' => $hotel->id,
+                'user_id' => $hotel->user_id,
+            ]);
+        }
+    }
+
     /**
      * Run the database seeds.
      *
@@ -45,6 +56,7 @@ class HotelSeeder extends Seeder {
         $owners = DB::table('users')
             ->where('role', '=', Models\User::role_owner)
             ->select('id')
+            ->orderBy('id')
             ->get();
 
         $owner_ids = [];
@@ -55,7 +67,7 @@ class HotelSeeder extends Seeder {
         DB::table('hotels')->updateOrInsert([
             'oznaceni' => 'Mánesovy koleje',
             'popis' => 'Best dormitory in Brno',
-            'user_id' => $faker->randomElement($owner_ids),
+            'user_id' => $owner_ids[0],
             'image' =>  $this->get_and_save_image('https://i.vutbr.cz/media/document_images/fotogalerie_doc/ostra/149411/manesky_640.jpg'),
             'ulice' => 'Mánesova',
             'c_popisne' => 2556,
@@ -98,5 +110,6 @@ class HotelSeeder extends Seeder {
             ]);
         }
 
+        $this->assign_owners_as_clerks();
     }
 }
