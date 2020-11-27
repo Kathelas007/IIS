@@ -16,7 +16,7 @@ class CreateHotelClerkTable extends Migration
         Schema::create('hotel_clerk', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('hotel_id')->constrained('hotels')->onDelete('cascade');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -22,7 +22,7 @@ class CreateHotelTable extends Migration
             $table->string('mesto');
             $table->string('PSC')->nullable();
             $table->string('stat');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -29,10 +29,16 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Type name</label>
                             <div class="col-md-6">
-                                <select name="type_id" id="type_id" class="form-control">
+                                <select name="type_id" id="type_id" class="form-control" @error('type_id') is-invalid @enderror>
                                     @foreach ($roomTypes as $roomType)
                                     <option value="{{ $roomType->id }}">{{ $roomType->name }}</option>
                                     @endforeach
+
+                                    @error('type_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                                 </select>
                             </div>
                         </div>
