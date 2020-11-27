@@ -53,7 +53,8 @@ class HotelController extends Controller {
 
     private static function join_orders_to_rooms($start, $end) {
 
-        $orders = DB::table('orders')->where([['end_date', '>=', "$start"], ['start_date', '<=', "$end"]]);
+        $orders = DB::table('orders')->where([['end_date', '>=', "$start"], ['start_date', '<=', "$end"],
+            ['state', '<>', 'cancelled'], ['state', '<>', 'finished']]);
 
         if ($orders->get()->count() == 0)
             return null;
