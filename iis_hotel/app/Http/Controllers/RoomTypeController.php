@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoomType;
+use App\Models\Room;
 use App\Models\user;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
@@ -105,15 +106,27 @@ class RoomTypeController extends Controller
         return redirect(route('hotels.owner_show', $hotel));
     }
 
-    public function destroy ($id){
+    public function destroy (Hotel $hotel, $id){
 
         if (! (Auth::user()->isAtLeast(User::role_owner))){
             return redirect('home');
         }
 
         $roomType = RoomType::findOrFail($id);
+        $rooms = Room::where('roomType_id',$id)->get();
+
+        foreach($rooms as $room){
+            if( RoomController::can_delete_room($room->id) == false){
+                return redirect(route('hotels.owner_show', $hotel));
+            }
+        }
+
+        foreach($rooms as $room){
+            RoomController::delete_room($room->id);
+        }
+
         $roomType->delete();
 
-        return redirect('home');
+        return redirect(route('hotels.owner_show', $hotel));
     }
 }

@@ -166,7 +166,7 @@ class RoomController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function can_delete_room($id){
+    public static function can_delete_room($id){
 
         Room::findOrFail($id);
         $orders = Order::join('order_room', 'order_room.order_id','=', 'orders.id')
@@ -177,7 +177,7 @@ class RoomController extends Controller
         return (!(count($orders) > 0));
     }
 
-    public function delete_room($id){
+    public static function delete_room($id){
         $room = Room::findOrFail($id);
         Order::join('order_room', 'order_room.order_id', '=', 'orders.id')
                ->where('order_room.room_id', $id)

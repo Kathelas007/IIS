@@ -15,7 +15,7 @@
                             <div class="form-group row">
                                 <div class="col-md-2"></div>
                                 <div class="col-md-8">
-                                    Thank you for your order, please consider to register
+                                    Thank you for your order, please consider registering
                                 </div>
                             </div>
                         @endif
@@ -52,8 +52,11 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ session('email') ?? old('email') }}" required autocomplete="email">
-
+                                @if(null !== session('email'))
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ session('email') }}" required autocomplete="email" readonly>
+                                @else
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                @endif
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
