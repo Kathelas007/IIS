@@ -143,19 +143,19 @@ class HotelController extends Controller {
             return $all_hotels->paginate(10);
         }
 
-
-        $orders_joined = HotelController::join_orders_to_rooms($start, $end);
-        if ($orders_joined == null) {
-            return $all_hotels
-                ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni', 'hotels.image AS image')
-                ->paginate(10);
-        }
-
         $all_hotels
             ->leftJoin('room_types', 'room_types.hotel_id', '=', 'hotels.id')
             ->whereNotNull('room_types.id')
             ->leftJoin('rooms', 'rooms.roomType_id', '=', 'room_types.id')
             ->whereNotNull('rooms.id');
+
+        $orders_joined = HotelController::join_orders_to_rooms($start, $end);
+        if ($orders_joined == null) {
+            return $all_hotels
+                ->groupBy('hotels.id AS id', 'hotels.oznaceni AS oznaceni', 'hotels.image AS image')
+                ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni', 'hotels.image AS image')
+                ->paginate(10);
+        }
 
         $hotels_orders_joined = $all_hotels->leftJoinSub($orders_joined, 'orders', function ($join) {
             $join->on('orders.rooms_id', '=', 'rooms.id');
