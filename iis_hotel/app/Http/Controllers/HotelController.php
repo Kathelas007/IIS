@@ -151,9 +151,8 @@ class HotelController extends Controller {
 
         $orders_joined = HotelController::join_orders_to_rooms($start, $end);
         if ($orders_joined == null) {
-            return $all_hotels
+            return DB::table('hotels')
                 ->select('hotels.id AS id', 'hotels.oznaceni AS oznaceni', 'hotels.image AS image')
-                ->groupBy('hotels.id')
                 ->paginate(10);
         }
 
