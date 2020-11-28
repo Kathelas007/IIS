@@ -121,7 +121,11 @@ class HotelController extends Controller {
                 'room_types.price AS price'
                 , DB::raw('count(rooms.id) as total')
             )
-            ->groupBy('room_types.id')
+            ->groupBy('room_types.id',
+                'room_types.name',
+                'room_types.beds_count',
+                'room_types.equipment',
+                'room_types.price')
             ->get();
 
         return $all_room_types;
@@ -165,7 +169,7 @@ class HotelController extends Controller {
         $filtered_hotels = $hotels_orders_joined
             ->whereNull('orders.rooms_id')
             ->select('hotels.id', 'hotels.oznaceni', 'hotels.image')
-            ->groupBy('hotels.id')->having(DB::raw('count(room_types.id)'), '>', '0');
+            ->groupBy('hotels.id AS id', 'hotels.oznaceni AS oznaceni', 'hotels.image AS image')->having(DB::raw('count(room_types.id)'), '>', '0');
 
         return $filtered_hotels->paginate(10);
 
