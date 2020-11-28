@@ -11,24 +11,21 @@
 </head>
 <body>
 
-<!-- Zkontrolujte prosím nastavení kódování v hlavièce dokumentu 
-     podle pou¾itého editoru -->
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
 
-<h1>Varianta termínu - 2. Hotel: rezervace a správa ubytování</h1> <!-- Nahradte názvem svého zadání -->
+<h1>Varianta termínu - 2. Hotel: rezervace a správa ubytování</h1> <!-- Nahraďte názvem svého zadání -->
 
 <dl>
-	<dt>Autoøi</dt>
-	<dd>Mušková Kateřina <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
-	    <a href="mailto:xmusko00@stud.fit.vutbr.cz">xmusko00@stud.fit.vutbr.cz</a> -
-		popis činnosti v týmu
+	<dt>Autoři</dt>
+	<dd>Mušková Kateřina <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xmusko00@stud.fit.vutbr.cz">xmusko00@stud.fit.vutbr.cz</a> - založení a prvotní zprovoznění projektu, implementace objektových modelů, implementace front-endu i backendu vyhledávání, řešení práce s mediálními soubory (obrázky), úpravy funkcionalit a vzhledu objednávek a hotelů, práce na front-endu
 	</dd>
-	<dd>Holas David <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
-	    <a href="mailto:xholas11@stud.fit.vutbr.cz">xholas11@stud.fit.vutbr.cz</a> - 
-		popis činnosti v týmu
+	<dd>Holas David <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xholas11@stud.fit.vutbr.cz">xholas11@stud.fit.vutbr.cz</a> - implementace uživatelů a rolí, nasazení autentizace, prvotní implementace objednávek, vytvoření základní struktury systému z uživatelského hlediska, kontrola validace dat, práce na front-endu, nasazení na server
 	</dd>
-  <dd>Hubík Antonín <!-- Nahraïte skuteèným jménem a e-mailem autora a popisem èinnosti -->
-	    <a href="mailto:xautor03@stud.fit.vutbr.cz">xhubik03@stud.fit.vutbr.cz</a> - 
-		popis činnosti v týmu
+  <dd>Hubík Antonín <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a href="mailto:xautor03@stud.fit.vutbr.cz">xhubik03@stud.fit.vutbr.cz</a> - implementace správy hotelů a pokojů a tomu přímo podřízených funkcionalit, úpravy funkcionalit a vzhledu objednávek, kontrola validace dat, integrity, ukládání a mazání perzistentních dat, dokumentace
 	</dd>
 	<dt>URL aplikace</dt>
 	<dd><a href="https://mrkew.lumolet.cz">https://mrkew.lumolet.cz</a></dd>
@@ -151,7 +148,7 @@ Všechny pohledy byly implementovány v <a href="https://laravel-guide.readthedo
 
 	<h4>welcome</h4>
 	<ul>
-		<li><b>index</b> - zahrnuje komponentu vyhledávací panel (Blade direktiva <i>@include</i>), jinakobsahuje pouze uvítací zprávu na hlavní stránce</li>,
+		<li><b>index</b> - zahrnuje komponentu vyhledávací panel (Blade direktiva <i>@include</i>), jinak obsahuje pouze uvítací zprávu na hlavní stránce,</li>
 		<li><b>search</b> - zahrnuje v sobě komponentu vyhledávací panel, řeší zobrazení vyhledaných hotelů s volnou kapacitou pro zadaný dotaz a požadované kalendářní období, popřípadě zprávu, že žádné takové hotely nebyly nalezeny.
 		</li>
 	</ul>
@@ -186,9 +183,7 @@ Všechny pohledy byly implementovány v <a href="https://laravel-guide.readthedo
 Přesné podoby tabulek včetně integritních omezení a vazebních tabulek jsou dodefinovány v migracích projektu. Připojení k fyzické databázi je konfigurováno (nutno nakonfigurovat) ve skrytém souboru <i>.env</i> v kořenovém adresáři projektu.
 </p>
 <h3>Databáze</h3>
-
-
-<i>Zde vložte grafické schéma relační databáze (tabulek v databázi).</i>
+<img src="DB_scheme.jpg">
 
 <h2>Instalace</h2>
 <h3>Postup instalace na server</h3>
