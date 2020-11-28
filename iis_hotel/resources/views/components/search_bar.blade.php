@@ -21,8 +21,8 @@
                    required="required">
 
             <span class=" input-group-btn">
-            <button type="submit" class="btn btn-default">
-                <i class="fa fa-search"></i>
+            <button type="submit" class="btn btn-primary">
+                Search
             </button>
             </span>
         </div>
