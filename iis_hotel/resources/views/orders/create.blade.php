@@ -14,7 +14,7 @@
                         <div class="card-body">
 
                             <div class="form-group row">
-                                <label for="firstname" class="col-4 col-form-label text-right">First name</label>
+                                <label for="firstname" class="col-4 col-form-label text-right reqlabel">First name</label>
 
                                 <div class="col-6">
                                     <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname"
@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="lastname" class="col-4 col-form-label text-right">Last name</label>
+                                <label for="lastname" class="col-4 col-form-label text-right reqlabel">Last name</label>
 
                                 <div class="col-6">
                                     <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname"
@@ -62,7 +62,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="e-mail" class="col-4 col-form-label text-right">E-mail</label>
+                                <label for="e-mail" class="col-4 col-form-label text-right reqlabel">E-mail</label>
 
                                 <div class="col-6">
                                     <input id="e-mail" type="text" class="form-control @error('e-mail') is-invalid @enderror" name="e-mail"
@@ -131,9 +131,8 @@
 
                         </div>
                     </div>
-
-
                 </form>
+                @include('components.required_note')
             </div>
         </div>
     </div>

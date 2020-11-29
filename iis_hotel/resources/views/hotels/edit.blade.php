@@ -11,7 +11,7 @@
                     <form method="POST" action="{{ route('hotels.update', $hotel) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
-                            <label for="oznaceni" class="col-4 col-form-label text-right">Hotel name</label>
+                            <label for="oznaceni" class="col-4 col-form-label text-right reqlabel">Hotel name</label>
 
                             <div class="col-6">
                                 <input id="oznaceni" type="text" class="form-control @error('oznaceni') is-invalid @enderror" name="oznaceni" value="{{ old('oznaceni', $hotel->oznaceni) }}" autofocus>
@@ -25,7 +25,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="stat" class="col-4 col-form-label text-right">Country</label>
+                            <label for="stat" class="col-4 col-form-label text-right reqlabel">Country</label>
 
                             <div class="col-6">
                                 <input id="stat" type="text" class="form-control @error('stat') is-invalid @enderror" name="stat" value="{{ old('stat', $hotel->stat) }}" autofocus>
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="mesto" class="col-4 col-form-label text-right">City</label>
+                            <label for="mesto" class="col-4 col-form-label text-right reqlabel">City</label>
 
                             <div class="col-6">
                                 <input id="mesto" type="text" class="form-control @error('mesto') is-invalid @enderror" name="mesto" value="{{ old('mesto', $hotel->mesto) }}" autofocus>
@@ -95,7 +95,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="ucet" class="col-4 col-form-label text-right">Account</label>
+                            <label for="ucet" class="col-4 col-form-label text-right reqlabel">Account</label>
 
                             <div class="col-6">
                                 <input id="ucet" type="text" class="form-control @error('ucet') is-invalid @enderror" name="ucet" value="{{ old('ucet', $hotel->ucet) }}" autofocus>
@@ -142,6 +142,7 @@
                             </div>
                         </div>
                     </form>
+                    @include('components.required_note')
                 </div>
             </div>
         </div>

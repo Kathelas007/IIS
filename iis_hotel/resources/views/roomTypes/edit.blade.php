@@ -11,7 +11,7 @@
                     <form method="POST" action="{{ route('roomTypes.edit', ['hotel' => $hotel, 'roomType' => $roomType]) }}">
                         @csrf
                         <div class="form-group row">
-                            <label for="name" class="col-4 col-form-label text-right">Type name</label>
+                            <label for="name" class="col-4 col-form-label text-right reqlabel">Type name</label>
 
                             <div class="col-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $roomType->name)  }}" autofocus>
@@ -25,7 +25,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="beds_count" class="col-4 col-form-label text-right">Number of beds</label>
+                            <label for="beds_count" class="col-4 col-form-label text-right reqlabel">Number of beds</label>
 
                             <div class="col-6">
                                 <input id="beds_count" type="text" class="form-control @error('beds_count') is-invalid @enderror" name="beds_count" value="{{ old('beds_count', $roomType->beds_count) }}" autofocus>
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="price" class="col-4 col-form-label text-right">Price</label>
+                            <label for="price" class="col-4 col-form-label text-right reqlabel">Price</label>
 
                             <div class="col-6">
                                 <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price', $roomType->price) }}" autofocus>
@@ -74,6 +74,7 @@
                             </div>
                         </div>
                     </form>
+                    @include('components.required_note')
                 </div>
             </div>
         </div>
