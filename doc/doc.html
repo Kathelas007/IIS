@@ -187,13 +187,32 @@ Přesné podoby tabulek včetně integritních omezení a vazebních tabulek jso
 
 <h2>Instalace</h2>
 <h3>Postup instalace na server</h3>
+<p>
+Kvůli povaze hostingu, který nepovoluje přístup přes <i>SSH</i> jsme museli zvolit alternativní variantu instalace na server. Pro potřeby školního projektu tato varianta sice postačí, ale <b>není doporučena</b> a pro nasazení reálného systému by určitě bylo lepší připlatit si za server přístupem přes <i>SSH</i>.
+</p>
+<p>
+K instalaci je nutné:
+</p>
+<ol>
+	<li>Exportovat lokální databázi do <i>.sql</i> souboru a importovat na serveru</li>
+	<li>Upravit nastavení databáze v souboru <i>config/database.php</i> tak aby odpovídalo databázi na serveru</li>
+	<li>Soubory <i>index.php</i> a <i>.htaccess</i> ze složky <i>public</i> posunout o úroveň výš do kořenového adresáře aplikace</li>
+	<li>V souborech <i>index.php</i> a <i>server.pho</i> změnit cesty, které předpokládají, že <i>index.php</i> je stále ve složce <i>public</i></li>
+	<li>Obdobně upravit všechny cesty předávané do funkce <i>asset</i> v souboru <i>views/layout/app.blade.php</i></li>
+	<li>Cesty k obrázkům v souborech <i>views/hotels/owner_show.blade.php</i>, <i>views/hotels/public_show.blade.php</i> a <i>views/welcome/search.blade.php</i> upravit tak, aby ukazovaly na obrázky uložené v <i>storage/app/public/images</i>
+	<li>Zakázat přístup k <i>.env</i> souboru v <i>.htaccess</i>
+	<li>Nahrát takto upravenou aplikaci na server</li>
+</ol>
+<p>
+Pro podrobnější postup doporučuji navštívit <a href="https://laravelarticle.com/deploy-laravel-on-shared-hosting">tutoriál</a>, ze kterého jsme při instalaci čerpali.
+</p>
 <h3>Softwarové požadavky</h3>
 	<ul>
 		<li>PHP 7.4</li>
 		<li>PHP rozšíření:
 			<ul>
 				<li>BCMath PHP Extension</li>
-				<li>Ctype PHP Extension</li>
+				<li>Ctype PHP Extension</li>b
 				<li>Fileinfo PHP Extension</li>
 				<li>JSON PHP Extension</li>
 				<li>Mbstring PHP Extension</li>
