@@ -83,6 +83,8 @@ Všechny pohledy byly implementovány v <a href="https://laravel-guide.readthedo
 
 	<h4>components</h4>
 	<ul>
+		<li><b>required_note</b> - pouze element s vysvětlivkou k požadovaným polím,
+		</li>
 		<li><b>search_bar</b> - definuje vyhledávací panel na úvodní stránce aplikace.
 		</li>
 	</ul>
@@ -228,7 +230,43 @@ Pro podrobnější postup doporučuji navštívit <a href="https://laravelarticl
 		<li><a href="https://dev.mysql.com/doc/refman/8.0/en/">MySQL 8</a></li>
 		<li><a href="http://httpd.apache.org/docs/2.2/">Apache 2.2</a> (pro účely vývoje stačí vývojový server dostupný příkazem <code>php artisan serve</code>)</li>
 	</ul>
-<H3><i>Jak rozbalit, konfigurovat, inicializovat databázi, ...</i></h3>
+<H3>Rozbalení, konfigurace, inicializace databáze</h3>
+	<ul>
+		<li>
+			Vzhledem k tomu, že součástí odevzdání jsou pouze nové a upravené soubory, je nutné vytvořit nový projekt laravel a nahradit soubory v patřičných adresářích, byly-li upraveny a přidat sem nové soubory.
+		</li>
+		<li>
+			Současně je nutné změnit konfigurační skripty projektu ve složce config, zejména připojení k databázi (na mysql) a název projektu
+		</li>
+		<li>
+			Pro další kroky se počítá s tím, že na zařízení je nainstalováno MySQL, je vytvořen aspoň nějaký uživatel (root by měl postačit) a existuje prázdná databáze
+		</li>
+		<li>
+			Projekt obsahuje ve svém kořenovém adresáři soubor <i>.env.example</i> se šablonou pro vytvoření <i>.env</i> souboru, který tedy stačí vytvořit zkopírováním a doplněním údajů o projektu:
+			<ul>
+				<li>
+					Název"projektu se musí shodovat s názvem uvedeným v konfiguraci
+				</li>
+				<li>
+					Musí být uveden správný poskytovatel databáze (MySQL) a název databáze, místo, kde databáze běží (localhost) a především musí být uvedeno, jako jaký uživatel se má aplikace k databázi připojovat (uživatelské jméno a heslo)
+				</li>
+				<li>
+					Aby bylo možné používat pro účely projektu používat program <i>artisan</i>, je nutné rovněž vygenerovat klíč, který bude uložen v <i>.env</i>: <code>php artisan key:generate</code>
+				</li>
+			</ul>
+		</li>
+		<li>
+			Jakmile jsou dokončena všechna prvotní nastavení, může být databáze inicializována příkazem <code>php artisan migrate</code>, který na určené databázi provede všechny migrace.
+		</li>
+		<li>
+			Pro správné fungování obrázků je potřeba v aplikaci ještě vytvořit symbolický odkaz na adresář, kde jsou ukládány datové soubory: <code>php artisan storage:link</code>
+		</li>
+		<li><b>Dodatečné reference: </b>
+			<a href="https://laravel.com/docs/8.x/installation">Instalace Laravel</a>,
+			 <a href="https://laravel.com/docs/8.x/configuration">konfigurace Laravel</a>,
+			 <a href="https://laravel.com/docs/8.x/artisan">Artisan</a>
+		</li>
+	</ul>
 
 <h2>Známé problémy</h2>
 <p>Z časových důvodů nebyla oproti zadání implementována možnost filtrování hotelů podle vybavení, počtu lůžek, apod. Vyhledávat hotely je možné podle názvu či města, kde se nacházejí, a datových rozmezí, kdy jsou v hotelu dostupné nějaké pokoje.
