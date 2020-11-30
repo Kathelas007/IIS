@@ -14,12 +14,20 @@
                         <div class="card-body">
 
                             <div class="form-group row">
-                                <label for="firstname" class="col-4 col-form-label text-right">First name</label>
+                                <label for="firstname" class="col-4 col-form-label text-right reqlabel">First name</label>
 
                                 <div class="col-6">
-                                    <input id="firstname" type="text"
-                                           class="form-control @error('firstname') is-invalid @enderror"
-                                           name="firstname" value="{{ $order->firstname }}" autofocus>
+                                    <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname"
+                                        @isset($order->firstname)
+                                            value="{{ $order->firstname }}"
+                                        @else
+                                            @auth
+                                                value="{{ Auth::user()->firstname }}"
+                                            @else
+                                                value=""
+                                            @endauth
+                                        @endisset
+                                    required autofocus>
 
                                     @error('firstname')
                                     <span class="invalid-feedback" role="alert">
@@ -30,12 +38,20 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="lastname" class="col-4 col-form-label text-right">Last name</label>
+                                <label for="lastname" class="col-4 col-form-label text-right reqlabel">Last name</label>
 
                                 <div class="col-6">
-                                    <input id="lastname" type="text"
-                                           class="form-control @error('lastname') is-invalid @enderror" name="lastname"
-                                           value="{{ $order->lastname }}" required>
+                                    <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname"
+                                        @isset($order->lastname)
+                                            value="{{ $order->lastname }}"
+                                        @else
+                                            @auth
+                                                value="{{ Auth::user()->lastname }}"
+                                            @else
+                                                value=""
+                                            @endauth
+                                        @endisset
+                                    required>
 
                                     @error('lastname')
                                     <span class="invalid-feedback" role="alert">
@@ -46,21 +62,20 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="e-mail" class="col-4 col-form-label text-right">E-mail</label>
+                                <label for="e-mail" class="col-4 col-form-label text-right reqlabel">E-mail</label>
 
                                 <div class="col-6">
-                                    <input id="e-mail" type="text"
-                                           class="form-control @error('e-mail') is-invalid @enderror" name="e-mail"
-                                           @isset($order->email)
-                                           value="{{ $order->email }}"
-                                           @else
-                                           @auth
-                                           value="{{ Auth::user()->email }}"
-                                           @else
-                                           value=""
-                                        @endauth
+                                    <input id="e-mail" type="text" class="form-control @error('e-mail') is-invalid @enderror" name="e-mail"
+                                        @isset($order->email)
+                                            value="{{ $order->email }}"
+                                        @else
+                                            @auth
+                                                value="{{ Auth::user()->email }}"
+                                            @else
+                                                value=""
+                                            @endauth
                                         @endisset
-                                    >
+                                    required>
 
                                     @error('e-mail')
                                     <span class="invalid-feedback" role="alert">
@@ -116,9 +131,8 @@
 
                         </div>
                     </div>
-
-
                 </form>
+                @include('components.required_note')
             </div>
         </div>
     </div>

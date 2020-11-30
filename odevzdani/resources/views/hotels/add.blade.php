@@ -11,7 +11,7 @@
                         <form method="POST" action="{{ route('hotels.add') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <label for="oznaceni" class="col-4 col-form-label text-right">Hotel name</label>
+                                <label for="oznaceni" class="col-4 col-form-label text-right reqlabel">Hotel name</label>
 
                                 <div class="col-6">
                                     <input id="oznaceni" type="text"
@@ -27,7 +27,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="stat" class="col-4 col-form-label text-right">Country</label>
+                                <label for="stat" class="col-4 col-form-label text-right reqlabel">Country</label>
 
                                 <div class="col-6">
                                     <input id="stat" type="text"
@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="mesto" class="col-4 col-form-label text-right">City</label>
+                                <label for="mesto" class="col-4 col-form-label text-right reqlabel">City</label>
 
                                 <div class="col-6">
                                     <input id="mesto" type="text"
@@ -106,7 +106,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="ucet" class="col-4 col-form-label text-right">Account</label>
+                                <label for="ucet" class="col-4 col-form-label text-right reqlabel">Account</label>
 
                                 <div class="col-6">
                                     <input id="ucet" type="text" class="form-control @error('ucet') is-invalid @enderror"
@@ -158,7 +158,7 @@
                                 </div>
                             </div>
                         </form>
-
+                        @include('components.required_note')
                     </div>
                 </div>
             </div>

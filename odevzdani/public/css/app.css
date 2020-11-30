@@ -13946,3 +13946,7 @@ a.text-dark:focus {
   clip: auto;
 }
 
+.reqlabel:after {
+    content: "*";
+    color: var(--red);
+}

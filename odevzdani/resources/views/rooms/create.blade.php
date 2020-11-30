@@ -13,7 +13,7 @@
 
                         <input type="hidden" id="hotel_id" name="hotel_id" value="{{$hotel->id}}">
                         <div class="form-group row">
-                            <label for="number" class="col-4 col-form-label text-right">No.:</label>
+                            <label for="number" class="col-4 col-form-label text-right reqlabel">No.:</label>
 
                             <div class="col-6">
                                 <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ old('number') }}" autofocus>
@@ -29,10 +29,16 @@
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Type name</label>
                             <div class="col-md-6">
-                                <select name="type_id" id="type_id" class="form-control">
+                                <select name="type_id" id="type_id" class="form-control" @error('type_id') is-invalid @enderror>
                                     @foreach ($roomTypes as $roomType)
                                     <option value="{{ $roomType->id }}">{{ $roomType->name }}</option>
                                     @endforeach
+
+                                    @error('type_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                                 </select>
                             </div>
                         </div>
@@ -45,6 +51,7 @@
                             </div>
                         </div>
                     </form>
+                    @include('components.required_note')
                 </div>
             </div>
         </div>

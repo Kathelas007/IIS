@@ -13,7 +13,7 @@
 
                         <input type="hidden" id="hotel_id" name="hotel_id" value="{{$hotel->id}}">
                         <div class="form-group row">
-                            <label for="number" class="col-4 col-form-label text-right">No.:</label>
+                            <label for="number" class="col-4 col-form-label text-right reqlabel">No.:</label>
 
                             <div class="col-6">
                                 <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ old('number', $room->number) }}" autofocus>
@@ -49,6 +49,7 @@
                             </div>
                         </div>
                     </form>
+                    @include('components.required_note')
                 </div>
             </div>
         </div>

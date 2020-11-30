@@ -19,6 +19,7 @@ class RoomController extends Controller
     {
         return Validator::make($data, [
             'number' => ['required','digits_between:1,3'],
+            'type_id'   => ['required']
         ]);
     }
 

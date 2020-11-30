@@ -21,8 +21,8 @@
                    required="required">
 
             <span class=" input-group-btn">
-            <button type="submit" class="btn btn-default">
-                <i class="fa fa-search"></i>
+            <button type="submit" class="btn btn-primary">
+                Search
             </button>
             </span>
         </div>
@@ -60,6 +60,8 @@
         if (ch_out.value === "") {
             ch_out.value = to_html_date(null, 0, 2)
         }
+        ch_out.value = to_html_date(null, 0, 2)
+
     }
 
     function check_ch_in() {

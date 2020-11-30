@@ -11,7 +11,9 @@
                             Your hotels
                         </div>
                         <div class="col text-right">
-                            <a href="{{ route('hotels.add') }}">Add hotel</a>
+                            <a href="{{ route('hotels.add') }}">
+                                <button class="btn btn-primary">Add hotel</button>
+                            </a>
                         </div>
                     </div>
                 </div>

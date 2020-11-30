@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="firstname" class="col-md-4 col-form-label text-md-right">First name</label>
+                            <label for="firstname" class="col-md-4 col-form-label text-md-right reqlabel">First name</label>
 
                             <div class="col-md-6">
                                 <input id="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" name="firstname" value="{{ $user->firstname }}" required autocomplete="firstname" autofocus>
@@ -36,6 +36,7 @@
                             </div>
                         </div>
                     </form>
+                    @include('components.required_note')
                 </div>
             </div>
         </div>
