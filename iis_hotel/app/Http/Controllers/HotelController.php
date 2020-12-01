@@ -30,7 +30,8 @@ class HotelController extends Controller {
             //image
             'c_popisne' => ['digits_between:0,10'],
             'PSC' => ['digits_between:0,8'],
-            'ucet' => ['required']
+            'ucet' => ['required'],
+            'popis' =>['string', 'max:250']
         ]);
     }
 
