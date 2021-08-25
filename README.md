@@ -6,3 +6,8 @@ Contributors:
 * Holas David
 * Antonín Hubík
 * Kateřina Mušková 
+
+![Alt text](img/ss1.png)
+![Alt text](img/ss2.png)
+
+
